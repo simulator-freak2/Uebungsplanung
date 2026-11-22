@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../data/demo_data.dart';
 import '../data/profile.dart';
 import '../data/repositories.dart';
 import '../ui/widgets.dart';
@@ -96,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     contentPadding: EdgeInsets.zero,
                     title: const Text('Freigabe von Übungen erforderlich'),
                     subtitle: const Text('Übungen werden zur Freigabe vorgelegt und von TL / Wehrführer freigegeben. '
-                        'Benutzerrollen mit Anmeldung folgen mit dem Server (Etappe 5).'),
+                        'Eine Anmeldung mit Benutzerrollen kommt mit dem Serverbetrieb.'),
                     value: s.data ?? true,
                     onChanged: (v) => repo.settings.set(SettingsRepository.approvalRequired, '$v'),
                   ),
@@ -109,11 +110,40 @@ class _SettingsPageState extends State<SettingsPage> {
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.computer),
                   title: const Text('Nur lokal'),
-                  subtitle: Text('Die Daten liegen auf diesem Gerät. Der Abgleich mit einem Server kommt in Etappe 5.',
+                  subtitle: Text('Die Daten liegen auf diesem Gerät. Der Abgleich mit einem Server kommt in einer späteren Version.',
                       style: TextStyle(color: c.onSurfaceVariant)),
                 ),
               ),
               const SizedBox(height: 16),
+              FutureBuilder<bool>(
+                future: canLoadDemo(repo),
+                builder: (context, s) => s.data != true
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: SectionCard(
+                          title: 'Ausprobieren',
+                          child: ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: const Text('Beispieldaten laden'),
+                            subtitle: const Text('Fiktives Personal, Fahrzeuge, Stichworte, Dienstplan und eine vollständig ausgearbeitete Übung. '
+                                'Nur möglich, solange noch kein Personal und keine Übungen angelegt sind.'),
+                            trailing: FilledButton.tonal(
+                              key: const Key('demo-load'),
+                              onPressed: () async {
+                                final id = await repo.settings.get(SettingsRepository.profileId);
+                                await loadDemoData(repo, await OrgProfile.load(id ?? 'feuerwehr'));
+                                if (context.mounted) {
+                                  showMessage(context, 'Beispieldaten geladen');
+                                  setState(() {});
+                                }
+                              },
+                              child: const Text('Laden'),
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
               SectionCard(
                 title: 'Datensicherung',
                 child: ListTile(
@@ -129,7 +159,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Text(
                   'Übungsplaner – Übungsplanung für Feuerwehr, DLRG und weitere Hilfsorganisationen.\n'
                   'Lizenz: EUPL-1.2 (European Union Public Licence).\n'
-                  'Taktische Zeichen (ab Etappe 6): Jonas Köritz, taktisches-zeichen.de, '
+                  'Taktische Zeichen (geplant): Jonas Köritz, taktisches-zeichen.de, '
                   'github.com/jonas-koeritz/Taktische-Zeichen.',
                 ),
               ),

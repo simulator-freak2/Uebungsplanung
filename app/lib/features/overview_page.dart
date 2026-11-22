@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../data/database.dart';
+import '../data/documents_repository.dart';
 import '../data/exercise_repository.dart';
 import '../ui/theme.dart';
 import '../util/time.dart' as t;
@@ -58,6 +59,8 @@ class OverviewPage extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 16),
+        const Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: _OpenLessons()),
         const SizedBox(height: 16),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24),
@@ -135,5 +138,75 @@ class _Stat extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+/// Offene Erkenntnisse aus Nachbesprechungen – Grundlage für die weitere
+/// Übungsplanung. „In Übung übernehmen“ fügt sie einer kommenden Übung als
+/// Lernziel hinzu.
+class _OpenLessons extends StatelessWidget {
+  const _OpenLessons();
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = AppScope.of(context);
+    return SectionCard(
+      title: 'Erkenntnisse aus Nachbesprechungen',
+      subtitle: 'Offene und eingeplante Maßnahmen',
+      child: StreamBuilder<List<LessonWithSource>>(
+        stream: repo.documents.watchOpenLessons(),
+        builder: (context, s) {
+          final list = s.data ?? const <LessonWithSource>[];
+          if (list.isEmpty) return const Text('Keine offenen Maßnahmen.');
+          return Column(children: [
+            for (final l in list)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Tag(lessonStatus[l.lesson.status] ?? l.lesson.status,
+                    color: l.lesson.status == 'offen' ? AppColors.warn.withValues(alpha: 0.18) : AppColors.ok.withValues(alpha: 0.15),
+                    textColor: l.lesson.status == 'offen' ? AppColors.warn : AppColors.ok),
+                title: Text(l.lesson.description),
+                subtitle: Text('aus: ${l.exercise.title}, ${t.date(l.exercise.date)}${l.lesson.responsible == null ? '' : ' · ${l.lesson.responsible}'}'),
+                trailing: Wrap(children: [
+                  if (l.lesson.status == 'offen')
+                    TextButton(onPressed: () => _plan(context, l), child: const Text('In Übung übernehmen')),
+                  IconButton(
+                    tooltip: 'Als erledigt markieren',
+                    icon: const Icon(Icons.check),
+                    onPressed: () => repo.documents.setLessonStatus(l.lesson.id, 'erledigt', plannedIn: l.lesson.plannedInExerciseId),
+                  ),
+                ]),
+              ),
+          ]);
+        },
+      ),
+    );
+  }
+
+  Future<void> _plan(BuildContext context, LessonWithSource l) async {
+    final repo = AppScope.of(context);
+    final today = DateTime.now();
+    final upcoming = (await repo.exercises.watchAll().first).where((e) => !e.date.isBefore(DateTime(today.year, today.month, today.day))).toList();
+    if (!context.mounted) return;
+    if (upcoming.isEmpty) {
+      showMessage(context, 'Es gibt keine anstehende Übung. Legt zuerst eine Übung an.');
+      return;
+    }
+    final target = await showDialog<Exercise>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: const Text('In welche Übung übernehmen?'),
+        children: [
+          for (final e in upcoming)
+            SimpleDialogOption(onPressed: () => Navigator.pop(ctx, e), child: Text('${t.date(e.date)}  ${e.title}')),
+        ],
+      ),
+    );
+    if (target == null) return;
+    final d = await repo.exercises.detail(target.id);
+    await repo.exercises.setGoals(target.id, [...?d?.goals, l.lesson.description]);
+    await repo.documents.setLessonStatus(l.lesson.id, 'eingeplant', plannedIn: target.id);
+    if (context.mounted) showMessage(context, 'Als Lernziel in „${target.title}“ übernommen');
   }
 }

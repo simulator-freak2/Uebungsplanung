@@ -80,7 +80,8 @@ class SectionCard extends StatelessWidget {
                 ),
                 if (actions.isNotEmpty) ...[
                   const SizedBox(width: 8),
-                  Flexible(child: Wrap(alignment: WrapAlignment.end, spacing: 8, runSpacing: 8, children: actions)),
+                  // Aktionen nehmen nur so viel Platz wie nötig (höchstens 60 %).
+                  _Actions(actions: actions),
                 ],
               ],
             ),
@@ -91,6 +92,17 @@ class SectionCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _Actions extends StatelessWidget {
+  const _Actions({required this.actions});
+  final List<Widget> actions;
+
+  @override
+  Widget build(BuildContext context) => ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.35),
+        child: Wrap(alignment: WrapAlignment.end, spacing: 8, runSpacing: 8, children: actions),
+      );
 }
 
 class EmptyHint extends StatelessWidget {

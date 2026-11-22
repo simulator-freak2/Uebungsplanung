@@ -48,7 +48,7 @@ Jede Übung besteht aus den folgenden Teilen. Alle sind einzeln und als gemeinsa
 | **Lageskizze** | OpenStreetMap online; ohne Internet Offline-Karte des **Landkreises**; taktische Zeichen (DV 102, Wasserrettung) |
 | **Fahrzeugbesetzung** | Besetzungsmuster je Fahrzeug wählen, Personen per **Drag & Drop** verschieben (Tablet: antippen), Prüfung der Qualifikation, Führungs- und Sonderfunktionen (Einsatzleiter, Übungsleitung, Sicherheitsbeauftragter, Beobachter, Mimenbetreuung …) |
 | **Alarmierungsplan** | je Fahrzeug bzw. Trupp: Zeitpunkt von Alarmierung/Abruf, Ausrücken und Ankunft/Einsatzbeginn, Auslöser; als Tabelle und Zeitleiste |
-| **Alarmmeldung** | nur Ausdruck; Aufbau wie die Divera-24/7-Meldung: Stichwort, Adresse, Sonderrechte/prioritär, Melder, alarmierte Fahrzeuge; deutlich als ÜBUNG gekennzeichnet |
+| **Alarmmeldung** | nur Ausdruck; je Alarmierungszeitpunkt eine eigene Meldung; Aufbau wie die Divera-24/7-Meldung: Stichwort, Adresse, Sonderrechte/prioritär, Melder, alarmierte Fahrzeuge; deutlich als ÜBUNG gekennzeichnet |
 | **Funkplan** | Rufname, Gerät, Funknetz (BOS digital TMO/DMO, BOS analog, DLRG-Betriebsfunk), Gruppe/Kanal, Aufgabe |
 | **Rollenkarten (Mimen)** | Name, Geburtsdatum, Alter, Vorerkrankungen, Erkrankungen, Symptome, Verletzungen, Story, Eskalationsstufen |
 | **Materialliste** | aus Materialkompass oder manuell |
@@ -107,7 +107,7 @@ Material und Fahrzeuge werden übernommen. Wenn der Admin es freischaltet, könn
 | PDF | `pdf` / `printing` |
 | Excel/CSV | `excel`, `csv` |
 | Sicherheit | Argon2-Passwörter, Token-Anmeldung, HTTPS (selbstsigniertes Zertifikat mit Fingerprint-Bestätigung oder eigenes Zertifikat) |
-| Qualität | Unit- und Widget-Tests, GitHub Actions (Analyse und Tests; Builds folgen in Etappe 8) |
+| Qualität | Unit- und Widget-Tests; GitHub Actions für Tests und Builds (Windows, macOS, Linux) |
 | Open Source | EUPL-1.2, README, CONTRIBUTING, Hinweise zu Drittlizenzen |
 
 ## 6. Datenmodell (Grobentwurf)
@@ -140,12 +140,12 @@ Vorlage = Übung ohne Datum           Benutzer ── Rolle(Admin | Planer)
 | 0 | ✅ Konzept, Vorschau, Schnittstellenanforderungen |
 | 1 | ✅ Flutter-Projekt, Design, Stammdaten (Personal, Fahrzeuge, Funktionen, Besetzungsmuster, Stichworte), lokale DB |
 | 2 | ✅ Übung: Übungsplan, Sicherheit, Freigabe, Fahrzeugbesetzung mit Drag & Drop, Alarmierungsplan, Alarmmeldung (Druck/PDF) |
-| 3 | Funkplan, Rollenkarten, Material, Beobachtungsbogen, Nachbesprechung, PDF-Übungsmappe |
-| 4 | Jahresdienstplan, Vorlagen, Excel-Import |
+| 3 | ✅ Funkplan, Rollenkarten, Material, Beobachtungsbogen (mit Katalog), Nachbesprechung, PDF-Übungsmappe, Beobachter-Ansicht, mehrere Alarmmeldungen je Alarmierungszeitpunkt |
+| 4 | ✅ Jahresdienstplan, Vorlagen (inkl. Austausch als Datei), Excel-Import |
 | 5 | Server, Benutzer, Abgleich, Tablet-Ansicht (nur lesen) |
 | 6 | Karten mit Offline-Landkreis und taktischen Zeichen |
 | 7 | Materialkompass-Anbindung und Reservierung mit Genehmigung (sobald die API steht) |
-| 8 | Installer (Windows/macOS/Linux), Docker-Image, Handbuch |
+| 8 | ◐ Builds für Windows/macOS/Linux per GitHub Actions und Anleitung erledigt; Installer und Docker-Image (für den Server) offen |
 
 ## 8. Entscheidungen Runde 3
 

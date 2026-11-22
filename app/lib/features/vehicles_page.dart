@@ -284,7 +284,7 @@ class _VehicleDetailViewState extends State<VehicleDetailView> {
         Tag(vehicleStatus[v.status] ?? v.status,
             color: ok ? AppColors.ok.withValues(alpha: 0.15) : AppColors.warn.withValues(alpha: 0.18),
             textColor: ok ? AppColors.ok : AppColors.warn),
-        const Tag('Stammdaten lokal · Abgleich mit Materialkompass folgt in Etappe 7'),
+        const Tag('Stammdaten lokal · Anbindung an Materialkompass in Vorbereitung'),
       ]),
     );
   }

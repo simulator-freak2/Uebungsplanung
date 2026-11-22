@@ -133,6 +133,19 @@ class Exercises extends Table with SyncColumns {
 
   /// `null` = aus dem Alarmierungsplan (Erstalarm) übernehmen.
   TextColumn get alarmVehicles => text().nullable()();
+
+  // ab Schema-Version 3
+  /// `praxis`, `theorie`, `sonderdienst`, `jugend`
+  TextColumn get category => text().withDefault(const Constant('praxis'))();
+
+  /// Vorlage statt echter Übung (Datum ist dann ohne Bedeutung).
+  BoolColumn get isTemplate => boolean().withDefault(const Constant(false))();
+
+  // Nachbesprechung
+  TextColumn get debriefGood => text().withDefault(const Constant('[]'))();
+  TextColumn get debriefBad => text().withDefault(const Constant('[]'))();
+  TextColumn get debriefNotes => text().nullable()();
+  TextColumn get debriefParticipants => text().nullable()();
 }
 
 /// Ablaufphase; Zeit als Minuten relativ zum Übungsbeginn.
@@ -180,6 +193,84 @@ class AlarmPlanEntries extends Table with SyncColumns {
   IntColumn get sortOrder => integer().withDefault(const Constant(0))();
 }
 
+// ---------------------------------------------------------------------------
+// Übungsunterlagen (ab Schema-Version 3)
+// ---------------------------------------------------------------------------
+
+/// Funkplan-Eintrag.
+class RadioEntries extends Table with SyncColumns {
+  TextColumn get exerciseId => text()();
+  TextColumn get callSign => text()();
+  TextColumn get device => text().nullable()();
+
+  /// `bos_digital`, `bos_analog`, `dlrg_betriebsfunk`
+  TextColumn get network => text().withDefault(const Constant('bos_digital'))();
+  TextColumn get channel => text().nullable()();
+  TextColumn get task => text().nullable()();
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+}
+
+/// Rollenkarte für eine Mime / einen Darsteller.
+class RoleCards extends Table with SyncColumns {
+  TextColumn get exerciseId => text()();
+  IntColumn get number => integer().withDefault(const Constant(1))();
+  TextColumn get name => text()();
+  DateTimeColumn get birthDate => dateTime().nullable()();
+
+  /// Alter, falls kein Geburtsdatum angegeben ist.
+  IntColumn get age => integer().nullable()();
+  TextColumn get preExisting => text().nullable()();
+  TextColumn get illnesses => text().nullable()();
+  TextColumn get symptoms => text().nullable()();
+  TextColumn get injuries => text().nullable()();
+  TextColumn get story => text().nullable()();
+
+  /// Eskalationsstufen als JSON-Liste von {"stufe", "ausloeser", "verhalten"}.
+  TextColumn get escalation => text().withDefault(const Constant('[]'))();
+}
+
+class MaterialItems extends Table with SyncColumns {
+  TextColumn get exerciseId => text()();
+  TextColumn get name => text()();
+  TextColumn get location => text().nullable()();
+  TextColumn get quantity => text().nullable()();
+
+  /// `manuell` oder später `materialkompass`
+  TextColumn get source => text().withDefault(const Constant('manuell'))();
+  TextColumn get externalId => text().nullable()();
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+}
+
+/// Beobachtungspunkt einer Übung mit Bewertung.
+class ObservationItems extends Table with SyncColumns {
+  TextColumn get exerciseId => text()();
+  TextColumn get description => text()();
+
+  /// `++`, `+`, `o`, `-` oder leer
+  TextColumn get rating => text().nullable()();
+  TextColumn get note => text().nullable()();
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+}
+
+/// Zentraler Katalog von Beobachtungspunkten.
+class ObservationTemplates extends Table with SyncColumns {
+  TextColumn get description => text()();
+  TextColumn get category => text().nullable()();
+}
+
+/// Maßnahme / Erkenntnis aus der Nachbesprechung.
+class Lessons extends Table with SyncColumns {
+  TextColumn get exerciseId => text()();
+  TextColumn get description => text()();
+  TextColumn get responsible => text().nullable()();
+
+  /// `offen`, `eingeplant`, `erledigt`
+  TextColumn get status => text().withDefault(const Constant('offen'))();
+
+  /// Übung, in die die Erkenntnis übernommen wurde.
+  TextColumn get plannedInExerciseId => text().nullable()();
+}
+
 @DriftDatabase(tables: [
   Settings,
   Qualifications,
@@ -196,6 +287,12 @@ class AlarmPlanEntries extends Table with SyncColumns {
   ExerciseVehicles,
   ExerciseAssignments,
   AlarmPlanEntries,
+  RadioEntries,
+  RoleCards,
+  MaterialItems,
+  ObservationItems,
+  ObservationTemplates,
+  Lessons,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
@@ -209,7 +306,7 @@ class AppDatabase extends _$AppDatabase {
       ));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -217,6 +314,23 @@ class AppDatabase extends _$AppDatabase {
         onUpgrade: (m, from, to) async {
           if (from < 2) {
             final List<TableInfo<Table, Object?>> added = [exercises, exercisePhases, exerciseSafetyChecks, exerciseVehicles, exerciseAssignments, alarmPlanEntries];
+            for (final t in added) {
+              await m.createTable(t);
+            }
+          }
+          if (from < 3) {
+            // Bei Version 1 wurde die Übungstabelle eben schon vollständig angelegt.
+            for (final c in from < 2 ? const <GeneratedColumn<Object>>[] : <GeneratedColumn<Object>>[
+              exercises.category,
+              exercises.isTemplate,
+              exercises.debriefGood,
+              exercises.debriefBad,
+              exercises.debriefNotes,
+              exercises.debriefParticipants,
+            ]) {
+              await m.addColumn(exercises, c);
+            }
+            final List<TableInfo<Table, Object?>> added = [radioEntries, roleCards, materialItems, observationItems, observationTemplates, lessons];
             for (final t in added) {
               await m.createTable(t);
             }

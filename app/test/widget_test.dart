@@ -29,6 +29,15 @@ Future<void> settle(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+/// Reiter sichtbar scrollen, antippen und den Wechsel abwarten.
+Future<void> openTab(WidgetTester tester, String label) async {
+  final tab = find.widgetWithText(Tab, label);
+  await tester.ensureVisible(tab);
+  await tester.pumpAndSettle();
+  await tester.tap(tab);
+  await settle(tester);
+}
+
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   // Zwischengespeicherte Assets eines vorherigen Tests gehören zu dessen
@@ -130,8 +139,7 @@ void main() {
     final id = (await tester.runAsync(() => repo.exercises.watchAll().first))!.single.id;
 
     // Fahrzeug einplanen und Person per Drag & Drop setzen
-    await tester.tap(find.text('Fahrzeugbesetzung'));
-    await settle(tester);
+    await openTab(tester, 'Besetzung');
     await pumpUntil(tester, find.byKey(const Key('crew-add-vehicle')));
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
     await tester.pumpAndSettle();
@@ -163,8 +171,7 @@ void main() {
     expect(d.personsByFunction[gfFunction.id], [becker.person.id]);
 
     // Alarmierungsplan aus eingeplanten Fahrzeugen
-    await tester.tap(find.text('Alarmierungsplan'));
-    await settle(tester);
+    await openTab(tester, 'Alarmierungsplan');
     await pumpUntil(tester, find.text('1 eingeplantes Fahrzeug übernehmen'));
     await settle(tester);
     await tester.tap(find.text('1 eingeplantes Fahrzeug übernehmen'));
@@ -174,13 +181,11 @@ void main() {
     await pumpUntil(tester, find.text('+15 Min.'));
 
     // Alarmmeldung
-    await tester.tap(find.text('Alarmmeldung'));
-    await settle(tester);
+    await openTab(tester, 'Alarmmeldung');
     await pumpUntil(tester, find.text('HLF 20 (Florian 1/46-1)'));
 
     // Freigabe erst nach vollständiger Checkliste
-    await tester.tap(find.text('Übungsplan'));
-    await settle(tester);
+    await openTab(tester, 'Übungsplan');
     await pumpUntil(tester, find.byKey(const Key('exercise-submit')));
     expect(tester.widget<ButtonStyleButton>(find.byKey(const Key('exercise-submit'))).onPressed, isNull);
     // Alle Prüfpunkte in der Oberfläche abhaken
@@ -200,6 +205,76 @@ void main() {
     await tester.enterText(find.byType(TextField).last, 'Hahn, Felix');
     await tester.tap(find.text('Freigeben').last);
     await pumpUntil(tester, find.textContaining('freigegeben von Hahn, Felix'));
+
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 1));
+    final closing = repo.db.close();
+    await tester.pump(const Duration(seconds: 1));
+    await closing;
+  });
+
+  testWidgets('Rollenkarte, Nachbesprechung, Übersicht, Beobachter-Ansicht, Vorlage', (tester) async {
+    tester.view.physicalSize = const Size(1800, 2000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    final repo = Repositories(AppDatabase(NativeDatabase.memory()));
+    final today = DateTime.now();
+    await tester.runAsync(() async {
+      await repo.settings.set(SettingsRepository.profileId, 'feuerwehr');
+      await repo.settings.set(SettingsRepository.orgName, 'FF Musterstadt');
+      await repo.exercises.create(ExerciseInput(title: 'Atemschutz Innenangriff', date: DateTime(today.year, today.month, today.day + 3), startMinutes: 19 * 60));
+    });
+
+    await tester.pumpWidget(UebungsplanerApp(repo: repo));
+    await pumpUntil(tester, find.text('Übungen'));
+    await tester.tap(find.text('Übungen'));
+    await pumpUntil(tester, find.text('Atemschutz Innenangriff'));
+    await tester.tap(find.text('Atemschutz Innenangriff'));
+    await pumpUntil(tester, find.text('Eckdaten'));
+    await settle(tester);
+
+    // Rollenkarte mit Eskalationsstufe
+    await openTab(tester, 'Rollenkarten');
+    await tester.tap(find.byKey(const Key('role-add')));
+    await pumpUntil(tester, find.byKey(const Key('role-name')));
+    await tester.enterText(find.byKey(const Key('role-name')), 'Thomas Berger');
+    await tester.enterText(find.byKey(const Key('role-stage-0')), 'Stöhnt, fragt nach seiner Frau');
+    await tester.tap(find.byKey(const Key('role-save')));
+    await pumpUntil(tester, find.text('Thomas Berger'));
+    expect(find.text('Stöhnt, fragt nach seiner Frau'), findsOneWidget);
+
+    // Nachbesprechung: Maßnahme
+    await openTab(tester, 'Nachbesprechung');
+    await tester.tap(find.byKey(const Key('lesson-add')));
+    await pumpUntil(tester, find.byKey(const Key('lesson-text')));
+    await tester.enterText(find.byKey(const Key('lesson-text')), 'Lagemeldung üben');
+    await tester.tap(find.byKey(const Key('lesson-save')));
+    await pumpUntil(tester, find.text('Lagemeldung üben'));
+
+    // Beobachter-Ansicht
+    await tester.tap(find.byTooltip('Weitere Aktionen'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Beobachter-Ansicht'));
+    await pumpUntil(tester, find.text('Mimen und Eskalationsstufen'));
+    expect(find.text('Stöhnt, fragt nach seiner Frau'), findsOneWidget);
+    await tester.tap(find.byTooltip('Zurück').last);
+    await settle(tester);
+
+    // Als Vorlage speichern
+    await tester.tap(find.byTooltip('Weitere Aktionen'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Als Vorlage speichern'));
+    await pumpUntil(tester, find.text('Name der Vorlage'));
+    await tester.tap(find.text('Speichern').last);
+    await settle(tester);
+    expect((await tester.runAsync(() => repo.exercises.watchTemplates().first))!.single.title, 'Atemschutz Innenangriff');
+
+    // Übersicht zeigt die offene Maßnahme
+    await tester.tap(find.text('Übersicht'));
+    await pumpUntil(tester, find.text('Erkenntnisse aus Nachbesprechungen'));
+    await pumpUntil(tester, find.text('Lagemeldung üben'));
+    expect(find.text('In Übung übernehmen'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(seconds: 1));

@@ -109,6 +109,14 @@ void main() {
     expect(sheet.vehicles, 'HLF 20 (Florian 1/46-1), RW');
     expect(sheet.specialRights, isTrue);
 
+    // Zwei Alarmierungszeitpunkte → zwei Alarmmeldungen (Trupps zählen nicht)
+    final sheets = alarmSheetsFor(d, vehicles, 'FF Musterstadt');
+    expect(sheets.length, 2);
+    expect(sheets[1].alarmTime, '19:40');
+    expect(sheets[1].vehicles, 'LF 10');
+    expect(sheets[1].note, 'Nachalarmierung');
+    expect(sheets[1].alarmLabel, '2. Alarmierung (2 von 2)');
+
     await repo.exercises.setAlarm(id, address: 'Industriestraße 12', reporter: 'Zeuge', specialRights: false, vehicles: null);
     d = (await repo.exercises.detail(id))!;
     sheet = alarmSheetFor(d, vehicles, 'FF Musterstadt');

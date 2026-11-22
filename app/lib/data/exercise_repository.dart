@@ -5,6 +5,14 @@ import 'package:drift/drift.dart';
 import 'database.dart';
 
 /// Status einer Übung.
+/// Kategorien im Dienstplan.
+const exerciseCategories = {
+  'praxis': 'Praxis',
+  'theorie': 'Theorie / Unterricht',
+  'sonderdienst': 'Sonderdienst / gemeinsame Übung',
+  'jugend': 'Jugend',
+};
+
 abstract final class ExerciseStatus {
   static const draft = 'entwurf';
   static const submitted = 'zur_freigabe';
@@ -27,6 +35,11 @@ class ExerciseDetail {
     required this.assignments,
     required this.alarmPlan,
     required this.keyword,
+    this.radio = const [],
+    this.roles = const [],
+    this.material = const [],
+    this.observations = const [],
+    this.lessons = const [],
   });
 
   final Exercise exercise;
@@ -36,6 +49,25 @@ class ExerciseDetail {
   final List<ExerciseAssignment> assignments;
   final List<AlarmPlanEntry> alarmPlan;
   final Keyword? keyword;
+  final List<RadioEntry> radio;
+  final List<RoleCard> roles;
+  final List<MaterialItem> material;
+  final List<ObservationItem> observations;
+  final List<Lesson> lessons;
+
+  List<String> get debriefGood => decodeGoals(exercise.debriefGood);
+  List<String> get debriefBad => decodeGoals(exercise.debriefBad);
+
+  /// Alarmierungen gruppiert nach Zeitpunkt (ohne Trupps, die abgerufen
+  /// werden). Jede Gruppe ergibt eine eigene Alarmmeldung.
+  List<AlarmGroup> get alarmGroups {
+    final byTime = <int, List<AlarmPlanEntry>>{};
+    for (final e in alarmPlan.where((e) => e.kind != 'trupp')) {
+      byTime.putIfAbsent(e.alarmOffset, () => []).add(e);
+    }
+    final times = byTime.keys.toList()..sort();
+    return [for (var i = 0; i < times.length; i++) AlarmGroup(index: i, offset: times[i], entries: byTime[times[i]]!)];
+  }
 
   List<String> get goals => decodeGoals(exercise.goals);
   bool get safetyComplete => checks.isNotEmpty && checks.every((c) => c.checked);
@@ -58,6 +90,16 @@ class ExerciseDetail {
   int? get firstAlarm => alarmPlan.isEmpty ? null : alarmPlan.map((e) => e.alarmOffset).reduce((a, b) => a < b ? a : b);
 }
 
+class AlarmGroup {
+  AlarmGroup({required this.index, required this.offset, required this.entries});
+  final int index;
+  final int offset;
+  final List<AlarmPlanEntry> entries;
+
+  bool get isFirst => index == 0;
+  String get title => isFirst ? 'Erstalarm' : '${index + 1}. Alarmierung';
+}
+
 List<String> decodeGoals(String json) {
   try {
     return [for (final g in jsonDecode(json) as List) g.toString()];
@@ -77,8 +119,13 @@ class ExerciseInput {
     this.unit,
     this.topic,
     this.keywordId,
+    this.category = 'praxis',
+    this.isTemplate = false,
   });
 
+  final bool isTemplate;
+
+  final String category;
   final String? id;
   final String title;
   final DateTime date;
@@ -112,8 +159,13 @@ class ExerciseRepository {
   // ------------------------------------------------------------------ Liste
 
   Stream<List<Exercise>> watchAll() => (db.select(db.exercises)
-        ..where((t) => t.deleted.equals(false))
+        ..where((t) => t.deleted.equals(false) & t.isTemplate.equals(false))
         ..orderBy([(t) => OrderingTerm(expression: t.date), (t) => OrderingTerm(expression: t.startMinutes)]))
+      .watch();
+
+  Stream<List<Exercise>> watchTemplates() => (db.select(db.exercises)
+        ..where((t) => t.deleted.equals(false) & t.isTemplate.equals(true))
+        ..orderBy([(t) => OrderingTerm(expression: t.title)]))
       .watch();
 
   // ----------------------------------------------------------------- Detail
@@ -127,6 +179,11 @@ class ExerciseRepository {
         db.exerciseAssignments,
         db.alarmPlanEntries,
         db.keywords,
+        db.radioEntries,
+        db.roleCards,
+        db.materialItems,
+        db.observationItems,
+        db.lessons,
       })
       .watch()
       .asyncMap((_) => detail(id));
@@ -152,7 +209,29 @@ class ExerciseRepository {
           ..orderBy([(t) => OrderingTerm(expression: t.alarmOffset), (t) => OrderingTerm(expression: t.sortOrder)]))
         .get();
     final kw = e.keywordId == null ? null : await (db.select(db.keywords)..where((t) => t.id.equals(e.keywordId!))).getSingleOrNull();
+    final radio = await (db.select(db.radioEntries)
+          ..where((t) => t.exerciseId.equals(id) & t.deleted.equals(false))
+          ..orderBy([(t) => OrderingTerm(expression: t.sortOrder)]))
+        .get();
+    final roles = await (db.select(db.roleCards)
+          ..where((t) => t.exerciseId.equals(id) & t.deleted.equals(false))
+          ..orderBy([(t) => OrderingTerm(expression: t.number)]))
+        .get();
+    final material = await (db.select(db.materialItems)
+          ..where((t) => t.exerciseId.equals(id) & t.deleted.equals(false))
+          ..orderBy([(t) => OrderingTerm(expression: t.sortOrder)]))
+        .get();
+    final observations = await (db.select(db.observationItems)
+          ..where((t) => t.exerciseId.equals(id) & t.deleted.equals(false))
+          ..orderBy([(t) => OrderingTerm(expression: t.sortOrder)]))
+        .get();
+    final lessons = await (db.select(db.lessons)..where((t) => t.exerciseId.equals(id) & t.deleted.equals(false))).get();
     return ExerciseDetail(
+      radio: radio,
+      roles: roles,
+      material: material,
+      observations: observations,
+      lessons: lessons,
       exercise: e,
       phases: phases,
       checks: checks,
@@ -176,6 +255,8 @@ class ExerciseRepository {
               unit: Value(_clean(input.unit)),
               topic: Value(_clean(input.topic)),
               keywordId: Value(input.keywordId),
+              category: Value(input.category),
+              isTemplate: Value(input.isTemplate),
             ));
         for (var i = 0; i < safetyChecklist.length; i++) {
           await db.into(db.exerciseSafetyChecks).insert(ExerciseSafetyChecksCompanion.insert(
@@ -197,6 +278,7 @@ class ExerciseRepository {
             unit: Value(_clean(input.unit)),
             topic: Value(_clean(input.topic)),
             keywordId: Value(input.keywordId),
+            category: Value(input.category),
             updatedAt: _now(),
           ));
 
@@ -220,6 +302,98 @@ class ExerciseRepository {
       ));
 
   Future<void> delete(String id) => _write(id, const ExercisesCompanion(deleted: Value(true)));
+
+  /// Kopiert eine Übung mit allen Unterlagen – als Vorlage ([asTemplate])
+  /// oder als neue Übung. Nicht übernommen werden Besetzung (Personen),
+  /// Bewertungen, Nachbesprechung, Freigabe und abgehakte Prüfpunkte.
+  Future<String> copy(String sourceId, {required bool asTemplate, DateTime? date, String? title}) => db.transaction(() async {
+        final d = (await detail(sourceId))!;
+        final e = d.exercise;
+        final row = await db.into(db.exercises).insertReturning(ExercisesCompanion.insert(
+              title: (title ?? e.title).trim(),
+              date: date ?? e.date,
+              startMinutes: Value(e.startMinutes),
+              endMinutes: Value(e.endMinutes),
+              location: Value(e.location),
+              unit: Value(e.unit),
+              topic: Value(e.topic),
+              keywordId: Value(e.keywordId),
+              goals: Value(e.goals),
+              scenario: Value(e.scenario),
+              timeMode: Value(e.timeMode),
+              alarmAddress: Value(e.alarmAddress),
+              alarmReporter: Value(e.alarmReporter),
+              alarmSpecialRights: Value(e.alarmSpecialRights),
+              alarmVehicles: Value(e.alarmVehicles),
+              category: Value(e.category),
+              isTemplate: Value(asTemplate),
+            ));
+        final id = row.id;
+        for (final p in d.phases) {
+          await db.into(db.exercisePhases).insert(ExercisePhasesCompanion.insert(exerciseId: id, offsetMinutes: Value(p.offsetMinutes), description: p.description));
+        }
+        for (final c in d.checks) {
+          await db.into(db.exerciseSafetyChecks).insert(ExerciseSafetyChecksCompanion.insert(exerciseId: id, description: c.description, sortOrder: Value(c.sortOrder)));
+        }
+        for (final v in d.vehicles) {
+          await db.into(db.exerciseVehicles)
+              .insert(ExerciseVehiclesCompanion.insert(exerciseId: id, vehicleId: v.vehicleId, patternId: Value(v.patternId), sortOrder: Value(v.sortOrder)));
+        }
+        for (final a in d.alarmPlan) {
+          await db.into(db.alarmPlanEntries).insert(AlarmPlanEntriesCompanion.insert(
+                exerciseId: id,
+                label: a.label,
+                kind: Value(a.kind),
+                vehicleId: Value(a.vehicleId),
+                alarmOffset: a.alarmOffset,
+                departOffset: Value(a.departOffset),
+                arriveOffset: Value(a.arriveOffset),
+                note: Value(a.note),
+                sortOrder: Value(a.sortOrder),
+              ));
+        }
+        for (final r in d.radio) {
+          await db.into(db.radioEntries).insert(RadioEntriesCompanion.insert(
+                exerciseId: id,
+                callSign: r.callSign,
+                device: Value(r.device),
+                network: Value(r.network),
+                channel: Value(r.channel),
+                task: Value(r.task),
+                sortOrder: Value(r.sortOrder),
+              ));
+        }
+        for (final r in d.roles) {
+          await db.into(db.roleCards).insert(RoleCardsCompanion.insert(
+                exerciseId: id,
+                number: Value(r.number),
+                name: r.name,
+                birthDate: Value(r.birthDate),
+                age: Value(r.age),
+                preExisting: Value(r.preExisting),
+                illnesses: Value(r.illnesses),
+                symptoms: Value(r.symptoms),
+                injuries: Value(r.injuries),
+                story: Value(r.story),
+                escalation: Value(r.escalation),
+              ));
+        }
+        for (final m in d.material) {
+          await db.into(db.materialItems).insert(MaterialItemsCompanion.insert(
+                exerciseId: id,
+                name: m.name,
+                location: Value(m.location),
+                quantity: Value(m.quantity),
+                source: Value(m.source),
+                externalId: Value(m.externalId),
+                sortOrder: Value(m.sortOrder),
+              ));
+        }
+        for (final o in d.observations) {
+          await db.into(db.observationItems).insert(ObservationItemsCompanion.insert(exerciseId: id, description: o.description, sortOrder: Value(o.sortOrder)));
+        }
+        return id;
+      });
 
   // ---------------------------------------------------------------- Freigabe
 

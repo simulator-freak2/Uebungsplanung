@@ -3992,6 +3992,79 @@ class $ExercisesTable extends Exercises
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('praxis'),
+  );
+  static const VerificationMeta _isTemplateMeta = const VerificationMeta(
+    'isTemplate',
+  );
+  @override
+  late final GeneratedColumn<bool> isTemplate = GeneratedColumn<bool>(
+    'is_template',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_template" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _debriefGoodMeta = const VerificationMeta(
+    'debriefGood',
+  );
+  @override
+  late final GeneratedColumn<String> debriefGood = GeneratedColumn<String>(
+    'debrief_good',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _debriefBadMeta = const VerificationMeta(
+    'debriefBad',
+  );
+  @override
+  late final GeneratedColumn<String> debriefBad = GeneratedColumn<String>(
+    'debrief_bad',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _debriefNotesMeta = const VerificationMeta(
+    'debriefNotes',
+  );
+  @override
+  late final GeneratedColumn<String> debriefNotes = GeneratedColumn<String>(
+    'debrief_notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _debriefParticipantsMeta =
+      const VerificationMeta('debriefParticipants');
+  @override
+  late final GeneratedColumn<String> debriefParticipants =
+      GeneratedColumn<String>(
+        'debrief_participants',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -4015,6 +4088,12 @@ class $ExercisesTable extends Exercises
     alarmReporter,
     alarmSpecialRights,
     alarmVehicles,
+    category,
+    isTemplate,
+    debriefGood,
+    debriefBad,
+    debriefNotes,
+    debriefParticipants,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -4170,6 +4249,51 @@ class $ExercisesTable extends Exercises
         ),
       );
     }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    }
+    if (data.containsKey('is_template')) {
+      context.handle(
+        _isTemplateMeta,
+        isTemplate.isAcceptableOrUnknown(data['is_template']!, _isTemplateMeta),
+      );
+    }
+    if (data.containsKey('debrief_good')) {
+      context.handle(
+        _debriefGoodMeta,
+        debriefGood.isAcceptableOrUnknown(
+          data['debrief_good']!,
+          _debriefGoodMeta,
+        ),
+      );
+    }
+    if (data.containsKey('debrief_bad')) {
+      context.handle(
+        _debriefBadMeta,
+        debriefBad.isAcceptableOrUnknown(data['debrief_bad']!, _debriefBadMeta),
+      );
+    }
+    if (data.containsKey('debrief_notes')) {
+      context.handle(
+        _debriefNotesMeta,
+        debriefNotes.isAcceptableOrUnknown(
+          data['debrief_notes']!,
+          _debriefNotesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('debrief_participants')) {
+      context.handle(
+        _debriefParticipantsMeta,
+        debriefParticipants.isAcceptableOrUnknown(
+          data['debrief_participants']!,
+          _debriefParticipantsMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -4263,6 +4387,30 @@ class $ExercisesTable extends Exercises
         DriftSqlType.string,
         data['${effectivePrefix}alarm_vehicles'],
       ),
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      )!,
+      isTemplate: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_template'],
+      )!,
+      debriefGood: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}debrief_good'],
+      )!,
+      debriefBad: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}debrief_bad'],
+      )!,
+      debriefNotes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}debrief_notes'],
+      ),
+      debriefParticipants: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}debrief_participants'],
+      ),
     );
   }
 
@@ -4306,6 +4454,16 @@ class Exercise extends DataClass implements Insertable<Exercise> {
 
   /// `null` = aus dem Alarmierungsplan (Erstalarm) übernehmen.
   final String? alarmVehicles;
+
+  /// `praxis`, `theorie`, `sonderdienst`, `jugend`
+  final String category;
+
+  /// Vorlage statt echter Übung (Datum ist dann ohne Bedeutung).
+  final bool isTemplate;
+  final String debriefGood;
+  final String debriefBad;
+  final String? debriefNotes;
+  final String? debriefParticipants;
   const Exercise({
     required this.id,
     required this.updatedAt,
@@ -4328,6 +4486,12 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     this.alarmReporter,
     this.alarmSpecialRights,
     this.alarmVehicles,
+    required this.category,
+    required this.isTemplate,
+    required this.debriefGood,
+    required this.debriefBad,
+    this.debriefNotes,
+    this.debriefParticipants,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4377,6 +4541,16 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     if (!nullToAbsent || alarmVehicles != null) {
       map['alarm_vehicles'] = Variable<String>(alarmVehicles);
     }
+    map['category'] = Variable<String>(category);
+    map['is_template'] = Variable<bool>(isTemplate);
+    map['debrief_good'] = Variable<String>(debriefGood);
+    map['debrief_bad'] = Variable<String>(debriefBad);
+    if (!nullToAbsent || debriefNotes != null) {
+      map['debrief_notes'] = Variable<String>(debriefNotes);
+    }
+    if (!nullToAbsent || debriefParticipants != null) {
+      map['debrief_participants'] = Variable<String>(debriefParticipants);
+    }
     return map;
   }
 
@@ -4425,6 +4599,16 @@ class Exercise extends DataClass implements Insertable<Exercise> {
       alarmVehicles: alarmVehicles == null && nullToAbsent
           ? const Value.absent()
           : Value(alarmVehicles),
+      category: Value(category),
+      isTemplate: Value(isTemplate),
+      debriefGood: Value(debriefGood),
+      debriefBad: Value(debriefBad),
+      debriefNotes: debriefNotes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(debriefNotes),
+      debriefParticipants: debriefParticipants == null && nullToAbsent
+          ? const Value.absent()
+          : Value(debriefParticipants),
     );
   }
 
@@ -4457,6 +4641,14 @@ class Exercise extends DataClass implements Insertable<Exercise> {
         json['alarmSpecialRights'],
       ),
       alarmVehicles: serializer.fromJson<String?>(json['alarmVehicles']),
+      category: serializer.fromJson<String>(json['category']),
+      isTemplate: serializer.fromJson<bool>(json['isTemplate']),
+      debriefGood: serializer.fromJson<String>(json['debriefGood']),
+      debriefBad: serializer.fromJson<String>(json['debriefBad']),
+      debriefNotes: serializer.fromJson<String?>(json['debriefNotes']),
+      debriefParticipants: serializer.fromJson<String?>(
+        json['debriefParticipants'],
+      ),
     );
   }
   @override
@@ -4484,6 +4676,12 @@ class Exercise extends DataClass implements Insertable<Exercise> {
       'alarmReporter': serializer.toJson<String?>(alarmReporter),
       'alarmSpecialRights': serializer.toJson<bool?>(alarmSpecialRights),
       'alarmVehicles': serializer.toJson<String?>(alarmVehicles),
+      'category': serializer.toJson<String>(category),
+      'isTemplate': serializer.toJson<bool>(isTemplate),
+      'debriefGood': serializer.toJson<String>(debriefGood),
+      'debriefBad': serializer.toJson<String>(debriefBad),
+      'debriefNotes': serializer.toJson<String?>(debriefNotes),
+      'debriefParticipants': serializer.toJson<String?>(debriefParticipants),
     };
   }
 
@@ -4509,6 +4707,12 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     Value<String?> alarmReporter = const Value.absent(),
     Value<bool?> alarmSpecialRights = const Value.absent(),
     Value<String?> alarmVehicles = const Value.absent(),
+    String? category,
+    bool? isTemplate,
+    String? debriefGood,
+    String? debriefBad,
+    Value<String?> debriefNotes = const Value.absent(),
+    Value<String?> debriefParticipants = const Value.absent(),
   }) => Exercise(
     id: id ?? this.id,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -4537,6 +4741,14 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     alarmVehicles: alarmVehicles.present
         ? alarmVehicles.value
         : this.alarmVehicles,
+    category: category ?? this.category,
+    isTemplate: isTemplate ?? this.isTemplate,
+    debriefGood: debriefGood ?? this.debriefGood,
+    debriefBad: debriefBad ?? this.debriefBad,
+    debriefNotes: debriefNotes.present ? debriefNotes.value : this.debriefNotes,
+    debriefParticipants: debriefParticipants.present
+        ? debriefParticipants.value
+        : this.debriefParticipants,
   );
   Exercise copyWithCompanion(ExercisesCompanion data) {
     return Exercise(
@@ -4577,6 +4789,22 @@ class Exercise extends DataClass implements Insertable<Exercise> {
       alarmVehicles: data.alarmVehicles.present
           ? data.alarmVehicles.value
           : this.alarmVehicles,
+      category: data.category.present ? data.category.value : this.category,
+      isTemplate: data.isTemplate.present
+          ? data.isTemplate.value
+          : this.isTemplate,
+      debriefGood: data.debriefGood.present
+          ? data.debriefGood.value
+          : this.debriefGood,
+      debriefBad: data.debriefBad.present
+          ? data.debriefBad.value
+          : this.debriefBad,
+      debriefNotes: data.debriefNotes.present
+          ? data.debriefNotes.value
+          : this.debriefNotes,
+      debriefParticipants: data.debriefParticipants.present
+          ? data.debriefParticipants.value
+          : this.debriefParticipants,
     );
   }
 
@@ -4603,7 +4831,13 @@ class Exercise extends DataClass implements Insertable<Exercise> {
           ..write('alarmAddress: $alarmAddress, ')
           ..write('alarmReporter: $alarmReporter, ')
           ..write('alarmSpecialRights: $alarmSpecialRights, ')
-          ..write('alarmVehicles: $alarmVehicles')
+          ..write('alarmVehicles: $alarmVehicles, ')
+          ..write('category: $category, ')
+          ..write('isTemplate: $isTemplate, ')
+          ..write('debriefGood: $debriefGood, ')
+          ..write('debriefBad: $debriefBad, ')
+          ..write('debriefNotes: $debriefNotes, ')
+          ..write('debriefParticipants: $debriefParticipants')
           ..write(')'))
         .toString();
   }
@@ -4631,6 +4865,12 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     alarmReporter,
     alarmSpecialRights,
     alarmVehicles,
+    category,
+    isTemplate,
+    debriefGood,
+    debriefBad,
+    debriefNotes,
+    debriefParticipants,
   ]);
   @override
   bool operator ==(Object other) =>
@@ -4656,7 +4896,13 @@ class Exercise extends DataClass implements Insertable<Exercise> {
           other.alarmAddress == this.alarmAddress &&
           other.alarmReporter == this.alarmReporter &&
           other.alarmSpecialRights == this.alarmSpecialRights &&
-          other.alarmVehicles == this.alarmVehicles);
+          other.alarmVehicles == this.alarmVehicles &&
+          other.category == this.category &&
+          other.isTemplate == this.isTemplate &&
+          other.debriefGood == this.debriefGood &&
+          other.debriefBad == this.debriefBad &&
+          other.debriefNotes == this.debriefNotes &&
+          other.debriefParticipants == this.debriefParticipants);
 }
 
 class ExercisesCompanion extends UpdateCompanion<Exercise> {
@@ -4681,6 +4927,12 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
   final Value<String?> alarmReporter;
   final Value<bool?> alarmSpecialRights;
   final Value<String?> alarmVehicles;
+  final Value<String> category;
+  final Value<bool> isTemplate;
+  final Value<String> debriefGood;
+  final Value<String> debriefBad;
+  final Value<String?> debriefNotes;
+  final Value<String?> debriefParticipants;
   final Value<int> rowid;
   const ExercisesCompanion({
     this.id = const Value.absent(),
@@ -4704,6 +4956,12 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     this.alarmReporter = const Value.absent(),
     this.alarmSpecialRights = const Value.absent(),
     this.alarmVehicles = const Value.absent(),
+    this.category = const Value.absent(),
+    this.isTemplate = const Value.absent(),
+    this.debriefGood = const Value.absent(),
+    this.debriefBad = const Value.absent(),
+    this.debriefNotes = const Value.absent(),
+    this.debriefParticipants = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ExercisesCompanion.insert({
@@ -4728,6 +4986,12 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     this.alarmReporter = const Value.absent(),
     this.alarmSpecialRights = const Value.absent(),
     this.alarmVehicles = const Value.absent(),
+    this.category = const Value.absent(),
+    this.isTemplate = const Value.absent(),
+    this.debriefGood = const Value.absent(),
+    this.debriefBad = const Value.absent(),
+    this.debriefNotes = const Value.absent(),
+    this.debriefParticipants = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : title = Value(title),
        date = Value(date);
@@ -4753,6 +5017,12 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     Expression<String>? alarmReporter,
     Expression<bool>? alarmSpecialRights,
     Expression<String>? alarmVehicles,
+    Expression<String>? category,
+    Expression<bool>? isTemplate,
+    Expression<String>? debriefGood,
+    Expression<String>? debriefBad,
+    Expression<String>? debriefNotes,
+    Expression<String>? debriefParticipants,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -4778,6 +5048,13 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
       if (alarmSpecialRights != null)
         'alarm_special_rights': alarmSpecialRights,
       if (alarmVehicles != null) 'alarm_vehicles': alarmVehicles,
+      if (category != null) 'category': category,
+      if (isTemplate != null) 'is_template': isTemplate,
+      if (debriefGood != null) 'debrief_good': debriefGood,
+      if (debriefBad != null) 'debrief_bad': debriefBad,
+      if (debriefNotes != null) 'debrief_notes': debriefNotes,
+      if (debriefParticipants != null)
+        'debrief_participants': debriefParticipants,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -4804,6 +5081,12 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     Value<String?>? alarmReporter,
     Value<bool?>? alarmSpecialRights,
     Value<String?>? alarmVehicles,
+    Value<String>? category,
+    Value<bool>? isTemplate,
+    Value<String>? debriefGood,
+    Value<String>? debriefBad,
+    Value<String?>? debriefNotes,
+    Value<String?>? debriefParticipants,
     Value<int>? rowid,
   }) {
     return ExercisesCompanion(
@@ -4828,6 +5111,12 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
       alarmReporter: alarmReporter ?? this.alarmReporter,
       alarmSpecialRights: alarmSpecialRights ?? this.alarmSpecialRights,
       alarmVehicles: alarmVehicles ?? this.alarmVehicles,
+      category: category ?? this.category,
+      isTemplate: isTemplate ?? this.isTemplate,
+      debriefGood: debriefGood ?? this.debriefGood,
+      debriefBad: debriefBad ?? this.debriefBad,
+      debriefNotes: debriefNotes ?? this.debriefNotes,
+      debriefParticipants: debriefParticipants ?? this.debriefParticipants,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -4898,6 +5187,24 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     if (alarmVehicles.present) {
       map['alarm_vehicles'] = Variable<String>(alarmVehicles.value);
     }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (isTemplate.present) {
+      map['is_template'] = Variable<bool>(isTemplate.value);
+    }
+    if (debriefGood.present) {
+      map['debrief_good'] = Variable<String>(debriefGood.value);
+    }
+    if (debriefBad.present) {
+      map['debrief_bad'] = Variable<String>(debriefBad.value);
+    }
+    if (debriefNotes.present) {
+      map['debrief_notes'] = Variable<String>(debriefNotes.value);
+    }
+    if (debriefParticipants.present) {
+      map['debrief_participants'] = Variable<String>(debriefParticipants.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -4928,6 +5235,12 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
           ..write('alarmReporter: $alarmReporter, ')
           ..write('alarmSpecialRights: $alarmSpecialRights, ')
           ..write('alarmVehicles: $alarmVehicles, ')
+          ..write('category: $category, ')
+          ..write('isTemplate: $isTemplate, ')
+          ..write('debriefGood: $debriefGood, ')
+          ..write('debriefBad: $debriefBad, ')
+          ..write('debriefNotes: $debriefNotes, ')
+          ..write('debriefParticipants: $debriefParticipants, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -7412,6 +7725,3431 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
   }
 }
 
+class $RadioEntriesTable extends RadioEntries
+    with TableInfo<$RadioEntriesTable, RadioEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RadioEntriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid.v4(),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: () => DateTime.now().toUtc(),
+  );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _exerciseIdMeta = const VerificationMeta(
+    'exerciseId',
+  );
+  @override
+  late final GeneratedColumn<String> exerciseId = GeneratedColumn<String>(
+    'exercise_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _callSignMeta = const VerificationMeta(
+    'callSign',
+  );
+  @override
+  late final GeneratedColumn<String> callSign = GeneratedColumn<String>(
+    'call_sign',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deviceMeta = const VerificationMeta('device');
+  @override
+  late final GeneratedColumn<String> device = GeneratedColumn<String>(
+    'device',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _networkMeta = const VerificationMeta(
+    'network',
+  );
+  @override
+  late final GeneratedColumn<String> network = GeneratedColumn<String>(
+    'network',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('bos_digital'),
+  );
+  static const VerificationMeta _channelMeta = const VerificationMeta(
+    'channel',
+  );
+  @override
+  late final GeneratedColumn<String> channel = GeneratedColumn<String>(
+    'channel',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _taskMeta = const VerificationMeta('task');
+  @override
+  late final GeneratedColumn<String> task = GeneratedColumn<String>(
+    'task',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    callSign,
+    device,
+    network,
+    channel,
+    task,
+    sortOrder,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'radio_entries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RadioEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
+    if (data.containsKey('exercise_id')) {
+      context.handle(
+        _exerciseIdMeta,
+        exerciseId.isAcceptableOrUnknown(data['exercise_id']!, _exerciseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_exerciseIdMeta);
+    }
+    if (data.containsKey('call_sign')) {
+      context.handle(
+        _callSignMeta,
+        callSign.isAcceptableOrUnknown(data['call_sign']!, _callSignMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_callSignMeta);
+    }
+    if (data.containsKey('device')) {
+      context.handle(
+        _deviceMeta,
+        device.isAcceptableOrUnknown(data['device']!, _deviceMeta),
+      );
+    }
+    if (data.containsKey('network')) {
+      context.handle(
+        _networkMeta,
+        network.isAcceptableOrUnknown(data['network']!, _networkMeta),
+      );
+    }
+    if (data.containsKey('channel')) {
+      context.handle(
+        _channelMeta,
+        channel.isAcceptableOrUnknown(data['channel']!, _channelMeta),
+      );
+    }
+    if (data.containsKey('task')) {
+      context.handle(
+        _taskMeta,
+        task.isAcceptableOrUnknown(data['task']!, _taskMeta),
+      );
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RadioEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RadioEntry(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      exerciseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exercise_id'],
+      )!,
+      callSign: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}call_sign'],
+      )!,
+      device: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device'],
+      ),
+      network: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}network'],
+      )!,
+      channel: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}channel'],
+      ),
+      task: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}task'],
+      ),
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+    );
+  }
+
+  @override
+  $RadioEntriesTable createAlias(String alias) {
+    return $RadioEntriesTable(attachedDatabase, alias);
+  }
+}
+
+class RadioEntry extends DataClass implements Insertable<RadioEntry> {
+  final String id;
+  final DateTime updatedAt;
+  final bool deleted;
+  final String exerciseId;
+  final String callSign;
+  final String? device;
+
+  /// `bos_digital`, `bos_analog`, `dlrg_betriebsfunk`
+  final String network;
+  final String? channel;
+  final String? task;
+  final int sortOrder;
+  const RadioEntry({
+    required this.id,
+    required this.updatedAt,
+    required this.deleted,
+    required this.exerciseId,
+    required this.callSign,
+    this.device,
+    required this.network,
+    this.channel,
+    this.task,
+    required this.sortOrder,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['deleted'] = Variable<bool>(deleted);
+    map['exercise_id'] = Variable<String>(exerciseId);
+    map['call_sign'] = Variable<String>(callSign);
+    if (!nullToAbsent || device != null) {
+      map['device'] = Variable<String>(device);
+    }
+    map['network'] = Variable<String>(network);
+    if (!nullToAbsent || channel != null) {
+      map['channel'] = Variable<String>(channel);
+    }
+    if (!nullToAbsent || task != null) {
+      map['task'] = Variable<String>(task);
+    }
+    map['sort_order'] = Variable<int>(sortOrder);
+    return map;
+  }
+
+  RadioEntriesCompanion toCompanion(bool nullToAbsent) {
+    return RadioEntriesCompanion(
+      id: Value(id),
+      updatedAt: Value(updatedAt),
+      deleted: Value(deleted),
+      exerciseId: Value(exerciseId),
+      callSign: Value(callSign),
+      device: device == null && nullToAbsent
+          ? const Value.absent()
+          : Value(device),
+      network: Value(network),
+      channel: channel == null && nullToAbsent
+          ? const Value.absent()
+          : Value(channel),
+      task: task == null && nullToAbsent ? const Value.absent() : Value(task),
+      sortOrder: Value(sortOrder),
+    );
+  }
+
+  factory RadioEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RadioEntry(
+      id: serializer.fromJson<String>(json['id']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      exerciseId: serializer.fromJson<String>(json['exerciseId']),
+      callSign: serializer.fromJson<String>(json['callSign']),
+      device: serializer.fromJson<String?>(json['device']),
+      network: serializer.fromJson<String>(json['network']),
+      channel: serializer.fromJson<String?>(json['channel']),
+      task: serializer.fromJson<String?>(json['task']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deleted': serializer.toJson<bool>(deleted),
+      'exerciseId': serializer.toJson<String>(exerciseId),
+      'callSign': serializer.toJson<String>(callSign),
+      'device': serializer.toJson<String?>(device),
+      'network': serializer.toJson<String>(network),
+      'channel': serializer.toJson<String?>(channel),
+      'task': serializer.toJson<String?>(task),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+    };
+  }
+
+  RadioEntry copyWith({
+    String? id,
+    DateTime? updatedAt,
+    bool? deleted,
+    String? exerciseId,
+    String? callSign,
+    Value<String?> device = const Value.absent(),
+    String? network,
+    Value<String?> channel = const Value.absent(),
+    Value<String?> task = const Value.absent(),
+    int? sortOrder,
+  }) => RadioEntry(
+    id: id ?? this.id,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deleted: deleted ?? this.deleted,
+    exerciseId: exerciseId ?? this.exerciseId,
+    callSign: callSign ?? this.callSign,
+    device: device.present ? device.value : this.device,
+    network: network ?? this.network,
+    channel: channel.present ? channel.value : this.channel,
+    task: task.present ? task.value : this.task,
+    sortOrder: sortOrder ?? this.sortOrder,
+  );
+  RadioEntry copyWithCompanion(RadioEntriesCompanion data) {
+    return RadioEntry(
+      id: data.id.present ? data.id.value : this.id,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+      exerciseId: data.exerciseId.present
+          ? data.exerciseId.value
+          : this.exerciseId,
+      callSign: data.callSign.present ? data.callSign.value : this.callSign,
+      device: data.device.present ? data.device.value : this.device,
+      network: data.network.present ? data.network.value : this.network,
+      channel: data.channel.present ? data.channel.value : this.channel,
+      task: data.task.present ? data.task.value : this.task,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RadioEntry(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('callSign: $callSign, ')
+          ..write('device: $device, ')
+          ..write('network: $network, ')
+          ..write('channel: $channel, ')
+          ..write('task: $task, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    callSign,
+    device,
+    network,
+    channel,
+    task,
+    sortOrder,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RadioEntry &&
+          other.id == this.id &&
+          other.updatedAt == this.updatedAt &&
+          other.deleted == this.deleted &&
+          other.exerciseId == this.exerciseId &&
+          other.callSign == this.callSign &&
+          other.device == this.device &&
+          other.network == this.network &&
+          other.channel == this.channel &&
+          other.task == this.task &&
+          other.sortOrder == this.sortOrder);
+}
+
+class RadioEntriesCompanion extends UpdateCompanion<RadioEntry> {
+  final Value<String> id;
+  final Value<DateTime> updatedAt;
+  final Value<bool> deleted;
+  final Value<String> exerciseId;
+  final Value<String> callSign;
+  final Value<String?> device;
+  final Value<String> network;
+  final Value<String?> channel;
+  final Value<String?> task;
+  final Value<int> sortOrder;
+  final Value<int> rowid;
+  const RadioEntriesCompanion({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.exerciseId = const Value.absent(),
+    this.callSign = const Value.absent(),
+    this.device = const Value.absent(),
+    this.network = const Value.absent(),
+    this.channel = const Value.absent(),
+    this.task = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RadioEntriesCompanion.insert({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    required String exerciseId,
+    required String callSign,
+    this.device = const Value.absent(),
+    this.network = const Value.absent(),
+    this.channel = const Value.absent(),
+    this.task = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : exerciseId = Value(exerciseId),
+       callSign = Value(callSign);
+  static Insertable<RadioEntry> custom({
+    Expression<String>? id,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? deleted,
+    Expression<String>? exerciseId,
+    Expression<String>? callSign,
+    Expression<String>? device,
+    Expression<String>? network,
+    Expression<String>? channel,
+    Expression<String>? task,
+    Expression<int>? sortOrder,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deleted != null) 'deleted': deleted,
+      if (exerciseId != null) 'exercise_id': exerciseId,
+      if (callSign != null) 'call_sign': callSign,
+      if (device != null) 'device': device,
+      if (network != null) 'network': network,
+      if (channel != null) 'channel': channel,
+      if (task != null) 'task': task,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RadioEntriesCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? updatedAt,
+    Value<bool>? deleted,
+    Value<String>? exerciseId,
+    Value<String>? callSign,
+    Value<String?>? device,
+    Value<String>? network,
+    Value<String?>? channel,
+    Value<String?>? task,
+    Value<int>? sortOrder,
+    Value<int>? rowid,
+  }) {
+    return RadioEntriesCompanion(
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deleted: deleted ?? this.deleted,
+      exerciseId: exerciseId ?? this.exerciseId,
+      callSign: callSign ?? this.callSign,
+      device: device ?? this.device,
+      network: network ?? this.network,
+      channel: channel ?? this.channel,
+      task: task ?? this.task,
+      sortOrder: sortOrder ?? this.sortOrder,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (exerciseId.present) {
+      map['exercise_id'] = Variable<String>(exerciseId.value);
+    }
+    if (callSign.present) {
+      map['call_sign'] = Variable<String>(callSign.value);
+    }
+    if (device.present) {
+      map['device'] = Variable<String>(device.value);
+    }
+    if (network.present) {
+      map['network'] = Variable<String>(network.value);
+    }
+    if (channel.present) {
+      map['channel'] = Variable<String>(channel.value);
+    }
+    if (task.present) {
+      map['task'] = Variable<String>(task.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RadioEntriesCompanion(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('callSign: $callSign, ')
+          ..write('device: $device, ')
+          ..write('network: $network, ')
+          ..write('channel: $channel, ')
+          ..write('task: $task, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RoleCardsTable extends RoleCards
+    with TableInfo<$RoleCardsTable, RoleCard> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoleCardsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid.v4(),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: () => DateTime.now().toUtc(),
+  );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _exerciseIdMeta = const VerificationMeta(
+    'exerciseId',
+  );
+  @override
+  late final GeneratedColumn<String> exerciseId = GeneratedColumn<String>(
+    'exercise_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _numberMeta = const VerificationMeta('number');
+  @override
+  late final GeneratedColumn<int> number = GeneratedColumn<int>(
+    'number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _birthDateMeta = const VerificationMeta(
+    'birthDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> birthDate = GeneratedColumn<DateTime>(
+    'birth_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _ageMeta = const VerificationMeta('age');
+  @override
+  late final GeneratedColumn<int> age = GeneratedColumn<int>(
+    'age',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _preExistingMeta = const VerificationMeta(
+    'preExisting',
+  );
+  @override
+  late final GeneratedColumn<String> preExisting = GeneratedColumn<String>(
+    'pre_existing',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _illnessesMeta = const VerificationMeta(
+    'illnesses',
+  );
+  @override
+  late final GeneratedColumn<String> illnesses = GeneratedColumn<String>(
+    'illnesses',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _symptomsMeta = const VerificationMeta(
+    'symptoms',
+  );
+  @override
+  late final GeneratedColumn<String> symptoms = GeneratedColumn<String>(
+    'symptoms',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _injuriesMeta = const VerificationMeta(
+    'injuries',
+  );
+  @override
+  late final GeneratedColumn<String> injuries = GeneratedColumn<String>(
+    'injuries',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _storyMeta = const VerificationMeta('story');
+  @override
+  late final GeneratedColumn<String> story = GeneratedColumn<String>(
+    'story',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _escalationMeta = const VerificationMeta(
+    'escalation',
+  );
+  @override
+  late final GeneratedColumn<String> escalation = GeneratedColumn<String>(
+    'escalation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    number,
+    name,
+    birthDate,
+    age,
+    preExisting,
+    illnesses,
+    symptoms,
+    injuries,
+    story,
+    escalation,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'role_cards';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RoleCard> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
+    if (data.containsKey('exercise_id')) {
+      context.handle(
+        _exerciseIdMeta,
+        exerciseId.isAcceptableOrUnknown(data['exercise_id']!, _exerciseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_exerciseIdMeta);
+    }
+    if (data.containsKey('number')) {
+      context.handle(
+        _numberMeta,
+        number.isAcceptableOrUnknown(data['number']!, _numberMeta),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('birth_date')) {
+      context.handle(
+        _birthDateMeta,
+        birthDate.isAcceptableOrUnknown(data['birth_date']!, _birthDateMeta),
+      );
+    }
+    if (data.containsKey('age')) {
+      context.handle(
+        _ageMeta,
+        age.isAcceptableOrUnknown(data['age']!, _ageMeta),
+      );
+    }
+    if (data.containsKey('pre_existing')) {
+      context.handle(
+        _preExistingMeta,
+        preExisting.isAcceptableOrUnknown(
+          data['pre_existing']!,
+          _preExistingMeta,
+        ),
+      );
+    }
+    if (data.containsKey('illnesses')) {
+      context.handle(
+        _illnessesMeta,
+        illnesses.isAcceptableOrUnknown(data['illnesses']!, _illnessesMeta),
+      );
+    }
+    if (data.containsKey('symptoms')) {
+      context.handle(
+        _symptomsMeta,
+        symptoms.isAcceptableOrUnknown(data['symptoms']!, _symptomsMeta),
+      );
+    }
+    if (data.containsKey('injuries')) {
+      context.handle(
+        _injuriesMeta,
+        injuries.isAcceptableOrUnknown(data['injuries']!, _injuriesMeta),
+      );
+    }
+    if (data.containsKey('story')) {
+      context.handle(
+        _storyMeta,
+        story.isAcceptableOrUnknown(data['story']!, _storyMeta),
+      );
+    }
+    if (data.containsKey('escalation')) {
+      context.handle(
+        _escalationMeta,
+        escalation.isAcceptableOrUnknown(data['escalation']!, _escalationMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RoleCard map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RoleCard(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      exerciseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exercise_id'],
+      )!,
+      number: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}number'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      birthDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}birth_date'],
+      ),
+      age: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}age'],
+      ),
+      preExisting: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pre_existing'],
+      ),
+      illnesses: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}illnesses'],
+      ),
+      symptoms: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}symptoms'],
+      ),
+      injuries: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}injuries'],
+      ),
+      story: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}story'],
+      ),
+      escalation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}escalation'],
+      )!,
+    );
+  }
+
+  @override
+  $RoleCardsTable createAlias(String alias) {
+    return $RoleCardsTable(attachedDatabase, alias);
+  }
+}
+
+class RoleCard extends DataClass implements Insertable<RoleCard> {
+  final String id;
+  final DateTime updatedAt;
+  final bool deleted;
+  final String exerciseId;
+  final int number;
+  final String name;
+  final DateTime? birthDate;
+
+  /// Alter, falls kein Geburtsdatum angegeben ist.
+  final int? age;
+  final String? preExisting;
+  final String? illnesses;
+  final String? symptoms;
+  final String? injuries;
+  final String? story;
+
+  /// Eskalationsstufen als JSON-Liste von {"stufe", "ausloeser", "verhalten"}.
+  final String escalation;
+  const RoleCard({
+    required this.id,
+    required this.updatedAt,
+    required this.deleted,
+    required this.exerciseId,
+    required this.number,
+    required this.name,
+    this.birthDate,
+    this.age,
+    this.preExisting,
+    this.illnesses,
+    this.symptoms,
+    this.injuries,
+    this.story,
+    required this.escalation,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['deleted'] = Variable<bool>(deleted);
+    map['exercise_id'] = Variable<String>(exerciseId);
+    map['number'] = Variable<int>(number);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || birthDate != null) {
+      map['birth_date'] = Variable<DateTime>(birthDate);
+    }
+    if (!nullToAbsent || age != null) {
+      map['age'] = Variable<int>(age);
+    }
+    if (!nullToAbsent || preExisting != null) {
+      map['pre_existing'] = Variable<String>(preExisting);
+    }
+    if (!nullToAbsent || illnesses != null) {
+      map['illnesses'] = Variable<String>(illnesses);
+    }
+    if (!nullToAbsent || symptoms != null) {
+      map['symptoms'] = Variable<String>(symptoms);
+    }
+    if (!nullToAbsent || injuries != null) {
+      map['injuries'] = Variable<String>(injuries);
+    }
+    if (!nullToAbsent || story != null) {
+      map['story'] = Variable<String>(story);
+    }
+    map['escalation'] = Variable<String>(escalation);
+    return map;
+  }
+
+  RoleCardsCompanion toCompanion(bool nullToAbsent) {
+    return RoleCardsCompanion(
+      id: Value(id),
+      updatedAt: Value(updatedAt),
+      deleted: Value(deleted),
+      exerciseId: Value(exerciseId),
+      number: Value(number),
+      name: Value(name),
+      birthDate: birthDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(birthDate),
+      age: age == null && nullToAbsent ? const Value.absent() : Value(age),
+      preExisting: preExisting == null && nullToAbsent
+          ? const Value.absent()
+          : Value(preExisting),
+      illnesses: illnesses == null && nullToAbsent
+          ? const Value.absent()
+          : Value(illnesses),
+      symptoms: symptoms == null && nullToAbsent
+          ? const Value.absent()
+          : Value(symptoms),
+      injuries: injuries == null && nullToAbsent
+          ? const Value.absent()
+          : Value(injuries),
+      story: story == null && nullToAbsent
+          ? const Value.absent()
+          : Value(story),
+      escalation: Value(escalation),
+    );
+  }
+
+  factory RoleCard.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RoleCard(
+      id: serializer.fromJson<String>(json['id']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      exerciseId: serializer.fromJson<String>(json['exerciseId']),
+      number: serializer.fromJson<int>(json['number']),
+      name: serializer.fromJson<String>(json['name']),
+      birthDate: serializer.fromJson<DateTime?>(json['birthDate']),
+      age: serializer.fromJson<int?>(json['age']),
+      preExisting: serializer.fromJson<String?>(json['preExisting']),
+      illnesses: serializer.fromJson<String?>(json['illnesses']),
+      symptoms: serializer.fromJson<String?>(json['symptoms']),
+      injuries: serializer.fromJson<String?>(json['injuries']),
+      story: serializer.fromJson<String?>(json['story']),
+      escalation: serializer.fromJson<String>(json['escalation']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deleted': serializer.toJson<bool>(deleted),
+      'exerciseId': serializer.toJson<String>(exerciseId),
+      'number': serializer.toJson<int>(number),
+      'name': serializer.toJson<String>(name),
+      'birthDate': serializer.toJson<DateTime?>(birthDate),
+      'age': serializer.toJson<int?>(age),
+      'preExisting': serializer.toJson<String?>(preExisting),
+      'illnesses': serializer.toJson<String?>(illnesses),
+      'symptoms': serializer.toJson<String?>(symptoms),
+      'injuries': serializer.toJson<String?>(injuries),
+      'story': serializer.toJson<String?>(story),
+      'escalation': serializer.toJson<String>(escalation),
+    };
+  }
+
+  RoleCard copyWith({
+    String? id,
+    DateTime? updatedAt,
+    bool? deleted,
+    String? exerciseId,
+    int? number,
+    String? name,
+    Value<DateTime?> birthDate = const Value.absent(),
+    Value<int?> age = const Value.absent(),
+    Value<String?> preExisting = const Value.absent(),
+    Value<String?> illnesses = const Value.absent(),
+    Value<String?> symptoms = const Value.absent(),
+    Value<String?> injuries = const Value.absent(),
+    Value<String?> story = const Value.absent(),
+    String? escalation,
+  }) => RoleCard(
+    id: id ?? this.id,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deleted: deleted ?? this.deleted,
+    exerciseId: exerciseId ?? this.exerciseId,
+    number: number ?? this.number,
+    name: name ?? this.name,
+    birthDate: birthDate.present ? birthDate.value : this.birthDate,
+    age: age.present ? age.value : this.age,
+    preExisting: preExisting.present ? preExisting.value : this.preExisting,
+    illnesses: illnesses.present ? illnesses.value : this.illnesses,
+    symptoms: symptoms.present ? symptoms.value : this.symptoms,
+    injuries: injuries.present ? injuries.value : this.injuries,
+    story: story.present ? story.value : this.story,
+    escalation: escalation ?? this.escalation,
+  );
+  RoleCard copyWithCompanion(RoleCardsCompanion data) {
+    return RoleCard(
+      id: data.id.present ? data.id.value : this.id,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+      exerciseId: data.exerciseId.present
+          ? data.exerciseId.value
+          : this.exerciseId,
+      number: data.number.present ? data.number.value : this.number,
+      name: data.name.present ? data.name.value : this.name,
+      birthDate: data.birthDate.present ? data.birthDate.value : this.birthDate,
+      age: data.age.present ? data.age.value : this.age,
+      preExisting: data.preExisting.present
+          ? data.preExisting.value
+          : this.preExisting,
+      illnesses: data.illnesses.present ? data.illnesses.value : this.illnesses,
+      symptoms: data.symptoms.present ? data.symptoms.value : this.symptoms,
+      injuries: data.injuries.present ? data.injuries.value : this.injuries,
+      story: data.story.present ? data.story.value : this.story,
+      escalation: data.escalation.present
+          ? data.escalation.value
+          : this.escalation,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoleCard(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('number: $number, ')
+          ..write('name: $name, ')
+          ..write('birthDate: $birthDate, ')
+          ..write('age: $age, ')
+          ..write('preExisting: $preExisting, ')
+          ..write('illnesses: $illnesses, ')
+          ..write('symptoms: $symptoms, ')
+          ..write('injuries: $injuries, ')
+          ..write('story: $story, ')
+          ..write('escalation: $escalation')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    number,
+    name,
+    birthDate,
+    age,
+    preExisting,
+    illnesses,
+    symptoms,
+    injuries,
+    story,
+    escalation,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RoleCard &&
+          other.id == this.id &&
+          other.updatedAt == this.updatedAt &&
+          other.deleted == this.deleted &&
+          other.exerciseId == this.exerciseId &&
+          other.number == this.number &&
+          other.name == this.name &&
+          other.birthDate == this.birthDate &&
+          other.age == this.age &&
+          other.preExisting == this.preExisting &&
+          other.illnesses == this.illnesses &&
+          other.symptoms == this.symptoms &&
+          other.injuries == this.injuries &&
+          other.story == this.story &&
+          other.escalation == this.escalation);
+}
+
+class RoleCardsCompanion extends UpdateCompanion<RoleCard> {
+  final Value<String> id;
+  final Value<DateTime> updatedAt;
+  final Value<bool> deleted;
+  final Value<String> exerciseId;
+  final Value<int> number;
+  final Value<String> name;
+  final Value<DateTime?> birthDate;
+  final Value<int?> age;
+  final Value<String?> preExisting;
+  final Value<String?> illnesses;
+  final Value<String?> symptoms;
+  final Value<String?> injuries;
+  final Value<String?> story;
+  final Value<String> escalation;
+  final Value<int> rowid;
+  const RoleCardsCompanion({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.exerciseId = const Value.absent(),
+    this.number = const Value.absent(),
+    this.name = const Value.absent(),
+    this.birthDate = const Value.absent(),
+    this.age = const Value.absent(),
+    this.preExisting = const Value.absent(),
+    this.illnesses = const Value.absent(),
+    this.symptoms = const Value.absent(),
+    this.injuries = const Value.absent(),
+    this.story = const Value.absent(),
+    this.escalation = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoleCardsCompanion.insert({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    required String exerciseId,
+    this.number = const Value.absent(),
+    required String name,
+    this.birthDate = const Value.absent(),
+    this.age = const Value.absent(),
+    this.preExisting = const Value.absent(),
+    this.illnesses = const Value.absent(),
+    this.symptoms = const Value.absent(),
+    this.injuries = const Value.absent(),
+    this.story = const Value.absent(),
+    this.escalation = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : exerciseId = Value(exerciseId),
+       name = Value(name);
+  static Insertable<RoleCard> custom({
+    Expression<String>? id,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? deleted,
+    Expression<String>? exerciseId,
+    Expression<int>? number,
+    Expression<String>? name,
+    Expression<DateTime>? birthDate,
+    Expression<int>? age,
+    Expression<String>? preExisting,
+    Expression<String>? illnesses,
+    Expression<String>? symptoms,
+    Expression<String>? injuries,
+    Expression<String>? story,
+    Expression<String>? escalation,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deleted != null) 'deleted': deleted,
+      if (exerciseId != null) 'exercise_id': exerciseId,
+      if (number != null) 'number': number,
+      if (name != null) 'name': name,
+      if (birthDate != null) 'birth_date': birthDate,
+      if (age != null) 'age': age,
+      if (preExisting != null) 'pre_existing': preExisting,
+      if (illnesses != null) 'illnesses': illnesses,
+      if (symptoms != null) 'symptoms': symptoms,
+      if (injuries != null) 'injuries': injuries,
+      if (story != null) 'story': story,
+      if (escalation != null) 'escalation': escalation,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoleCardsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? updatedAt,
+    Value<bool>? deleted,
+    Value<String>? exerciseId,
+    Value<int>? number,
+    Value<String>? name,
+    Value<DateTime?>? birthDate,
+    Value<int?>? age,
+    Value<String?>? preExisting,
+    Value<String?>? illnesses,
+    Value<String?>? symptoms,
+    Value<String?>? injuries,
+    Value<String?>? story,
+    Value<String>? escalation,
+    Value<int>? rowid,
+  }) {
+    return RoleCardsCompanion(
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deleted: deleted ?? this.deleted,
+      exerciseId: exerciseId ?? this.exerciseId,
+      number: number ?? this.number,
+      name: name ?? this.name,
+      birthDate: birthDate ?? this.birthDate,
+      age: age ?? this.age,
+      preExisting: preExisting ?? this.preExisting,
+      illnesses: illnesses ?? this.illnesses,
+      symptoms: symptoms ?? this.symptoms,
+      injuries: injuries ?? this.injuries,
+      story: story ?? this.story,
+      escalation: escalation ?? this.escalation,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (exerciseId.present) {
+      map['exercise_id'] = Variable<String>(exerciseId.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (birthDate.present) {
+      map['birth_date'] = Variable<DateTime>(birthDate.value);
+    }
+    if (age.present) {
+      map['age'] = Variable<int>(age.value);
+    }
+    if (preExisting.present) {
+      map['pre_existing'] = Variable<String>(preExisting.value);
+    }
+    if (illnesses.present) {
+      map['illnesses'] = Variable<String>(illnesses.value);
+    }
+    if (symptoms.present) {
+      map['symptoms'] = Variable<String>(symptoms.value);
+    }
+    if (injuries.present) {
+      map['injuries'] = Variable<String>(injuries.value);
+    }
+    if (story.present) {
+      map['story'] = Variable<String>(story.value);
+    }
+    if (escalation.present) {
+      map['escalation'] = Variable<String>(escalation.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoleCardsCompanion(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('number: $number, ')
+          ..write('name: $name, ')
+          ..write('birthDate: $birthDate, ')
+          ..write('age: $age, ')
+          ..write('preExisting: $preExisting, ')
+          ..write('illnesses: $illnesses, ')
+          ..write('symptoms: $symptoms, ')
+          ..write('injuries: $injuries, ')
+          ..write('story: $story, ')
+          ..write('escalation: $escalation, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MaterialItemsTable extends MaterialItems
+    with TableInfo<$MaterialItemsTable, MaterialItem> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MaterialItemsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid.v4(),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: () => DateTime.now().toUtc(),
+  );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _exerciseIdMeta = const VerificationMeta(
+    'exerciseId',
+  );
+  @override
+  late final GeneratedColumn<String> exerciseId = GeneratedColumn<String>(
+    'exercise_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _locationMeta = const VerificationMeta(
+    'location',
+  );
+  @override
+  late final GeneratedColumn<String> location = GeneratedColumn<String>(
+    'location',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _quantityMeta = const VerificationMeta(
+    'quantity',
+  );
+  @override
+  late final GeneratedColumn<String> quantity = GeneratedColumn<String>(
+    'quantity',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('manuell'),
+  );
+  static const VerificationMeta _externalIdMeta = const VerificationMeta(
+    'externalId',
+  );
+  @override
+  late final GeneratedColumn<String> externalId = GeneratedColumn<String>(
+    'external_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    name,
+    location,
+    quantity,
+    source,
+    externalId,
+    sortOrder,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'material_items';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MaterialItem> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
+    if (data.containsKey('exercise_id')) {
+      context.handle(
+        _exerciseIdMeta,
+        exerciseId.isAcceptableOrUnknown(data['exercise_id']!, _exerciseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_exerciseIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('location')) {
+      context.handle(
+        _locationMeta,
+        location.isAcceptableOrUnknown(data['location']!, _locationMeta),
+      );
+    }
+    if (data.containsKey('quantity')) {
+      context.handle(
+        _quantityMeta,
+        quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta),
+      );
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    }
+    if (data.containsKey('external_id')) {
+      context.handle(
+        _externalIdMeta,
+        externalId.isAcceptableOrUnknown(data['external_id']!, _externalIdMeta),
+      );
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MaterialItem map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MaterialItem(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      exerciseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exercise_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      location: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}location'],
+      ),
+      quantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}quantity'],
+      ),
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      externalId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}external_id'],
+      ),
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+    );
+  }
+
+  @override
+  $MaterialItemsTable createAlias(String alias) {
+    return $MaterialItemsTable(attachedDatabase, alias);
+  }
+}
+
+class MaterialItem extends DataClass implements Insertable<MaterialItem> {
+  final String id;
+  final DateTime updatedAt;
+  final bool deleted;
+  final String exerciseId;
+  final String name;
+  final String? location;
+  final String? quantity;
+
+  /// `manuell` oder später `materialkompass`
+  final String source;
+  final String? externalId;
+  final int sortOrder;
+  const MaterialItem({
+    required this.id,
+    required this.updatedAt,
+    required this.deleted,
+    required this.exerciseId,
+    required this.name,
+    this.location,
+    this.quantity,
+    required this.source,
+    this.externalId,
+    required this.sortOrder,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['deleted'] = Variable<bool>(deleted);
+    map['exercise_id'] = Variable<String>(exerciseId);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || location != null) {
+      map['location'] = Variable<String>(location);
+    }
+    if (!nullToAbsent || quantity != null) {
+      map['quantity'] = Variable<String>(quantity);
+    }
+    map['source'] = Variable<String>(source);
+    if (!nullToAbsent || externalId != null) {
+      map['external_id'] = Variable<String>(externalId);
+    }
+    map['sort_order'] = Variable<int>(sortOrder);
+    return map;
+  }
+
+  MaterialItemsCompanion toCompanion(bool nullToAbsent) {
+    return MaterialItemsCompanion(
+      id: Value(id),
+      updatedAt: Value(updatedAt),
+      deleted: Value(deleted),
+      exerciseId: Value(exerciseId),
+      name: Value(name),
+      location: location == null && nullToAbsent
+          ? const Value.absent()
+          : Value(location),
+      quantity: quantity == null && nullToAbsent
+          ? const Value.absent()
+          : Value(quantity),
+      source: Value(source),
+      externalId: externalId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(externalId),
+      sortOrder: Value(sortOrder),
+    );
+  }
+
+  factory MaterialItem.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MaterialItem(
+      id: serializer.fromJson<String>(json['id']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      exerciseId: serializer.fromJson<String>(json['exerciseId']),
+      name: serializer.fromJson<String>(json['name']),
+      location: serializer.fromJson<String?>(json['location']),
+      quantity: serializer.fromJson<String?>(json['quantity']),
+      source: serializer.fromJson<String>(json['source']),
+      externalId: serializer.fromJson<String?>(json['externalId']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deleted': serializer.toJson<bool>(deleted),
+      'exerciseId': serializer.toJson<String>(exerciseId),
+      'name': serializer.toJson<String>(name),
+      'location': serializer.toJson<String?>(location),
+      'quantity': serializer.toJson<String?>(quantity),
+      'source': serializer.toJson<String>(source),
+      'externalId': serializer.toJson<String?>(externalId),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+    };
+  }
+
+  MaterialItem copyWith({
+    String? id,
+    DateTime? updatedAt,
+    bool? deleted,
+    String? exerciseId,
+    String? name,
+    Value<String?> location = const Value.absent(),
+    Value<String?> quantity = const Value.absent(),
+    String? source,
+    Value<String?> externalId = const Value.absent(),
+    int? sortOrder,
+  }) => MaterialItem(
+    id: id ?? this.id,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deleted: deleted ?? this.deleted,
+    exerciseId: exerciseId ?? this.exerciseId,
+    name: name ?? this.name,
+    location: location.present ? location.value : this.location,
+    quantity: quantity.present ? quantity.value : this.quantity,
+    source: source ?? this.source,
+    externalId: externalId.present ? externalId.value : this.externalId,
+    sortOrder: sortOrder ?? this.sortOrder,
+  );
+  MaterialItem copyWithCompanion(MaterialItemsCompanion data) {
+    return MaterialItem(
+      id: data.id.present ? data.id.value : this.id,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+      exerciseId: data.exerciseId.present
+          ? data.exerciseId.value
+          : this.exerciseId,
+      name: data.name.present ? data.name.value : this.name,
+      location: data.location.present ? data.location.value : this.location,
+      quantity: data.quantity.present ? data.quantity.value : this.quantity,
+      source: data.source.present ? data.source.value : this.source,
+      externalId: data.externalId.present
+          ? data.externalId.value
+          : this.externalId,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MaterialItem(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('name: $name, ')
+          ..write('location: $location, ')
+          ..write('quantity: $quantity, ')
+          ..write('source: $source, ')
+          ..write('externalId: $externalId, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    name,
+    location,
+    quantity,
+    source,
+    externalId,
+    sortOrder,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MaterialItem &&
+          other.id == this.id &&
+          other.updatedAt == this.updatedAt &&
+          other.deleted == this.deleted &&
+          other.exerciseId == this.exerciseId &&
+          other.name == this.name &&
+          other.location == this.location &&
+          other.quantity == this.quantity &&
+          other.source == this.source &&
+          other.externalId == this.externalId &&
+          other.sortOrder == this.sortOrder);
+}
+
+class MaterialItemsCompanion extends UpdateCompanion<MaterialItem> {
+  final Value<String> id;
+  final Value<DateTime> updatedAt;
+  final Value<bool> deleted;
+  final Value<String> exerciseId;
+  final Value<String> name;
+  final Value<String?> location;
+  final Value<String?> quantity;
+  final Value<String> source;
+  final Value<String?> externalId;
+  final Value<int> sortOrder;
+  final Value<int> rowid;
+  const MaterialItemsCompanion({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.exerciseId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.location = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.source = const Value.absent(),
+    this.externalId = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MaterialItemsCompanion.insert({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    required String exerciseId,
+    required String name,
+    this.location = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.source = const Value.absent(),
+    this.externalId = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : exerciseId = Value(exerciseId),
+       name = Value(name);
+  static Insertable<MaterialItem> custom({
+    Expression<String>? id,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? deleted,
+    Expression<String>? exerciseId,
+    Expression<String>? name,
+    Expression<String>? location,
+    Expression<String>? quantity,
+    Expression<String>? source,
+    Expression<String>? externalId,
+    Expression<int>? sortOrder,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deleted != null) 'deleted': deleted,
+      if (exerciseId != null) 'exercise_id': exerciseId,
+      if (name != null) 'name': name,
+      if (location != null) 'location': location,
+      if (quantity != null) 'quantity': quantity,
+      if (source != null) 'source': source,
+      if (externalId != null) 'external_id': externalId,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MaterialItemsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? updatedAt,
+    Value<bool>? deleted,
+    Value<String>? exerciseId,
+    Value<String>? name,
+    Value<String?>? location,
+    Value<String?>? quantity,
+    Value<String>? source,
+    Value<String?>? externalId,
+    Value<int>? sortOrder,
+    Value<int>? rowid,
+  }) {
+    return MaterialItemsCompanion(
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deleted: deleted ?? this.deleted,
+      exerciseId: exerciseId ?? this.exerciseId,
+      name: name ?? this.name,
+      location: location ?? this.location,
+      quantity: quantity ?? this.quantity,
+      source: source ?? this.source,
+      externalId: externalId ?? this.externalId,
+      sortOrder: sortOrder ?? this.sortOrder,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (exerciseId.present) {
+      map['exercise_id'] = Variable<String>(exerciseId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (location.present) {
+      map['location'] = Variable<String>(location.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<String>(quantity.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (externalId.present) {
+      map['external_id'] = Variable<String>(externalId.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MaterialItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('name: $name, ')
+          ..write('location: $location, ')
+          ..write('quantity: $quantity, ')
+          ..write('source: $source, ')
+          ..write('externalId: $externalId, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ObservationItemsTable extends ObservationItems
+    with TableInfo<$ObservationItemsTable, ObservationItem> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ObservationItemsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid.v4(),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: () => DateTime.now().toUtc(),
+  );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _exerciseIdMeta = const VerificationMeta(
+    'exerciseId',
+  );
+  @override
+  late final GeneratedColumn<String> exerciseId = GeneratedColumn<String>(
+    'exercise_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ratingMeta = const VerificationMeta('rating');
+  @override
+  late final GeneratedColumn<String> rating = GeneratedColumn<String>(
+    'rating',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    description,
+    rating,
+    note,
+    sortOrder,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'observation_items';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ObservationItem> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
+    if (data.containsKey('exercise_id')) {
+      context.handle(
+        _exerciseIdMeta,
+        exerciseId.isAcceptableOrUnknown(data['exercise_id']!, _exerciseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_exerciseIdMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('rating')) {
+      context.handle(
+        _ratingMeta,
+        rating.isAcceptableOrUnknown(data['rating']!, _ratingMeta),
+      );
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ObservationItem map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ObservationItem(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      exerciseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exercise_id'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      rating: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rating'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+    );
+  }
+
+  @override
+  $ObservationItemsTable createAlias(String alias) {
+    return $ObservationItemsTable(attachedDatabase, alias);
+  }
+}
+
+class ObservationItem extends DataClass implements Insertable<ObservationItem> {
+  final String id;
+  final DateTime updatedAt;
+  final bool deleted;
+  final String exerciseId;
+  final String description;
+
+  /// `++`, `+`, `o`, `-` oder leer
+  final String? rating;
+  final String? note;
+  final int sortOrder;
+  const ObservationItem({
+    required this.id,
+    required this.updatedAt,
+    required this.deleted,
+    required this.exerciseId,
+    required this.description,
+    this.rating,
+    this.note,
+    required this.sortOrder,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['deleted'] = Variable<bool>(deleted);
+    map['exercise_id'] = Variable<String>(exerciseId);
+    map['description'] = Variable<String>(description);
+    if (!nullToAbsent || rating != null) {
+      map['rating'] = Variable<String>(rating);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['sort_order'] = Variable<int>(sortOrder);
+    return map;
+  }
+
+  ObservationItemsCompanion toCompanion(bool nullToAbsent) {
+    return ObservationItemsCompanion(
+      id: Value(id),
+      updatedAt: Value(updatedAt),
+      deleted: Value(deleted),
+      exerciseId: Value(exerciseId),
+      description: Value(description),
+      rating: rating == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rating),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      sortOrder: Value(sortOrder),
+    );
+  }
+
+  factory ObservationItem.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ObservationItem(
+      id: serializer.fromJson<String>(json['id']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      exerciseId: serializer.fromJson<String>(json['exerciseId']),
+      description: serializer.fromJson<String>(json['description']),
+      rating: serializer.fromJson<String?>(json['rating']),
+      note: serializer.fromJson<String?>(json['note']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deleted': serializer.toJson<bool>(deleted),
+      'exerciseId': serializer.toJson<String>(exerciseId),
+      'description': serializer.toJson<String>(description),
+      'rating': serializer.toJson<String?>(rating),
+      'note': serializer.toJson<String?>(note),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+    };
+  }
+
+  ObservationItem copyWith({
+    String? id,
+    DateTime? updatedAt,
+    bool? deleted,
+    String? exerciseId,
+    String? description,
+    Value<String?> rating = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+    int? sortOrder,
+  }) => ObservationItem(
+    id: id ?? this.id,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deleted: deleted ?? this.deleted,
+    exerciseId: exerciseId ?? this.exerciseId,
+    description: description ?? this.description,
+    rating: rating.present ? rating.value : this.rating,
+    note: note.present ? note.value : this.note,
+    sortOrder: sortOrder ?? this.sortOrder,
+  );
+  ObservationItem copyWithCompanion(ObservationItemsCompanion data) {
+    return ObservationItem(
+      id: data.id.present ? data.id.value : this.id,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+      exerciseId: data.exerciseId.present
+          ? data.exerciseId.value
+          : this.exerciseId,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      rating: data.rating.present ? data.rating.value : this.rating,
+      note: data.note.present ? data.note.value : this.note,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ObservationItem(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('description: $description, ')
+          ..write('rating: $rating, ')
+          ..write('note: $note, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    description,
+    rating,
+    note,
+    sortOrder,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ObservationItem &&
+          other.id == this.id &&
+          other.updatedAt == this.updatedAt &&
+          other.deleted == this.deleted &&
+          other.exerciseId == this.exerciseId &&
+          other.description == this.description &&
+          other.rating == this.rating &&
+          other.note == this.note &&
+          other.sortOrder == this.sortOrder);
+}
+
+class ObservationItemsCompanion extends UpdateCompanion<ObservationItem> {
+  final Value<String> id;
+  final Value<DateTime> updatedAt;
+  final Value<bool> deleted;
+  final Value<String> exerciseId;
+  final Value<String> description;
+  final Value<String?> rating;
+  final Value<String?> note;
+  final Value<int> sortOrder;
+  final Value<int> rowid;
+  const ObservationItemsCompanion({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.exerciseId = const Value.absent(),
+    this.description = const Value.absent(),
+    this.rating = const Value.absent(),
+    this.note = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ObservationItemsCompanion.insert({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    required String exerciseId,
+    required String description,
+    this.rating = const Value.absent(),
+    this.note = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : exerciseId = Value(exerciseId),
+       description = Value(description);
+  static Insertable<ObservationItem> custom({
+    Expression<String>? id,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? deleted,
+    Expression<String>? exerciseId,
+    Expression<String>? description,
+    Expression<String>? rating,
+    Expression<String>? note,
+    Expression<int>? sortOrder,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deleted != null) 'deleted': deleted,
+      if (exerciseId != null) 'exercise_id': exerciseId,
+      if (description != null) 'description': description,
+      if (rating != null) 'rating': rating,
+      if (note != null) 'note': note,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ObservationItemsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? updatedAt,
+    Value<bool>? deleted,
+    Value<String>? exerciseId,
+    Value<String>? description,
+    Value<String?>? rating,
+    Value<String?>? note,
+    Value<int>? sortOrder,
+    Value<int>? rowid,
+  }) {
+    return ObservationItemsCompanion(
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deleted: deleted ?? this.deleted,
+      exerciseId: exerciseId ?? this.exerciseId,
+      description: description ?? this.description,
+      rating: rating ?? this.rating,
+      note: note ?? this.note,
+      sortOrder: sortOrder ?? this.sortOrder,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (exerciseId.present) {
+      map['exercise_id'] = Variable<String>(exerciseId.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (rating.present) {
+      map['rating'] = Variable<String>(rating.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ObservationItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('description: $description, ')
+          ..write('rating: $rating, ')
+          ..write('note: $note, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ObservationTemplatesTable extends ObservationTemplates
+    with TableInfo<$ObservationTemplatesTable, ObservationTemplate> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ObservationTemplatesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid.v4(),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: () => DateTime.now().toUtc(),
+  );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    updatedAt,
+    deleted,
+    description,
+    category,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'observation_templates';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ObservationTemplate> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ObservationTemplate map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ObservationTemplate(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      ),
+    );
+  }
+
+  @override
+  $ObservationTemplatesTable createAlias(String alias) {
+    return $ObservationTemplatesTable(attachedDatabase, alias);
+  }
+}
+
+class ObservationTemplate extends DataClass
+    implements Insertable<ObservationTemplate> {
+  final String id;
+  final DateTime updatedAt;
+  final bool deleted;
+  final String description;
+  final String? category;
+  const ObservationTemplate({
+    required this.id,
+    required this.updatedAt,
+    required this.deleted,
+    required this.description,
+    this.category,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['deleted'] = Variable<bool>(deleted);
+    map['description'] = Variable<String>(description);
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
+    return map;
+  }
+
+  ObservationTemplatesCompanion toCompanion(bool nullToAbsent) {
+    return ObservationTemplatesCompanion(
+      id: Value(id),
+      updatedAt: Value(updatedAt),
+      deleted: Value(deleted),
+      description: Value(description),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+    );
+  }
+
+  factory ObservationTemplate.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ObservationTemplate(
+      id: serializer.fromJson<String>(json['id']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      description: serializer.fromJson<String>(json['description']),
+      category: serializer.fromJson<String?>(json['category']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deleted': serializer.toJson<bool>(deleted),
+      'description': serializer.toJson<String>(description),
+      'category': serializer.toJson<String?>(category),
+    };
+  }
+
+  ObservationTemplate copyWith({
+    String? id,
+    DateTime? updatedAt,
+    bool? deleted,
+    String? description,
+    Value<String?> category = const Value.absent(),
+  }) => ObservationTemplate(
+    id: id ?? this.id,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deleted: deleted ?? this.deleted,
+    description: description ?? this.description,
+    category: category.present ? category.value : this.category,
+  );
+  ObservationTemplate copyWithCompanion(ObservationTemplatesCompanion data) {
+    return ObservationTemplate(
+      id: data.id.present ? data.id.value : this.id,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      category: data.category.present ? data.category.value : this.category,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ObservationTemplate(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('description: $description, ')
+          ..write('category: $category')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, updatedAt, deleted, description, category);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ObservationTemplate &&
+          other.id == this.id &&
+          other.updatedAt == this.updatedAt &&
+          other.deleted == this.deleted &&
+          other.description == this.description &&
+          other.category == this.category);
+}
+
+class ObservationTemplatesCompanion
+    extends UpdateCompanion<ObservationTemplate> {
+  final Value<String> id;
+  final Value<DateTime> updatedAt;
+  final Value<bool> deleted;
+  final Value<String> description;
+  final Value<String?> category;
+  final Value<int> rowid;
+  const ObservationTemplatesCompanion({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.description = const Value.absent(),
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ObservationTemplatesCompanion.insert({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    required String description,
+    this.category = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : description = Value(description);
+  static Insertable<ObservationTemplate> custom({
+    Expression<String>? id,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? deleted,
+    Expression<String>? description,
+    Expression<String>? category,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deleted != null) 'deleted': deleted,
+      if (description != null) 'description': description,
+      if (category != null) 'category': category,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ObservationTemplatesCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? updatedAt,
+    Value<bool>? deleted,
+    Value<String>? description,
+    Value<String?>? category,
+    Value<int>? rowid,
+  }) {
+    return ObservationTemplatesCompanion(
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deleted: deleted ?? this.deleted,
+      description: description ?? this.description,
+      category: category ?? this.category,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ObservationTemplatesCompanion(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('description: $description, ')
+          ..write('category: $category, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LessonsTable extends Lessons with TableInfo<$LessonsTable, Lesson> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LessonsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid.v4(),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: () => DateTime.now().toUtc(),
+  );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _exerciseIdMeta = const VerificationMeta(
+    'exerciseId',
+  );
+  @override
+  late final GeneratedColumn<String> exerciseId = GeneratedColumn<String>(
+    'exercise_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _responsibleMeta = const VerificationMeta(
+    'responsible',
+  );
+  @override
+  late final GeneratedColumn<String> responsible = GeneratedColumn<String>(
+    'responsible',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('offen'),
+  );
+  static const VerificationMeta _plannedInExerciseIdMeta =
+      const VerificationMeta('plannedInExerciseId');
+  @override
+  late final GeneratedColumn<String> plannedInExerciseId =
+      GeneratedColumn<String>(
+        'planned_in_exercise_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    description,
+    responsible,
+    status,
+    plannedInExerciseId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lessons';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Lesson> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
+    if (data.containsKey('exercise_id')) {
+      context.handle(
+        _exerciseIdMeta,
+        exerciseId.isAcceptableOrUnknown(data['exercise_id']!, _exerciseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_exerciseIdMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('responsible')) {
+      context.handle(
+        _responsibleMeta,
+        responsible.isAcceptableOrUnknown(
+          data['responsible']!,
+          _responsibleMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('planned_in_exercise_id')) {
+      context.handle(
+        _plannedInExerciseIdMeta,
+        plannedInExerciseId.isAcceptableOrUnknown(
+          data['planned_in_exercise_id']!,
+          _plannedInExerciseIdMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Lesson map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Lesson(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      exerciseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exercise_id'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      responsible: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}responsible'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      plannedInExerciseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}planned_in_exercise_id'],
+      ),
+    );
+  }
+
+  @override
+  $LessonsTable createAlias(String alias) {
+    return $LessonsTable(attachedDatabase, alias);
+  }
+}
+
+class Lesson extends DataClass implements Insertable<Lesson> {
+  final String id;
+  final DateTime updatedAt;
+  final bool deleted;
+  final String exerciseId;
+  final String description;
+  final String? responsible;
+
+  /// `offen`, `eingeplant`, `erledigt`
+  final String status;
+
+  /// Übung, in die die Erkenntnis übernommen wurde.
+  final String? plannedInExerciseId;
+  const Lesson({
+    required this.id,
+    required this.updatedAt,
+    required this.deleted,
+    required this.exerciseId,
+    required this.description,
+    this.responsible,
+    required this.status,
+    this.plannedInExerciseId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['deleted'] = Variable<bool>(deleted);
+    map['exercise_id'] = Variable<String>(exerciseId);
+    map['description'] = Variable<String>(description);
+    if (!nullToAbsent || responsible != null) {
+      map['responsible'] = Variable<String>(responsible);
+    }
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || plannedInExerciseId != null) {
+      map['planned_in_exercise_id'] = Variable<String>(plannedInExerciseId);
+    }
+    return map;
+  }
+
+  LessonsCompanion toCompanion(bool nullToAbsent) {
+    return LessonsCompanion(
+      id: Value(id),
+      updatedAt: Value(updatedAt),
+      deleted: Value(deleted),
+      exerciseId: Value(exerciseId),
+      description: Value(description),
+      responsible: responsible == null && nullToAbsent
+          ? const Value.absent()
+          : Value(responsible),
+      status: Value(status),
+      plannedInExerciseId: plannedInExerciseId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(plannedInExerciseId),
+    );
+  }
+
+  factory Lesson.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Lesson(
+      id: serializer.fromJson<String>(json['id']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      exerciseId: serializer.fromJson<String>(json['exerciseId']),
+      description: serializer.fromJson<String>(json['description']),
+      responsible: serializer.fromJson<String?>(json['responsible']),
+      status: serializer.fromJson<String>(json['status']),
+      plannedInExerciseId: serializer.fromJson<String?>(
+        json['plannedInExerciseId'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deleted': serializer.toJson<bool>(deleted),
+      'exerciseId': serializer.toJson<String>(exerciseId),
+      'description': serializer.toJson<String>(description),
+      'responsible': serializer.toJson<String?>(responsible),
+      'status': serializer.toJson<String>(status),
+      'plannedInExerciseId': serializer.toJson<String?>(plannedInExerciseId),
+    };
+  }
+
+  Lesson copyWith({
+    String? id,
+    DateTime? updatedAt,
+    bool? deleted,
+    String? exerciseId,
+    String? description,
+    Value<String?> responsible = const Value.absent(),
+    String? status,
+    Value<String?> plannedInExerciseId = const Value.absent(),
+  }) => Lesson(
+    id: id ?? this.id,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deleted: deleted ?? this.deleted,
+    exerciseId: exerciseId ?? this.exerciseId,
+    description: description ?? this.description,
+    responsible: responsible.present ? responsible.value : this.responsible,
+    status: status ?? this.status,
+    plannedInExerciseId: plannedInExerciseId.present
+        ? plannedInExerciseId.value
+        : this.plannedInExerciseId,
+  );
+  Lesson copyWithCompanion(LessonsCompanion data) {
+    return Lesson(
+      id: data.id.present ? data.id.value : this.id,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+      exerciseId: data.exerciseId.present
+          ? data.exerciseId.value
+          : this.exerciseId,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      responsible: data.responsible.present
+          ? data.responsible.value
+          : this.responsible,
+      status: data.status.present ? data.status.value : this.status,
+      plannedInExerciseId: data.plannedInExerciseId.present
+          ? data.plannedInExerciseId.value
+          : this.plannedInExerciseId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Lesson(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('description: $description, ')
+          ..write('responsible: $responsible, ')
+          ..write('status: $status, ')
+          ..write('plannedInExerciseId: $plannedInExerciseId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    description,
+    responsible,
+    status,
+    plannedInExerciseId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Lesson &&
+          other.id == this.id &&
+          other.updatedAt == this.updatedAt &&
+          other.deleted == this.deleted &&
+          other.exerciseId == this.exerciseId &&
+          other.description == this.description &&
+          other.responsible == this.responsible &&
+          other.status == this.status &&
+          other.plannedInExerciseId == this.plannedInExerciseId);
+}
+
+class LessonsCompanion extends UpdateCompanion<Lesson> {
+  final Value<String> id;
+  final Value<DateTime> updatedAt;
+  final Value<bool> deleted;
+  final Value<String> exerciseId;
+  final Value<String> description;
+  final Value<String?> responsible;
+  final Value<String> status;
+  final Value<String?> plannedInExerciseId;
+  final Value<int> rowid;
+  const LessonsCompanion({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.exerciseId = const Value.absent(),
+    this.description = const Value.absent(),
+    this.responsible = const Value.absent(),
+    this.status = const Value.absent(),
+    this.plannedInExerciseId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LessonsCompanion.insert({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    required String exerciseId,
+    required String description,
+    this.responsible = const Value.absent(),
+    this.status = const Value.absent(),
+    this.plannedInExerciseId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : exerciseId = Value(exerciseId),
+       description = Value(description);
+  static Insertable<Lesson> custom({
+    Expression<String>? id,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? deleted,
+    Expression<String>? exerciseId,
+    Expression<String>? description,
+    Expression<String>? responsible,
+    Expression<String>? status,
+    Expression<String>? plannedInExerciseId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deleted != null) 'deleted': deleted,
+      if (exerciseId != null) 'exercise_id': exerciseId,
+      if (description != null) 'description': description,
+      if (responsible != null) 'responsible': responsible,
+      if (status != null) 'status': status,
+      if (plannedInExerciseId != null)
+        'planned_in_exercise_id': plannedInExerciseId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LessonsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? updatedAt,
+    Value<bool>? deleted,
+    Value<String>? exerciseId,
+    Value<String>? description,
+    Value<String?>? responsible,
+    Value<String>? status,
+    Value<String?>? plannedInExerciseId,
+    Value<int>? rowid,
+  }) {
+    return LessonsCompanion(
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deleted: deleted ?? this.deleted,
+      exerciseId: exerciseId ?? this.exerciseId,
+      description: description ?? this.description,
+      responsible: responsible ?? this.responsible,
+      status: status ?? this.status,
+      plannedInExerciseId: plannedInExerciseId ?? this.plannedInExerciseId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (exerciseId.present) {
+      map['exercise_id'] = Variable<String>(exerciseId.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (responsible.present) {
+      map['responsible'] = Variable<String>(responsible.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (plannedInExerciseId.present) {
+      map['planned_in_exercise_id'] = Variable<String>(
+        plannedInExerciseId.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LessonsCompanion(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('description: $description, ')
+          ..write('responsible: $responsible, ')
+          ..write('status: $status, ')
+          ..write('plannedInExerciseId: $plannedInExerciseId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -7438,6 +11176,15 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $AlarmPlanEntriesTable alarmPlanEntries = $AlarmPlanEntriesTable(
     this,
   );
+  late final $RadioEntriesTable radioEntries = $RadioEntriesTable(this);
+  late final $RoleCardsTable roleCards = $RoleCardsTable(this);
+  late final $MaterialItemsTable materialItems = $MaterialItemsTable(this);
+  late final $ObservationItemsTable observationItems = $ObservationItemsTable(
+    this,
+  );
+  late final $ObservationTemplatesTable observationTemplates =
+      $ObservationTemplatesTable(this);
+  late final $LessonsTable lessons = $LessonsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7458,6 +11205,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     exerciseVehicles,
     exerciseAssignments,
     alarmPlanEntries,
+    radioEntries,
+    roleCards,
+    materialItems,
+    observationItems,
+    observationTemplates,
+    lessons,
   ];
 }
 
@@ -9564,6 +13317,12 @@ typedef $$ExercisesTableCreateCompanionBuilder = ExercisesCompanion Function({
   Value<String?> alarmReporter,
   Value<bool?> alarmSpecialRights,
   Value<String?> alarmVehicles,
+  Value<String> category,
+  Value<bool> isTemplate,
+  Value<String> debriefGood,
+  Value<String> debriefBad,
+  Value<String?> debriefNotes,
+  Value<String?> debriefParticipants,
   Value<int> rowid,
 });
 typedef $$ExercisesTableUpdateCompanionBuilder = ExercisesCompanion Function({
@@ -9588,6 +13347,12 @@ typedef $$ExercisesTableUpdateCompanionBuilder = ExercisesCompanion Function({
   Value<String?> alarmReporter,
   Value<bool?> alarmSpecialRights,
   Value<String?> alarmVehicles,
+  Value<String> category,
+  Value<bool> isTemplate,
+  Value<String> debriefGood,
+  Value<String> debriefBad,
+  Value<String?> debriefNotes,
+  Value<String?> debriefParticipants,
   Value<int> rowid,
 });
 
@@ -9702,6 +13467,36 @@ class $$ExercisesTableFilterComposer
 
   ColumnFilters<String> get alarmVehicles => $composableBuilder(
     column: $table.alarmVehicles,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isTemplate => $composableBuilder(
+    column: $table.isTemplate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get debriefGood => $composableBuilder(
+    column: $table.debriefGood,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get debriefBad => $composableBuilder(
+    column: $table.debriefBad,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get debriefNotes => $composableBuilder(
+    column: $table.debriefNotes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get debriefParticipants => $composableBuilder(
+    column: $table.debriefParticipants,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -9819,6 +13614,36 @@ class $$ExercisesTableOrderingComposer
     column: $table.alarmVehicles,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isTemplate => $composableBuilder(
+    column: $table.isTemplate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get debriefGood => $composableBuilder(
+    column: $table.debriefGood,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get debriefBad => $composableBuilder(
+    column: $table.debriefBad,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get debriefNotes => $composableBuilder(
+    column: $table.debriefNotes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get debriefParticipants => $composableBuilder(
+    column: $table.debriefParticipants,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ExercisesTableAnnotationComposer
@@ -9908,6 +13733,34 @@ class $$ExercisesTableAnnotationComposer
     column: $table.alarmVehicles,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<bool> get isTemplate => $composableBuilder(
+    column: $table.isTemplate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get debriefGood => $composableBuilder(
+    column: $table.debriefGood,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get debriefBad => $composableBuilder(
+    column: $table.debriefBad,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get debriefNotes => $composableBuilder(
+    column: $table.debriefNotes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get debriefParticipants => $composableBuilder(
+    column: $table.debriefParticipants,
+    builder: (column) => column,
+  );
 }
 
 class $$ExercisesTableTableManager
@@ -9959,6 +13812,12 @@ class $$ExercisesTableTableManager
                 Value<String?> alarmReporter = const Value.absent(),
                 Value<bool?> alarmSpecialRights = const Value.absent(),
                 Value<String?> alarmVehicles = const Value.absent(),
+                Value<String> category = const Value.absent(),
+                Value<bool> isTemplate = const Value.absent(),
+                Value<String> debriefGood = const Value.absent(),
+                Value<String> debriefBad = const Value.absent(),
+                Value<String?> debriefNotes = const Value.absent(),
+                Value<String?> debriefParticipants = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ExercisesCompanion(
                 id: id,
@@ -9982,6 +13841,12 @@ class $$ExercisesTableTableManager
                 alarmReporter: alarmReporter,
                 alarmSpecialRights: alarmSpecialRights,
                 alarmVehicles: alarmVehicles,
+                category: category,
+                isTemplate: isTemplate,
+                debriefGood: debriefGood,
+                debriefBad: debriefBad,
+                debriefNotes: debriefNotes,
+                debriefParticipants: debriefParticipants,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -10007,6 +13872,12 @@ class $$ExercisesTableTableManager
                 Value<String?> alarmReporter = const Value.absent(),
                 Value<bool?> alarmSpecialRights = const Value.absent(),
                 Value<String?> alarmVehicles = const Value.absent(),
+                Value<String> category = const Value.absent(),
+                Value<bool> isTemplate = const Value.absent(),
+                Value<String> debriefGood = const Value.absent(),
+                Value<String> debriefBad = const Value.absent(),
+                Value<String?> debriefNotes = const Value.absent(),
+                Value<String?> debriefParticipants = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ExercisesCompanion.insert(
                 id: id,
@@ -10030,6 +13901,12 @@ class $$ExercisesTableTableManager
                 alarmReporter: alarmReporter,
                 alarmSpecialRights: alarmSpecialRights,
                 alarmVehicles: alarmVehicles,
+                category: category,
+                isTemplate: isTemplate,
+                debriefGood: debriefGood,
+                debriefBad: debriefBad,
+                debriefNotes: debriefNotes,
+                debriefParticipants: debriefParticipants,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -11429,6 +15306,1769 @@ typedef $$AlarmPlanEntriesTableProcessedTableManager =
       AlarmPlanEntry,
       PrefetchHooks Function()
     >;
+typedef $$RadioEntriesTableCreateCompanionBuilder =
+    RadioEntriesCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      required String exerciseId,
+      required String callSign,
+      Value<String?> device,
+      Value<String> network,
+      Value<String?> channel,
+      Value<String?> task,
+      Value<int> sortOrder,
+      Value<int> rowid,
+    });
+typedef $$RadioEntriesTableUpdateCompanionBuilder =
+    RadioEntriesCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      Value<String> exerciseId,
+      Value<String> callSign,
+      Value<String?> device,
+      Value<String> network,
+      Value<String?> channel,
+      Value<String?> task,
+      Value<int> sortOrder,
+      Value<int> rowid,
+    });
+
+class $$RadioEntriesTableFilterComposer
+    extends Composer<_$AppDatabase, $RadioEntriesTable> {
+  $$RadioEntriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get callSign => $composableBuilder(
+    column: $table.callSign,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get device => $composableBuilder(
+    column: $table.device,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get network => $composableBuilder(
+    column: $table.network,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get channel => $composableBuilder(
+    column: $table.channel,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get task => $composableBuilder(
+    column: $table.task,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RadioEntriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $RadioEntriesTable> {
+  $$RadioEntriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get callSign => $composableBuilder(
+    column: $table.callSign,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get device => $composableBuilder(
+    column: $table.device,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get network => $composableBuilder(
+    column: $table.network,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get channel => $composableBuilder(
+    column: $table.channel,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get task => $composableBuilder(
+    column: $table.task,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RadioEntriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RadioEntriesTable> {
+  $$RadioEntriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
+
+  GeneratedColumn<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get callSign =>
+      $composableBuilder(column: $table.callSign, builder: (column) => column);
+
+  GeneratedColumn<String> get device =>
+      $composableBuilder(column: $table.device, builder: (column) => column);
+
+  GeneratedColumn<String> get network =>
+      $composableBuilder(column: $table.network, builder: (column) => column);
+
+  GeneratedColumn<String> get channel =>
+      $composableBuilder(column: $table.channel, builder: (column) => column);
+
+  GeneratedColumn<String> get task =>
+      $composableBuilder(column: $table.task, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+}
+
+class $$RadioEntriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RadioEntriesTable,
+          RadioEntry,
+          $$RadioEntriesTableFilterComposer,
+          $$RadioEntriesTableOrderingComposer,
+          $$RadioEntriesTableAnnotationComposer,
+          $$RadioEntriesTableCreateCompanionBuilder,
+          $$RadioEntriesTableUpdateCompanionBuilder,
+          (
+            RadioEntry,
+            BaseReferences<_$AppDatabase, $RadioEntriesTable, RadioEntry>,
+          ),
+          RadioEntry,
+          PrefetchHooks Function()
+        > {
+  $$RadioEntriesTableTableManager(_$AppDatabase db, $RadioEntriesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RadioEntriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RadioEntriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RadioEntriesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<String> exerciseId = const Value.absent(),
+                Value<String> callSign = const Value.absent(),
+                Value<String?> device = const Value.absent(),
+                Value<String> network = const Value.absent(),
+                Value<String?> channel = const Value.absent(),
+                Value<String?> task = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RadioEntriesCompanion(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                callSign: callSign,
+                device: device,
+                network: network,
+                channel: channel,
+                task: task,
+                sortOrder: sortOrder,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                required String exerciseId,
+                required String callSign,
+                Value<String?> device = const Value.absent(),
+                Value<String> network = const Value.absent(),
+                Value<String?> channel = const Value.absent(),
+                Value<String?> task = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RadioEntriesCompanion.insert(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                callSign: callSign,
+                device: device,
+                network: network,
+                channel: channel,
+                task: task,
+                sortOrder: sortOrder,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RadioEntriesTable, RadioEntry>(table),
+                  BaseReferences<_$AppDatabase, $RadioEntriesTable, RadioEntry>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RadioEntriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RadioEntriesTable,
+      RadioEntry,
+      $$RadioEntriesTableFilterComposer,
+      $$RadioEntriesTableOrderingComposer,
+      $$RadioEntriesTableAnnotationComposer,
+      $$RadioEntriesTableCreateCompanionBuilder,
+      $$RadioEntriesTableUpdateCompanionBuilder,
+      (
+        RadioEntry,
+        BaseReferences<_$AppDatabase, $RadioEntriesTable, RadioEntry>,
+      ),
+      RadioEntry,
+      PrefetchHooks Function()
+    >;
+typedef $$RoleCardsTableCreateCompanionBuilder = RoleCardsCompanion Function({
+  Value<String> id,
+  Value<DateTime> updatedAt,
+  Value<bool> deleted,
+  required String exerciseId,
+  Value<int> number,
+  required String name,
+  Value<DateTime?> birthDate,
+  Value<int?> age,
+  Value<String?> preExisting,
+  Value<String?> illnesses,
+  Value<String?> symptoms,
+  Value<String?> injuries,
+  Value<String?> story,
+  Value<String> escalation,
+  Value<int> rowid,
+});
+typedef $$RoleCardsTableUpdateCompanionBuilder = RoleCardsCompanion Function({
+  Value<String> id,
+  Value<DateTime> updatedAt,
+  Value<bool> deleted,
+  Value<String> exerciseId,
+  Value<int> number,
+  Value<String> name,
+  Value<DateTime?> birthDate,
+  Value<int?> age,
+  Value<String?> preExisting,
+  Value<String?> illnesses,
+  Value<String?> symptoms,
+  Value<String?> injuries,
+  Value<String?> story,
+  Value<String> escalation,
+  Value<int> rowid,
+});
+
+class $$RoleCardsTableFilterComposer
+    extends Composer<_$AppDatabase, $RoleCardsTable> {
+  $$RoleCardsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get number => $composableBuilder(
+    column: $table.number,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get birthDate => $composableBuilder(
+    column: $table.birthDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get age => $composableBuilder(
+    column: $table.age,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get preExisting => $composableBuilder(
+    column: $table.preExisting,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get illnesses => $composableBuilder(
+    column: $table.illnesses,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get symptoms => $composableBuilder(
+    column: $table.symptoms,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get injuries => $composableBuilder(
+    column: $table.injuries,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get story => $composableBuilder(
+    column: $table.story,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get escalation => $composableBuilder(
+    column: $table.escalation,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RoleCardsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoleCardsTable> {
+  $$RoleCardsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get number => $composableBuilder(
+    column: $table.number,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get birthDate => $composableBuilder(
+    column: $table.birthDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get age => $composableBuilder(
+    column: $table.age,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get preExisting => $composableBuilder(
+    column: $table.preExisting,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get illnesses => $composableBuilder(
+    column: $table.illnesses,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get symptoms => $composableBuilder(
+    column: $table.symptoms,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get injuries => $composableBuilder(
+    column: $table.injuries,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get story => $composableBuilder(
+    column: $table.story,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get escalation => $composableBuilder(
+    column: $table.escalation,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RoleCardsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoleCardsTable> {
+  $$RoleCardsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
+
+  GeneratedColumn<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get number =>
+      $composableBuilder(column: $table.number, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get birthDate =>
+      $composableBuilder(column: $table.birthDate, builder: (column) => column);
+
+  GeneratedColumn<int> get age =>
+      $composableBuilder(column: $table.age, builder: (column) => column);
+
+  GeneratedColumn<String> get preExisting => $composableBuilder(
+    column: $table.preExisting,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get illnesses =>
+      $composableBuilder(column: $table.illnesses, builder: (column) => column);
+
+  GeneratedColumn<String> get symptoms =>
+      $composableBuilder(column: $table.symptoms, builder: (column) => column);
+
+  GeneratedColumn<String> get injuries =>
+      $composableBuilder(column: $table.injuries, builder: (column) => column);
+
+  GeneratedColumn<String> get story =>
+      $composableBuilder(column: $table.story, builder: (column) => column);
+
+  GeneratedColumn<String> get escalation => $composableBuilder(
+    column: $table.escalation,
+    builder: (column) => column,
+  );
+}
+
+class $$RoleCardsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoleCardsTable,
+          RoleCard,
+          $$RoleCardsTableFilterComposer,
+          $$RoleCardsTableOrderingComposer,
+          $$RoleCardsTableAnnotationComposer,
+          $$RoleCardsTableCreateCompanionBuilder,
+          $$RoleCardsTableUpdateCompanionBuilder,
+          (RoleCard, BaseReferences<_$AppDatabase, $RoleCardsTable, RoleCard>),
+          RoleCard,
+          PrefetchHooks Function()
+        > {
+  $$RoleCardsTableTableManager(_$AppDatabase db, $RoleCardsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoleCardsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RoleCardsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RoleCardsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<String> exerciseId = const Value.absent(),
+                Value<int> number = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<DateTime?> birthDate = const Value.absent(),
+                Value<int?> age = const Value.absent(),
+                Value<String?> preExisting = const Value.absent(),
+                Value<String?> illnesses = const Value.absent(),
+                Value<String?> symptoms = const Value.absent(),
+                Value<String?> injuries = const Value.absent(),
+                Value<String?> story = const Value.absent(),
+                Value<String> escalation = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoleCardsCompanion(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                number: number,
+                name: name,
+                birthDate: birthDate,
+                age: age,
+                preExisting: preExisting,
+                illnesses: illnesses,
+                symptoms: symptoms,
+                injuries: injuries,
+                story: story,
+                escalation: escalation,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                required String exerciseId,
+                Value<int> number = const Value.absent(),
+                required String name,
+                Value<DateTime?> birthDate = const Value.absent(),
+                Value<int?> age = const Value.absent(),
+                Value<String?> preExisting = const Value.absent(),
+                Value<String?> illnesses = const Value.absent(),
+                Value<String?> symptoms = const Value.absent(),
+                Value<String?> injuries = const Value.absent(),
+                Value<String?> story = const Value.absent(),
+                Value<String> escalation = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoleCardsCompanion.insert(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                number: number,
+                name: name,
+                birthDate: birthDate,
+                age: age,
+                preExisting: preExisting,
+                illnesses: illnesses,
+                symptoms: symptoms,
+                injuries: injuries,
+                story: story,
+                escalation: escalation,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$RoleCardsTable, RoleCard>(table),
+                  BaseReferences<_$AppDatabase, $RoleCardsTable, RoleCard>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RoleCardsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoleCardsTable,
+      RoleCard,
+      $$RoleCardsTableFilterComposer,
+      $$RoleCardsTableOrderingComposer,
+      $$RoleCardsTableAnnotationComposer,
+      $$RoleCardsTableCreateCompanionBuilder,
+      $$RoleCardsTableUpdateCompanionBuilder,
+      (RoleCard, BaseReferences<_$AppDatabase, $RoleCardsTable, RoleCard>),
+      RoleCard,
+      PrefetchHooks Function()
+    >;
+typedef $$MaterialItemsTableCreateCompanionBuilder =
+    MaterialItemsCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      required String exerciseId,
+      required String name,
+      Value<String?> location,
+      Value<String?> quantity,
+      Value<String> source,
+      Value<String?> externalId,
+      Value<int> sortOrder,
+      Value<int> rowid,
+    });
+typedef $$MaterialItemsTableUpdateCompanionBuilder =
+    MaterialItemsCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      Value<String> exerciseId,
+      Value<String> name,
+      Value<String?> location,
+      Value<String?> quantity,
+      Value<String> source,
+      Value<String?> externalId,
+      Value<int> sortOrder,
+      Value<int> rowid,
+    });
+
+class $$MaterialItemsTableFilterComposer
+    extends Composer<_$AppDatabase, $MaterialItemsTable> {
+  $$MaterialItemsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get location => $composableBuilder(
+    column: $table.location,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get externalId => $composableBuilder(
+    column: $table.externalId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MaterialItemsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MaterialItemsTable> {
+  $$MaterialItemsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get location => $composableBuilder(
+    column: $table.location,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get externalId => $composableBuilder(
+    column: $table.externalId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MaterialItemsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MaterialItemsTable> {
+  $$MaterialItemsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
+
+  GeneratedColumn<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get location =>
+      $composableBuilder(column: $table.location, builder: (column) => column);
+
+  GeneratedColumn<String> get quantity =>
+      $composableBuilder(column: $table.quantity, builder: (column) => column);
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get externalId => $composableBuilder(
+    column: $table.externalId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+}
+
+class $$MaterialItemsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MaterialItemsTable,
+          MaterialItem,
+          $$MaterialItemsTableFilterComposer,
+          $$MaterialItemsTableOrderingComposer,
+          $$MaterialItemsTableAnnotationComposer,
+          $$MaterialItemsTableCreateCompanionBuilder,
+          $$MaterialItemsTableUpdateCompanionBuilder,
+          (
+            MaterialItem,
+            BaseReferences<_$AppDatabase, $MaterialItemsTable, MaterialItem>,
+          ),
+          MaterialItem,
+          PrefetchHooks Function()
+        > {
+  $$MaterialItemsTableTableManager(_$AppDatabase db, $MaterialItemsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MaterialItemsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MaterialItemsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MaterialItemsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<String> exerciseId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> location = const Value.absent(),
+                Value<String?> quantity = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String?> externalId = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MaterialItemsCompanion(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                name: name,
+                location: location,
+                quantity: quantity,
+                source: source,
+                externalId: externalId,
+                sortOrder: sortOrder,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                required String exerciseId,
+                required String name,
+                Value<String?> location = const Value.absent(),
+                Value<String?> quantity = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String?> externalId = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MaterialItemsCompanion.insert(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                name: name,
+                location: location,
+                quantity: quantity,
+                source: source,
+                externalId: externalId,
+                sortOrder: sortOrder,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MaterialItemsTable, MaterialItem>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $MaterialItemsTable,
+                    MaterialItem
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MaterialItemsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MaterialItemsTable,
+      MaterialItem,
+      $$MaterialItemsTableFilterComposer,
+      $$MaterialItemsTableOrderingComposer,
+      $$MaterialItemsTableAnnotationComposer,
+      $$MaterialItemsTableCreateCompanionBuilder,
+      $$MaterialItemsTableUpdateCompanionBuilder,
+      (
+        MaterialItem,
+        BaseReferences<_$AppDatabase, $MaterialItemsTable, MaterialItem>,
+      ),
+      MaterialItem,
+      PrefetchHooks Function()
+    >;
+typedef $$ObservationItemsTableCreateCompanionBuilder =
+    ObservationItemsCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      required String exerciseId,
+      required String description,
+      Value<String?> rating,
+      Value<String?> note,
+      Value<int> sortOrder,
+      Value<int> rowid,
+    });
+typedef $$ObservationItemsTableUpdateCompanionBuilder =
+    ObservationItemsCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      Value<String> exerciseId,
+      Value<String> description,
+      Value<String?> rating,
+      Value<String?> note,
+      Value<int> sortOrder,
+      Value<int> rowid,
+    });
+
+class $$ObservationItemsTableFilterComposer
+    extends Composer<_$AppDatabase, $ObservationItemsTable> {
+  $$ObservationItemsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get rating => $composableBuilder(
+    column: $table.rating,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ObservationItemsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ObservationItemsTable> {
+  $$ObservationItemsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get rating => $composableBuilder(
+    column: $table.rating,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ObservationItemsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ObservationItemsTable> {
+  $$ObservationItemsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
+
+  GeneratedColumn<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get rating =>
+      $composableBuilder(column: $table.rating, builder: (column) => column);
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+}
+
+class $$ObservationItemsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ObservationItemsTable,
+          ObservationItem,
+          $$ObservationItemsTableFilterComposer,
+          $$ObservationItemsTableOrderingComposer,
+          $$ObservationItemsTableAnnotationComposer,
+          $$ObservationItemsTableCreateCompanionBuilder,
+          $$ObservationItemsTableUpdateCompanionBuilder,
+          (
+            ObservationItem,
+            BaseReferences<
+              _$AppDatabase,
+              $ObservationItemsTable,
+              ObservationItem
+            >,
+          ),
+          ObservationItem,
+          PrefetchHooks Function()
+        > {
+  $$ObservationItemsTableTableManager(
+    _$AppDatabase db,
+    $ObservationItemsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ObservationItemsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ObservationItemsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ObservationItemsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<String> exerciseId = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String?> rating = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ObservationItemsCompanion(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                description: description,
+                rating: rating,
+                note: note,
+                sortOrder: sortOrder,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                required String exerciseId,
+                required String description,
+                Value<String?> rating = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ObservationItemsCompanion.insert(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                description: description,
+                rating: rating,
+                note: note,
+                sortOrder: sortOrder,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ObservationItemsTable, ObservationItem>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $ObservationItemsTable,
+                    ObservationItem
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ObservationItemsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ObservationItemsTable,
+      ObservationItem,
+      $$ObservationItemsTableFilterComposer,
+      $$ObservationItemsTableOrderingComposer,
+      $$ObservationItemsTableAnnotationComposer,
+      $$ObservationItemsTableCreateCompanionBuilder,
+      $$ObservationItemsTableUpdateCompanionBuilder,
+      (
+        ObservationItem,
+        BaseReferences<_$AppDatabase, $ObservationItemsTable, ObservationItem>,
+      ),
+      ObservationItem,
+      PrefetchHooks Function()
+    >;
+typedef $$ObservationTemplatesTableCreateCompanionBuilder =
+    ObservationTemplatesCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      required String description,
+      Value<String?> category,
+      Value<int> rowid,
+    });
+typedef $$ObservationTemplatesTableUpdateCompanionBuilder =
+    ObservationTemplatesCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      Value<String> description,
+      Value<String?> category,
+      Value<int> rowid,
+    });
+
+class $$ObservationTemplatesTableFilterComposer
+    extends Composer<_$AppDatabase, $ObservationTemplatesTable> {
+  $$ObservationTemplatesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ObservationTemplatesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ObservationTemplatesTable> {
+  $$ObservationTemplatesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ObservationTemplatesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ObservationTemplatesTable> {
+  $$ObservationTemplatesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+}
+
+class $$ObservationTemplatesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ObservationTemplatesTable,
+          ObservationTemplate,
+          $$ObservationTemplatesTableFilterComposer,
+          $$ObservationTemplatesTableOrderingComposer,
+          $$ObservationTemplatesTableAnnotationComposer,
+          $$ObservationTemplatesTableCreateCompanionBuilder,
+          $$ObservationTemplatesTableUpdateCompanionBuilder,
+          (
+            ObservationTemplate,
+            BaseReferences<
+              _$AppDatabase,
+              $ObservationTemplatesTable,
+              ObservationTemplate
+            >,
+          ),
+          ObservationTemplate,
+          PrefetchHooks Function()
+        > {
+  $$ObservationTemplatesTableTableManager(
+    _$AppDatabase db,
+    $ObservationTemplatesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ObservationTemplatesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ObservationTemplatesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$ObservationTemplatesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String?> category = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ObservationTemplatesCompanion(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                description: description,
+                category: category,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                required String description,
+                Value<String?> category = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ObservationTemplatesCompanion.insert(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                description: description,
+                category: category,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ObservationTemplatesTable, ObservationTemplate>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $ObservationTemplatesTable,
+                    ObservationTemplate
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ObservationTemplatesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ObservationTemplatesTable,
+      ObservationTemplate,
+      $$ObservationTemplatesTableFilterComposer,
+      $$ObservationTemplatesTableOrderingComposer,
+      $$ObservationTemplatesTableAnnotationComposer,
+      $$ObservationTemplatesTableCreateCompanionBuilder,
+      $$ObservationTemplatesTableUpdateCompanionBuilder,
+      (
+        ObservationTemplate,
+        BaseReferences<
+          _$AppDatabase,
+          $ObservationTemplatesTable,
+          ObservationTemplate
+        >,
+      ),
+      ObservationTemplate,
+      PrefetchHooks Function()
+    >;
+typedef $$LessonsTableCreateCompanionBuilder = LessonsCompanion Function({
+  Value<String> id,
+  Value<DateTime> updatedAt,
+  Value<bool> deleted,
+  required String exerciseId,
+  required String description,
+  Value<String?> responsible,
+  Value<String> status,
+  Value<String?> plannedInExerciseId,
+  Value<int> rowid,
+});
+typedef $$LessonsTableUpdateCompanionBuilder = LessonsCompanion Function({
+  Value<String> id,
+  Value<DateTime> updatedAt,
+  Value<bool> deleted,
+  Value<String> exerciseId,
+  Value<String> description,
+  Value<String?> responsible,
+  Value<String> status,
+  Value<String?> plannedInExerciseId,
+  Value<int> rowid,
+});
+
+class $$LessonsTableFilterComposer
+    extends Composer<_$AppDatabase, $LessonsTable> {
+  $$LessonsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get responsible => $composableBuilder(
+    column: $table.responsible,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get plannedInExerciseId => $composableBuilder(
+    column: $table.plannedInExerciseId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LessonsTableOrderingComposer
+    extends Composer<_$AppDatabase, $LessonsTable> {
+  $$LessonsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get responsible => $composableBuilder(
+    column: $table.responsible,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get plannedInExerciseId => $composableBuilder(
+    column: $table.plannedInExerciseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LessonsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LessonsTable> {
+  $$LessonsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
+
+  GeneratedColumn<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get responsible => $composableBuilder(
+    column: $table.responsible,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get plannedInExerciseId => $composableBuilder(
+    column: $table.plannedInExerciseId,
+    builder: (column) => column,
+  );
+}
+
+class $$LessonsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LessonsTable,
+          Lesson,
+          $$LessonsTableFilterComposer,
+          $$LessonsTableOrderingComposer,
+          $$LessonsTableAnnotationComposer,
+          $$LessonsTableCreateCompanionBuilder,
+          $$LessonsTableUpdateCompanionBuilder,
+          (Lesson, BaseReferences<_$AppDatabase, $LessonsTable, Lesson>),
+          Lesson,
+          PrefetchHooks Function()
+        > {
+  $$LessonsTableTableManager(_$AppDatabase db, $LessonsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LessonsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LessonsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LessonsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<String> exerciseId = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String?> responsible = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String?> plannedInExerciseId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LessonsCompanion(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                description: description,
+                responsible: responsible,
+                status: status,
+                plannedInExerciseId: plannedInExerciseId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                required String exerciseId,
+                required String description,
+                Value<String?> responsible = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String?> plannedInExerciseId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LessonsCompanion.insert(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                description: description,
+                responsible: responsible,
+                status: status,
+                plannedInExerciseId: plannedInExerciseId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LessonsTable, Lesson>(table),
+                  BaseReferences<_$AppDatabase, $LessonsTable, Lesson>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LessonsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LessonsTable,
+      Lesson,
+      $$LessonsTableFilterComposer,
+      $$LessonsTableOrderingComposer,
+      $$LessonsTableAnnotationComposer,
+      $$LessonsTableCreateCompanionBuilder,
+      $$LessonsTableUpdateCompanionBuilder,
+      (Lesson, BaseReferences<_$AppDatabase, $LessonsTable, Lesson>),
+      Lesson,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -11463,4 +17103,16 @@ class $AppDatabaseManager {
       $$ExerciseAssignmentsTableTableManager(_db, _db.exerciseAssignments);
   $$AlarmPlanEntriesTableTableManager get alarmPlanEntries =>
       $$AlarmPlanEntriesTableTableManager(_db, _db.alarmPlanEntries);
+  $$RadioEntriesTableTableManager get radioEntries =>
+      $$RadioEntriesTableTableManager(_db, _db.radioEntries);
+  $$RoleCardsTableTableManager get roleCards =>
+      $$RoleCardsTableTableManager(_db, _db.roleCards);
+  $$MaterialItemsTableTableManager get materialItems =>
+      $$MaterialItemsTableTableManager(_db, _db.materialItems);
+  $$ObservationItemsTableTableManager get observationItems =>
+      $$ObservationItemsTableTableManager(_db, _db.observationItems);
+  $$ObservationTemplatesTableTableManager get observationTemplates =>
+      $$ObservationTemplatesTableTableManager(_db, _db.observationTemplates);
+  $$LessonsTableTableManager get lessons =>
+      $$LessonsTableTableManager(_db, _db.lessons);
 }

@@ -4,11 +4,16 @@ import '../../data/exercise_repository.dart';
 import '../../data/repositories.dart';
 import '../../ui/widgets.dart';
 import '../../util/time.dart' as t;
+import 'exercise_actions.dart';
 import 'exercises_page.dart';
+import 'observer_view.dart';
 import 'tab_alarm.dart';
 import 'tab_alarmplan.dart';
 import 'tab_crew.dart';
+import 'tab_observation.dart';
 import 'tab_plan.dart';
+import 'tab_radio_material.dart';
+import 'tab_roles.dart';
 
 class ExerciseDetailPage extends StatefulWidget {
   const ExerciseDetailPage({super.key, required this.exerciseId});
@@ -42,7 +47,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
           builder: (context, a) {
             final approval = a.data ?? true;
             return DefaultTabController(
-              length: 4,
+              length: 9,
               child: Scaffold(
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,9 +62,10 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                             Text(e.title, style: Theme.of(context).textTheme.headlineSmall),
                             const SizedBox(height: 4),
                             Wrap(spacing: 10, runSpacing: 6, crossAxisAlignment: WrapCrossAlignment.center, children: [
-                              Text('${t.dateLong(e.date)} · ${t.clock(e.startMinutes)}${e.endMinutes == null ? '' : '–${t.clock(e.endMinutes!)}'} Uhr'
+                              if (e.isTemplate) const Tag('Vorlage'),
+                              Text('${e.isTemplate ? '' : '${t.dateLong(e.date)} · '}${t.clock(e.startMinutes)}${e.endMinutes == null ? '' : '–${t.clock(e.endMinutes!)}'} Uhr'
                                   '${e.unit == null ? '' : ' · ${e.unit}'}'),
-                              StatusTag(status: e.status, approvalRequired: approval),
+                              if (!e.isTemplate) StatusTag(status: e.status, approvalRequired: approval),
                               if (e.status == ExerciseStatus.approved && e.approvedBy != null)
                                 Text('freigegeben von ${e.approvedBy}${e.approvedAt == null ? '' : ' am ${t.date(e.approvedAt!.toLocal())}'}',
                                     style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
@@ -67,16 +73,58 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                           ]),
                         ),
                         const SizedBox(width: 12),
-                        _StatusActions(detail: d, approvalRequired: approval),
+                        if (!e.isTemplate) ...[
+                          OutlinedButton.icon(
+                            key: const Key('exercise-map'),
+                            onPressed: () => showExerciseMapDialog(context, d),
+                            icon: const Icon(Icons.picture_as_pdf_outlined),
+                            label: const Text('Übungsmappe'),
+                          ),
+                          const SizedBox(width: 8),
+                          _StatusActions(detail: d, approvalRequired: approval),
+                        ] else
+                          FilledButton.icon(
+                            key: const Key('template-use'),
+                            onPressed: () async {
+                              final id = await copyAsNewExercise(context, e.id, title: e.title, heading: 'Übung aus Vorlage anlegen');
+                              if (id != null && context.mounted) {
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => ExerciseDetailPage(exerciseId: id)));
+                              }
+                            },
+                            icon: const Icon(Icons.add),
+                            label: const Text('Übung daraus anlegen'),
+                          ),
                         PopupMenuButton<String>(
                           tooltip: 'Weitere Aktionen',
                           onSelected: (v) async {
-                            if (v == 'delete' && await confirmDelete(context, e.title) && context.mounted) {
-                              await repo.exercises.delete(e.id);
-                              if (context.mounted) Navigator.of(context).maybePop();
+                            switch (v) {
+                              case 'observer':
+                                Navigator.of(context).push(MaterialPageRoute(builder: (_) => ObserverView(exerciseId: e.id)));
+                              case 'template':
+                                await saveAsTemplate(context, d);
+                              case 'copy':
+                                final id = await copyAsNewExercise(context, e.id, title: e.title);
+                                if (id != null && context.mounted) {
+                                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => ExerciseDetailPage(exerciseId: id)));
+                                }
+                              case 'delete':
+                                if (await confirmDelete(context, e.title) && context.mounted) {
+                                  await repo.exercises.delete(e.id);
+                                  if (context.mounted) Navigator.of(context).maybePop();
+                                }
                             }
                           },
-                          itemBuilder: (_) => const [PopupMenuItem(value: 'delete', child: Text('Übung löschen'))],
+                          itemBuilder: (_) => [
+                            const PopupMenuItem(value: 'observer', child: ListTile(leading: Icon(Icons.tablet_outlined), title: Text('Beobachter-Ansicht'))),
+                            if (!e.isTemplate)
+                              const PopupMenuItem(value: 'template', child: ListTile(leading: Icon(Icons.library_add_outlined), title: Text('Als Vorlage speichern'))),
+                            if (!e.isTemplate)
+                              const PopupMenuItem(value: 'copy', child: ListTile(leading: Icon(Icons.copy_outlined), title: Text('Übung kopieren'))),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: ListTile(leading: const Icon(Icons.delete_outline), title: Text(e.isTemplate ? 'Vorlage löschen' : 'Übung löschen')),
+                            ),
+                          ],
                         ),
                       ]),
                     ),
@@ -85,9 +133,14 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                       tabAlignment: TabAlignment.start,
                       tabs: [
                         Tab(text: 'Übungsplan'),
-                        Tab(text: 'Fahrzeugbesetzung'),
+                        Tab(text: 'Besetzung'),
                         Tab(text: 'Alarmierungsplan'),
                         Tab(text: 'Alarmmeldung'),
+                        Tab(text: 'Funkplan'),
+                        Tab(text: 'Rollenkarten'),
+                        Tab(text: 'Material'),
+                        Tab(text: 'Beobachtung'),
+                        Tab(text: 'Nachbesprechung'),
                       ],
                     ),
                     Expanded(
@@ -96,6 +149,11 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                         CrewTab(detail: d),
                         AlarmPlanTab(detail: d),
                         AlarmTab(detail: d),
+                        RadioTab(detail: d),
+                        RolesTab(detail: d),
+                        MaterialTab(detail: d),
+                        ObservationTab(detail: d),
+                        DebriefTab(detail: d),
                       ]),
                     ),
                   ],

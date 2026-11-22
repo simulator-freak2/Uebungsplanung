@@ -10,33 +10,53 @@ import '../../ui/theme.dart';
 import '../../ui/widgets.dart';
 import '../../util/time.dart' as t;
 
+String _vehicleText(Iterable<AlarmPlanEntry> entries, Map<String, Vehicle> byId) => entries.map((e) {
+      final v = e.vehicleId == null ? null : byId[e.vehicleId];
+      return v?.callSign == null ? e.label : '${e.label} (${v!.callSign})';
+    }).join(', ');
+
 /// Fahrzeuge der ersten Alarmierung, z. B. „HLF 20 (Florian … 1/46-1), RW“.
 String defaultAlarmVehicles(ExerciseDetail d, List<Vehicle> vehicles) {
-  final first = d.firstAlarm;
-  if (first == null) return '';
-  final byId = {for (final v in vehicles) v.id: v};
-  return d.alarmPlan.where((e) => e.alarmOffset == first && e.kind != 'trupp').map((e) {
-    final v = e.vehicleId == null ? null : byId[e.vehicleId];
-    return v?.callSign == null ? e.label : '${e.label} (${v!.callSign})';
-  }).join(', ');
+  final groups = d.alarmGroups;
+  if (groups.isEmpty) return '';
+  return _vehicleText(groups.first.entries, {for (final v in vehicles) v.id: v});
 }
 
-AlarmSheet alarmSheetFor(ExerciseDetail d, List<Vehicle> vehicles, String organisation) {
+/// Eine Alarmmeldung je Alarmierungszeitpunkt. Stichwort, Adresse, Melder
+/// und Sonderrechte gelten für alle; die eingetragenen Fahrzeuge der
+/// Alarmmeldung ersetzen nur die des Erstalarms.
+List<AlarmSheet> alarmSheetsFor(ExerciseDetail d, List<Vehicle> vehicles, String organisation) {
   final e = d.exercise;
-  final first = d.firstAlarm;
-  return AlarmSheet(
-    organisation: organisation,
-    exerciseTitle: e.title,
-    date: e.date,
-    alarmTime: first == null ? null : t.clock(d.start + first),
-    keyword: d.keyword?.code ?? 'Übungsalarm',
-    keywordDescription: d.keyword?.description,
-    address: e.alarmAddress ?? e.location ?? '',
-    specialRights: d.specialRights,
-    reporter: e.alarmReporter ?? '',
-    vehicles: e.alarmVehicles ?? defaultAlarmVehicles(d, vehicles),
-  );
+  final byId = {for (final v in vehicles) v.id: v};
+  final groups = d.alarmGroups;
+  AlarmSheet sheet({int? offset, String? label, required String fz, String? note}) => AlarmSheet(
+        organisation: organisation,
+        exerciseTitle: e.title,
+        date: e.date,
+        alarmTime: offset == null ? null : t.clock(d.start + offset),
+        keyword: d.keyword?.code ?? 'Übungsalarm',
+        keywordDescription: d.keyword?.description,
+        address: e.alarmAddress ?? e.location ?? '',
+        specialRights: d.specialRights,
+        reporter: e.alarmReporter ?? '',
+        vehicles: fz,
+        alarmLabel: label,
+        note: note,
+      );
+  if (groups.isEmpty) return [sheet(fz: e.alarmVehicles ?? '')];
+  return [
+    for (final g in groups)
+      sheet(
+        offset: g.offset,
+        label: groups.length > 1 ? '${g.title} (${g.index + 1} von ${groups.length})' : null,
+        fz: g.isFirst && e.alarmVehicles != null ? e.alarmVehicles! : _vehicleText(g.entries, byId),
+        note: g.isFirst ? null : g.entries.map((x) => x.note).whereType<String>().toSet().join(' · '),
+      ),
+  ];
 }
+
+/// Erste Alarmmeldung (Kompatibilität für Tests).
+AlarmSheet alarmSheetFor(ExerciseDetail d, List<Vehicle> vehicles, String organisation) => alarmSheetsFor(d, vehicles, organisation).first;
 
 /// Alarmmeldung zum Ausdrucken. Die Auslösung in Divera macht der TL.
 class AlarmTab extends StatefulWidget {
@@ -94,8 +114,8 @@ class _AlarmTabState extends State<AlarmTab> {
                   minLines: 1,
                   maxLines: 3,
                   decoration: const InputDecoration(
-                    labelText: 'Alarmierte Fahrzeuge',
-                    helperText: 'Leer lassen = Erstalarm aus dem Alarmierungsplan übernehmen',
+                    labelText: 'Alarmierte Fahrzeuge (Erstalarm)',
+                    helperText: 'Leer lassen = aus dem Alarmierungsplan übernehmen. Weitere Alarmierungen kommen immer aus dem Plan.',
                   ),
                 ),
               ]),
@@ -121,16 +141,16 @@ class _AlarmTabState extends State<AlarmTab> {
 
   String _fileName() => 'Alarmmeldung_${t.date(d.exercise.date)}_${d.exercise.title}'.replaceAll(RegExp(r'[^\wäöüÄÖÜß.-]+'), '_');
 
-  Future<void> _print(AlarmSheet sheet) async {
+  Future<void> _print(List<AlarmSheet> sheets) async {
     try {
-      await Printing.layoutPdf(onLayout: (_) => buildAlarmPdf(sheet), name: _fileName());
+      await Printing.layoutPdf(onLayout: (_) => buildAlarmPdf(sheets), name: _fileName());
     } catch (e) {
       if (mounted) showMessage(context, 'Drucken nicht möglich: $e. Bitte als PDF speichern.');
     }
   }
 
-  Future<void> _save(AlarmSheet sheet) async {
-    final bytes = await buildAlarmPdf(sheet);
+  Future<void> _save(List<AlarmSheet> sheets) async {
+    final bytes = await buildAlarmPdf(sheets);
     final uri = await FilePicker.saveFile(fileName: '${_fileName()}.pdf', bytes: bytes, mimeType: 'application/pdf');
     if (uri != null && mounted) showMessage(context, 'PDF gespeichert');
   }
@@ -142,7 +162,8 @@ class _AlarmTabState extends State<AlarmTab> {
       builder: (context, vehicles) => StreamBuilder<String?>(
         stream: _org,
         builder: (context, org) {
-          final sheet = alarmSheetFor(d, vehicles, org.data ?? '');
+          final sheets = alarmSheetsFor(d, vehicles, org.data ?? '');
+          final sheet = sheets.first;
           final hints = [
             if (d.keyword == null) 'Kein Alarmstichwort gewählt (Eckdaten).',
             if (sheet.address.isEmpty) 'Keine Adresse.',
@@ -152,8 +173,12 @@ class _AlarmTabState extends State<AlarmTab> {
             padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
             children: [
               Wrap(spacing: 12, runSpacing: 12, children: [
-                FilledButton.icon(onPressed: () => _print(sheet), icon: const Icon(Icons.print_outlined), label: const Text('Drucken')),
-                OutlinedButton.icon(onPressed: () => _save(sheet), icon: const Icon(Icons.picture_as_pdf_outlined), label: const Text('Als PDF speichern')),
+                FilledButton.icon(
+                  onPressed: () => _print(sheets),
+                  icon: const Icon(Icons.print_outlined),
+                  label: Text(sheets.length > 1 ? '${sheets.length} Alarmmeldungen drucken' : 'Drucken'),
+                ),
+                OutlinedButton.icon(onPressed: () => _save(sheets), icon: const Icon(Icons.picture_as_pdf_outlined), label: const Text('Als PDF speichern')),
                 OutlinedButton.icon(
                   key: const Key('alarm-sheet-edit'),
                   onPressed: () => _edit(vehicles),
@@ -172,8 +197,13 @@ class _AlarmTabState extends State<AlarmTab> {
                     Expanded(child: Text(h)),
                   ]),
                 ),
+              if (sheets.length > 1)
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Text('Es gibt ${sheets.length} Alarmierungszeitpunkte im Alarmierungsplan, daher ${sheets.length} Alarmmeldungen.'),
+                ),
               const SizedBox(height: 16),
-              Align(alignment: Alignment.topLeft, child: _AlarmPreview(sheet: sheet)),
+              Wrap(spacing: 16, runSpacing: 16, children: [for (final s in sheets) _AlarmPreview(sheet: s)]),
             ],
           );
         },
@@ -211,6 +241,12 @@ class _AlarmPreview extends StatelessWidget {
         elevation: 2,
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           banner(),
+          if (sheet.alarmLabel != null)
+            Container(
+              color: c.surfaceContainerHighest,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              child: Text(sheet.alarmLabel!, style: const TextStyle(fontWeight: FontWeight.w700)),
+            ),
           Container(
             color: AppColors.red,
             padding: const EdgeInsets.all(14),
@@ -228,6 +264,7 @@ class _AlarmPreview extends StatelessWidget {
               row('Sonderrechte / prioritär', sheet.specialRights ? 'Ja' : 'Nein'),
               row('Melder', sheet.reporter),
               row('Alarmierte Fahrzeuge', sheet.vehicles),
+              if (sheet.note != null && sheet.note!.isNotEmpty) row('Hinweis Übungsleitung', sheet.note!),
             ]),
           ),
           banner(),

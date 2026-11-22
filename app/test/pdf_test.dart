@@ -11,7 +11,7 @@ void main() {
       pw.Font.ttf((await File('assets/fonts/DejaVuSans-Bold.ttf').readAsBytes()).buffer.asByteData()),
     );
     final bytes = await buildAlarmPdf(
-      AlarmSheet(
+      [AlarmSheet(
         organisation: 'Freiwillige Feuerwehr Musterstadt',
         exerciseTitle: 'THL: Verkehrsunfall mit eingeklemmter Person',
         date: DateTime(2027, 3, 4),
@@ -22,7 +22,7 @@ void main() {
         specialRights: true,
         reporter: 'Übungsleitung – Zeuge auf der Straße',
         vehicles: 'HLF 20 (Florian Musterstadt 1/46-1), RW (Florian Musterstadt 1/52-1)',
-      ),
+      )],
       fonts: fonts,
     );
     expect(String.fromCharCodes(bytes.take(5)), '%PDF-');

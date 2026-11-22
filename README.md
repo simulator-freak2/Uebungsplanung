@@ -11,34 +11,25 @@ einem eigenen Server abgleichen.
 | `docs/SCHNITTSTELLE_MATERIALKOMPASS.md` | Anforderungen an die Materialkompass-API |
 | `app/` | die Flutter-App |
 
-## Stand: Etappe 1 (Stammdaten)
+## Stand: Version 1.0 (lokal nutzbar)
 
-- Ersteinrichtung mit Organisationsprofil (Feuerwehr oder DLRG)
-- **Personal & Qualifikationen**: anlegen, bearbeiten, Excel-/CSV-Import mit Spaltenzuordnung
-- **Fahrzeuge & Funktionen**: Fahrzeuge aus Vorlagen (HLF 20, LF 10, TSF-W, RW, DLK, ELW 1, MTW,
-  Motorrettungsboot, GW-Wasserrettung …), Funktionen mit benötigter Qualifikation, Besetzungsmuster
-  (Gruppe, Staffel, Trupp …), fahrzeugunabhängige Führungs- und Sonderfunktionen
-- **Alarmstichworte**: zentrale Datenbank mit AAO und Sonderrechten, Import/Export Excel/CSV
-- Datensicherung der Datenbank als Datei
-- Alle Datensätze haben schon die Felder für den späteren Server-Abgleich
+**Anleitung für Anwender:** [`docs/ANLEITUNG.md`](docs/ANLEITUNG.md). Dort steht auch, wie ihr die fertigen Programme für Windows, macOS und Linux bekommt.
 
-## Stand: Etappe 2 (Übungen)
+- **Stammdaten**: Personal mit Qualifikationen (Excel-Import), Fahrzeuge mit Funktionen und Besetzungsmustern,
+  Führungs- und Sonderfunktionen, Alarmstichworte, Katalog für Beobachtungspunkte
+- **Übungen** mit Übungsplan, Sicherheits-Checkliste, Freigabe durch TL/Wehrführer,
+  Fahrzeugbesetzung per Drag & Drop, Alarmierungsplan (Uhrzeit oder relativ),
+  **eine Alarmmeldung je Alarmierungszeitpunkt**, Funkplan, Rollenkarten mit Eskalationsstufen,
+  Material, Beobachtungsbogen, Nachbesprechung
+- **Übungsmappe** als PDF oder Ausdruck (Teile wählbar), Beobachter-Ansicht
+- **Dienstplan** mit Kategorien und PDF-Aushang, **Vorlagen** (auch als Datei austauschbar)
+- Erkenntnisse aus Nachbesprechungen fließen über die Übersicht in neue Übungen
+- Beispieldaten zum Ausprobieren, Datensicherung
 
-- **Übungsliste** (anstehend / vergangen) und **Übung anlegen** mit Datum, Beginn/Ende, Ort, Einheit, Thema, Alarmstichwort
-- **Übungsplan**: Eckdaten, Lernziele, Lage, Ablauf in Phasen
-- **Sicherheit & Gefährdungsbeurteilung**: Checkliste aus dem Profil, je Übung erweiterbar; Pflicht vor Freigabe
-- **Freigabe**: Entwurf → zur Freigabe vorlegen → Freigabe durch TL / Wehrführer (in den Einstellungen abschaltbar).
-  Die Rollenprüfung mit Anmeldung folgt mit dem Server (Etappe 5).
-- **Fahrzeugbesetzung**: Fahrzeuge einplanen, Besetzungsmuster wählen, Personen per **Drag & Drop**
-  (oder antippen) auf Funktionen setzen, tauschen, zurückziehen; Hinweis bei fehlender Qualifikation;
-  eine Person darf mehrere Funktionen haben
-- **Alarmierungsplan**: Alarmierung/Abruf, Ausrücken, Ankunft/Einsatz je Fahrzeug, Boot oder Trupp;
-  Eingabe als Uhrzeit (19:15) oder relativ (+15), Anzeige umschaltbar; Zeitleiste
-- **Alarmmeldung**: Stichwort, Adresse, Sonderrechte, Melder, alarmierte Fahrzeuge (aus dem Erstalarm);
-  **Drucken** und **PDF**, deutlich als ÜBUNG gekennzeichnet. Die Auslösung in Divera macht der TL.
-
-![Fahrzeugbesetzung](docs/screenshots/etappe2-fahrzeugbesetzung.png)
-![Alarmierungsplan](docs/screenshots/etappe2-alarmierungsplan.png)
+![Fahrzeugbesetzung](docs/screenshots/v1-besetzung.png)
+![Dienstplan](docs/screenshots/v1-dienstplan.png)
+![Rollenkarten](docs/screenshots/v1-rollenkarten.png)
+![Mehrere Alarmmeldungen](docs/screenshots/v1-mehrere-alarmmeldungen.png)
 
 ## App starten (Entwickler)
 
@@ -62,8 +53,7 @@ Tests:
 flutter test
 ```
 
-Die Datenbank liegt im Anwendungsdatenordner (Windows `%APPDATA%`, macOS
-`~/Library/Application Support`, Linux `~/.local/share`).
+Wo die Datenbank liegt, steht in `docs/ANLEITUNG.md`.
 
 ## Lizenz
 

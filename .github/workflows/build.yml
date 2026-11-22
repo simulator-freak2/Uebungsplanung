@@ -1,0 +1,67 @@
+name: Programme bauen
+
+# Baut die App für Windows, macOS und Linux. Die fertigen Dateien
+# erscheinen im Lauf unter „Artifacts“. Bei einem Tag wie v1.0.0 werden sie
+# zusätzlich an ein GitHub-Release gehängt.
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: windows
+            out: build/windows/x64/runner/Release
+            file: Uebungsplaner-Windows.zip
+          - os: macos-latest
+            target: macos
+            out: build/macos/Build/Products/Release
+            file: Uebungsplaner-macOS.zip
+          - os: ubuntu-latest
+            target: linux
+            out: build/linux/x64/release/bundle
+            file: Uebungsplaner-Linux.tar.gz
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: app
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.50.1
+          channel: stable
+      - name: Linux-Abhängigkeiten
+        if: matrix.target == 'linux'
+        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev ninja-build
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter test
+      - run: flutter build ${{ matrix.target }} --release
+      - name: Packen (Windows)
+        if: matrix.target == 'windows'
+        run: 7z a "../${{ matrix.file }}" "./${{ matrix.out }}/*"
+      - name: Packen (macOS)
+        if: matrix.target == 'macos'
+        run: ditto -c -k --keepParent "${{ matrix.out }}/uebungsplaner.app" "../${{ matrix.file }}"
+      - name: Packen (Linux)
+        if: matrix.target == 'linux'
+        run: tar -czf "../${{ matrix.file }}" -C "${{ matrix.out }}" .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.file }}
+          path: ${{ matrix.file }}
+      - name: An Release hängen
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.file }}

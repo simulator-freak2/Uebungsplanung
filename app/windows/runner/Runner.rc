@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "de.uebungsplaner" "\0"
-            VALUE "FileDescription", "uebungsplaner" "\0"
+            VALUE "CompanyName", "Uebungsplaner" "\0"
+            VALUE "FileDescription", "Uebungsplaner - Uebungsplanung fuer Feuerwehr und DLRG" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "uebungsplaner" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 de.uebungsplaner. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Lizenz: EUPL-1.2" "\0"
             VALUE "OriginalFilename", "uebungsplaner.exe" "\0"
-            VALUE "ProductName", "uebungsplaner" "\0"
+            VALUE "ProductName", "Uebungsplaner" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

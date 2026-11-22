@@ -19,7 +19,15 @@ class AlarmSheet {
     required this.specialRights,
     required this.reporter,
     required this.vehicles,
+    this.alarmLabel,
+    this.note,
   });
+
+  /// z. B. „Erstalarm“ oder „2. Alarmierung“ – nur bei mehreren Meldungen.
+  final String? alarmLabel;
+
+  /// Hinweis der Übungsleitung, z. B. „Nachalarmierung durch Einsatzleiter“.
+  final String? note;
 
   final String organisation;
   final String exerciseTitle;
@@ -53,10 +61,17 @@ const _yellow = PdfColor.fromInt(0xFFFFCC00);
 /// Erzeugt die Alarmmeldung als A4-PDF. Sie ist oben und unten deutlich als
 /// Übung gekennzeichnet, damit sie nicht mit einer echten Alarmierung
 /// verwechselt werden kann.
-Future<Uint8List> buildAlarmPdf(AlarmSheet a, {PdfFonts? fonts}) async {
+Future<Uint8List> buildAlarmPdf(List<AlarmSheet> sheets, {PdfFonts? fonts}) async {
   final f = fonts ?? await PdfFonts.load();
-  final doc = pw.Document(title: 'Alarmmeldung (Übung) – ${a.exerciseTitle}', author: a.organisation);
+  final doc = pw.Document(title: 'Alarmmeldung (Übung) – ${sheets.first.exerciseTitle}', author: sheets.first.organisation);
+  for (final a in sheets) {
+    addAlarmPage(doc, a, f);
+  }
+  return doc.save();
+}
 
+/// Fügt eine Alarmmeldung als Seite hinzu (auch für die Übungsmappe).
+void addAlarmPage(pw.Document doc, AlarmSheet a, PdfFonts f) {
   pw.Widget banner() => pw.Container(
         width: double.infinity,
         color: _yellow,
@@ -88,6 +103,12 @@ Future<Uint8List> buildAlarmPdf(AlarmSheet a, {PdfFonts? fonts}) async {
               textAlign: pw.TextAlign.right, style: pw.TextStyle(font: f.bold, fontSize: 13, color: PdfColors.white)),
         ]),
       ),
+      if (a.alarmLabel != null)
+        pw.Container(
+          color: PdfColors.grey200,
+          padding: const pw.EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          child: pw.Text(a.alarmLabel!, style: pw.TextStyle(font: f.bold, fontSize: 13)),
+        ),
       pw.SizedBox(height: 12),
       row('Stichwort', a.keyword, big: true),
       if (a.keywordDescription != null) row('Meldebild', a.keywordDescription!),
@@ -96,6 +117,10 @@ Future<Uint8List> buildAlarmPdf(AlarmSheet a, {PdfFonts? fonts}) async {
       row('Sonderrechte / prioritär', a.specialRights ? 'Ja' : 'Nein'),
       row('Melder', a.reporter),
       row('Alarmierte Fahrzeuge', a.vehicles),
+      if (a.note != null && a.note!.isNotEmpty) ...[
+        pw.Divider(color: PdfColors.grey400),
+        row('Hinweis Übungsleitung', a.note!),
+      ],
       pw.Spacer(),
       pw.Text('${a.organisation} · Übung: ${a.exerciseTitle}', style: pw.TextStyle(font: f.regular, fontSize: 9, color: PdfColors.grey700)),
       pw.Text('Nur zur Verwendung im Übungsdienst. Die Auslösung in Divera 24/7 erfolgt durch den TL.',
@@ -104,5 +129,4 @@ Future<Uint8List> buildAlarmPdf(AlarmSheet a, {PdfFonts? fonts}) async {
       banner(),
     ]),
   ));
-  return doc.save();
 }

@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import 'database.dart';
+import 'documents_repository.dart';
 import 'exercise_repository.dart';
 
 /// Zugriff auf alle Stammdaten. Gelöschte Datensätze werden nur markiert
@@ -12,7 +13,8 @@ class Repositories {
         persons = PersonRepository(db),
         vehicles = VehicleRepository(db),
         keywords = KeywordRepository(db),
-        exercises = ExerciseRepository(db);
+        exercises = ExerciseRepository(db),
+        documents = DocumentsRepository(db);
 
   final AppDatabase db;
   final SettingsRepository settings;
@@ -21,6 +23,7 @@ class Repositories {
   final VehicleRepository vehicles;
   final KeywordRepository keywords;
   final ExerciseRepository exercises;
+  final DocumentsRepository documents;
 }
 
 String _norm(String s) => s.trim().toLowerCase();

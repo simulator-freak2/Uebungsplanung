@@ -5,7 +5,9 @@ import '../features/exercises/exercises_page.dart';
 import '../features/keywords_page.dart';
 import '../features/overview_page.dart';
 import '../features/personal_page.dart';
-import '../features/placeholder_page.dart';
+import '../features/duty_plan_page.dart';
+import '../features/observation_catalog_page.dart';
+import '../features/templates_page.dart';
 import '../features/settings_page.dart';
 import '../features/vehicles_page.dart';
 import 'theme.dart';
@@ -21,14 +23,13 @@ class _Dest {
 
 final _destinations = <_Dest>[
   _Dest('Übersicht', Icons.home_outlined, (_) => const OverviewPage(), group: 'Planung'),
-  _Dest('Dienstplan', Icons.calendar_month_outlined,
-      (_) => const PlaceholderPage(title: 'Jahresdienstplan', stage: 'Etappe 4', icon: Icons.calendar_month_outlined)),
+  _Dest('Dienstplan', Icons.calendar_month_outlined, (_) => const SectionNavigator(child: DutyPlanPage())),
   _Dest('Übungen', Icons.description_outlined, (_) => const ExercisesSection()),
-  _Dest('Vorlagen', Icons.library_books_outlined,
-      (_) => const PlaceholderPage(title: 'Vorlagen', stage: 'Etappe 4', icon: Icons.library_books_outlined)),
+  _Dest('Vorlagen', Icons.library_books_outlined, (_) => const SectionNavigator(child: TemplatesPage())),
   _Dest('Fahrzeuge & Funktionen', Icons.local_shipping_outlined, (_) => const VehiclesPage(), group: 'Stammdaten'),
   _Dest('Alarmstichworte', Icons.notifications_active_outlined, (_) => const KeywordsPage()),
   _Dest('Personal', Icons.groups_outlined, (_) => const PersonalPage()),
+  _Dest('Beobachtungspunkte', Icons.checklist_outlined, (_) => const ObservationCatalogPage()),
   _Dest('Einstellungen', Icons.settings_outlined, (_) => const SettingsPage(), group: 'System'),
 ];
 
