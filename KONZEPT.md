@@ -1,176 +1,188 @@
-# Übungsplanung – Konzept (Entwurf v0.1)
+# Übungsplanung – Konzept (Entwurf v0.2)
 
-Planungs- und Dokumentationswerkzeug für Übungs- und Ausbildungsdienste von
-**Feuerwehr** und **DLRG** (bzw. weiteren Hilfsorganisationen). Die App läuft
-**lokal auf einem Rechner** (Einzelplatz, offline) oder **im Netzwerk**
-(ein Server, viele Nutzer per Browser).
+Planungssoftware für Übungen von **Feuerwehr**, **DLRG** und weiteren
+Hilfsorganisationen (THW, DRK, ASB, Wasserwacht, JUH, MHD). Jede Organisation
+betreibt ihre **eigene Installation**. Die App läuft **lokal** auf einem Gerät
+und kann sich mit einem **eigenen Server** abgleichen.
 
-> Status: Entwurf zur Abstimmung. Offene Punkte sind mit **[FRAGE]** markiert
-> und am Ende gesammelt.
+Vorschau (klickbar, mit fiktiven Beispieldaten): `vorschau/index.html`
+
+> Status: v0.2 – Antworten aus Runde 1 eingearbeitet. Offene Punkte stehen in
+> Abschnitt 10.
 
 ---
 
-## 1. Ziele
+## 1. Ziele (Priorität)
 
-1. Jahres-/Halbjahres-Dienstpläne schnell erstellen und veröffentlichen.
-2. Einzelne Übungen strukturiert planen (Lernziele, Ablauf, Material, Personal,
-   Fahrzeuge/Boote, Sicherheit).
-3. Wiederverwendbare **Übungsbibliothek** (Vorlagen) aufbauen.
-4. Teilnahme erfassen und **Ausbildungsnachweise / Pflichtstunden** auswerten.
-5. Für beide Organisationen nutzbar, ohne dass eine die Begriffe der anderen
-   sieht (konfigurierbare Organisationsprofile).
-6. Datenschutzkonform (DSGVO), Daten bleiben auf eigener Hardware.
+1. **Ausführliche Übungsausarbeitung** inklusive aller Übungsunterlagen
+2. **Jahresdienstplan**
+3. **Qualifikationsverwaltung**, genutzt für die Fahrzeug- und Trupp-Einteilung
 
-## 2. Zielgruppen & Rollen
+Ausdrücklich **nicht** Teil der App: Zu- und Absagen durch Mitglieder,
+Benachrichtigungen, Überwachung von Fristen und Pflichtübungen. Die App ist ein
+Planungswerkzeug für die Planer.
 
-| Rolle | Beispiele FW | Beispiele DLRG | Rechte |
-|---|---|---|---|
-| Administrator | Wehrführung, IT-Beauftragter | Vorstand, Technischer Leiter | Alles, Benutzer, Stammdaten |
-| Planer / Ausbilder | Gruppenführer, Ausbilder | Ausbilder Rettungsschwimmen, Wachleiter | Übungen planen, Vorlagen pflegen, Anwesenheit |
-| Mitglied | Einsatzkraft, Jugendfeuerwehr | Rettungsschwimmer, Jugend | Dienstplan sehen, Zu-/Absagen |
-| Gast / Anzeige | Infobildschirm im Gerätehaus | Aushang Wachstation | Nur lesen |
+## 2. Rahmen
 
-## 3. Organisationsprofile (FW / DLRG)
+| Punkt | Festlegung |
+|---|---|
+| Betrieb | eine Installation pro Organisation |
+| Nutzer | ca. 5 gleichzeitig |
+| Zielgruppen | Erwachsene und Jugend (JF, DLRG-Jugend) |
+| Rollen | **Administrator**, **Planer/Ausbilder** |
+| Personendaten | nur Name, Personalnummer, Qualifikationen |
+| Sprache | Deutsch |
+| Rechtsrahmen | DSGVO, BDSG, Landesrecht |
+| Lizenz | als Open Source vorbereiten |
+| Technik | **Flutter** |
+| Farben | Rot / Gelb |
+| Betreuung | Projektinhaber selbst (wenig Erfahrung): Installation und Updates müssen sehr einfach sein |
 
-Ein gemeinsamer Kern, die Fachlichkeit kommt aus einem **Profil**:
+## 3. Organisationsprofile
+
+Der Kern ist für alle Organisationen gleich. Was sich unterscheidet, steht in einem Profil:
 
 | Bereich | Feuerwehr | DLRG |
 |---|---|---|
-| Einheiten | Abteilung, Zug, Gruppe, Staffel, Trupp, JF | Ortsgruppe, Wasserrettungszug, Wachmannschaft, Jugend |
-| Ressourcen | Fahrzeuge (HLF, LF, DLK, MTW …), Geräte | Boote, Fahrzeuge, Tauchausrüstung, Rettungsgeräte |
-| Qualifikationen | Truppmann, Truppführer, AGT, Maschinist, Gruppenführer … | DRSA Bronze/Silber/Gold, Wasserretter, Bootsführer, Strömungsretter, Taucher, San … |
-| Themenkatalog | FwDV 3/7/10/500, THL, Brandbekämpfung, Atemschutz … | Rettungsschwimmen, Bootsdienst, Strömungsrettung, Erste Hilfe … |
-| Pflichtnachweise | z. B. Atemschutz-Belastungsübung jährlich | z. B. DRSA-Wiederholung, San-Fortbildung |
+| Einheiten | Löschzug, Gruppe, Jugendfeuerwehr | Wasserrettungszug, Wachdienst, DLRG-Jugend |
+| Fahrzeuge/Boote und Funktionen | HLF: GF, Ma, Me, A-/W-/S-Trupp | MZB: Bootsführer, Bootsgast, Strömungsretter |
+| Qualifikationen | Truppmann, Truppführer, AGT, Maschinist, Gruppenführer | DRSA, Wasserretter, Bootsführer, Strömungsretter, Taucher |
+| Rufnamen | z. B. „Florian …“ | z. B. „Pelikan …“ |
 
-Profile sind als **Katalogdaten** (nicht im Code) hinterlegt und können lokal
-ergänzt werden. Gemischte Übungen (z. B. FW + DLRG Eisrettung) werden
-unterstützt.
+Profile sind Katalogdaten (JSON) und keine Programmlogik. Weitere Organisationen kommen später über neue Profile dazu.
 
-## 4. Funktionsumfang
+## 4. Funktionen (Version 1)
 
-### 4.1 MVP (Version 1)
-- **Dienstplan / Kalender**: Monats-, Wochen-, Listenansicht; Serientermine;
-  Filter nach Einheit; Export PDF und iCal (Abo-Link im Netzwerkbetrieb).
-- **Übungsplanung (Übungsblatt)**:
-  - Titel, Datum/Zeit, Ort (inkl. Koordinaten/Karte optional), Einheit(en)
-  - Thema aus Katalog, Lernziele, Dauer
-  - Ablaufplan in Phasen (Einweisung – Durchführung – Nachbesprechung)
-  - Lage-/Szenariobeschreibung, Einspielungen
-  - Benötigtes Material, Fahrzeuge/Boote
-  - Verantwortliche (Leitung, Sicherheitsbeauftragter, Ausbilder)
-  - **Sicherheitshinweise / Gefährdungsbeurteilung** (Checkliste)
-  - Anhänge (PDF, Bilder, Skizzen)
-  - Druckansicht als Übungsblatt (PDF)
-- **Übungsbibliothek**: Übung als Vorlage speichern, kopieren, verschlagworten.
-- **Mitglieder & Qualifikationen** (Basis): Name, Einheit, Qualifikationen
-  mit Ablaufdatum.
-- **Anwesenheit**: Teilnehmerliste je Übung, Stunden automatisch.
-- **Auswertung**: Stunden je Mitglied/Einheit/Thema; Hinweis auf fällige
-  Pflichtübungen.
-- **Benutzer & Rollen**, Login (im Lokalmodus optional).
-- **Datensicherung**: Backup/Restore als eine Datei.
+### 4.1 Übung (Übungsmappe)
+Zu jeder Übung gehören folgende Teile:
 
-### 4.2 Spätere Ausbaustufen (Vorschläge)
-- Zu-/Absage durch Mitglieder, Erinnerungen per E-Mail
-- Bewertung/Nachbesprechung mit Mängelliste („Lessons learned“)
-- Ressourcen-Konfliktprüfung (Fahrzeug/Boot doppelt verplant)
-- Import/Export: CSV, Anbindung an bestehende Systeme (siehe Fragen)
-- Mobile-optimierte Ansicht/PWA, Offline-Synchronisation
-- Mehrmandantenfähigkeit (mehrere Wehren/Ortsgruppen auf einem Server)
-- Infobildschirm-Modus
+- **Übungsplan**: Eckdaten, Lernziele, Lage, Ablauf in Phasen, Übungsleitung, Sicherheitsbeauftragte/r
+- **Sicherheit / Gefährdungsbeurteilung**: Pflicht-Checkliste. Ohne sie wird die Übung nicht freigegeben.
+- **Lageskizze & Karte**: Online-Karten (OpenStreetMap) und Offline-Kartenpakete, Symbole zum Einzeichnen
+- **Fahrzeug- und Trupp-Einteilung**: Sitzplan je Fahrzeug bzw. Boot mit Qualifikationsprüfung (Hinweis bei fehlender Qualifikation)
+- **Funkplan / Kommunikationsplan**: Rufnamen, Gesprächsgruppen (TMO/DMO), Aufgaben
+- **Rollenkarten für Mimen**: Rolle, Verletzungen, Verhalten, Schminkhinweise, Info nur für Mimen
+- **Materialliste**: aus Materialkompass übernommen oder manuell ergänzt
+- **Einsatzfax**: Übungs-Alarmdepesche, deutlich als „ÜBUNG“ gekennzeichnet
+- **Export als PDF**: als komplette Übungsmappe oder jedes Dokument einzeln
 
-## 5. Betriebsmodi
+### 4.2 Jahresdienstplan
+Jahres- und Monatsansicht mit Kategorien (Praxis, Theorie, Sonderdienst, Jugend). Export als PDF-Aushang und optional als iCal.
 
-| | Lokal (Einzelplatz) | Netzwerk (Server) |
-|---|---|---|
-| Start | Doppelklick, öffnet Browser/Fenster | Dienst auf Server/NAS/Raspberry Pi/Docker |
-| Datenbank | SQLite-Datei | SQLite (klein) oder PostgreSQL (größer) |
-| Nutzer | 1 – wenige an einem Gerät | viele, gleichzeitig, per Browser |
-| Login | optional | Pflicht |
-| Internet | nicht nötig | nicht nötig (LAN), optional extern über HTTPS/VPN |
+### 4.3 Vorlagen
+Jede Übung lässt sich als Vorlage speichern. Vorlagen können als Datei exportiert und importiert werden, um sie mit anderen Wehren oder Ortsgruppen zu teilen.
 
-**Kernidee: dieselbe Anwendung** – ein Webserver mit Browser-Oberfläche.
-Lokal lauscht er nur auf `127.0.0.1`, im Netzwerk auf der LAN-Adresse. Ein
-Umschalten per Konfiguration genügt; eine lokale Datenbank kann später auf den
-Server übernommen werden.
+### 4.4 Personal & Qualifikationen
+Gespeichert werden Name, Personalnummer und Qualifikationen. Bestehende Listen lassen sich per **Excel-Import** übernehmen.
+
+### 4.5 Materialkompass-Anbindung
+Material, Fahrzeuge und Standorte werden aus Materialkompass übernommen (Details siehe offene Fragen).
+
+## 5. Betriebsarten
+
+```
+ ┌──────────────── Gerät (Windows/macOS/Linux/Tablet) ────────────────┐
+ │ Flutter-App  ──  lokale Datenbank (SQLite)                        │
+ └───────────────▲───────────────────────────────────────────────────┘
+                 │ Abgleich (HTTPS, wenn Server erreichbar)
+ ┌───────────────┴─── Server (Linux, Windows, NAS, Raspberry Pi, Mietserver) ─┐
+ │ Übungsplaner-Server (Dart) – Datenbank – Benutzer/Rollen                   │
+ │ optional: Zugriff von außen (vom Admin freigeschaltet, nur HTTPS)          │
+ └───────────────────────────────────────────────────────────────────────────┘
+```
+
+- **Nur lokal**: Die App arbeitet allein, ganz ohne Server.
+- **Mit Server**: Die App arbeitet offline weiter und gleicht ab, sobald der Server erreichbar ist (offline-first).
+- **Tablet**: dieselbe App, für die Übungsvorbereitung. Übungen werden auf das Gerät geladen.
 
 ## 6. Technischer Vorschlag
 
-- **Backend**: Python 3 + FastAPI (alternativ Node.js/TypeScript)
-- **Datenbank**: SQLite (Standard), PostgreSQL optional; ORM SQLAlchemy +
-  Migrationen (Alembic)
-- **Frontend**: Web-Oberfläche (z. B. Vue oder React), responsive für Tablet/Handy
-- **PDF**: serverseitige Erzeugung (z. B. WeasyPrint)
-- **Auslieferung**:
-  - Lokal: Windows-Installer / portable EXE (PyInstaller), optional
-    Desktop-Fenster
-  - Netzwerk: Docker-Image + docker-compose; alternativ Linux-Dienst
-- **Sicherheit**: Passwort-Hashing (Argon2), Rollenrechte, HTTPS im
-  Netzwerkbetrieb (Reverse Proxy), Audit-Log, verschlüsselte Backups optional
-- **Datenschutz**: nur notwendige Personendaten, Lösch-/Exportfunktion,
-  Rechtekonzept für Qualifikationsdaten
+| Baustein | Vorschlag | Grund |
+|---|---|---|
+| App | Flutter (Windows, macOS, Linux, iPadOS, Android) | Vorgabe; eine Codebasis |
+| Lokale DB | SQLite über `drift` | stabil, offline |
+| Server | **Dart** (z. B. `shelf`), als **eine ausführbare Datei** und als **Docker-Image** | gleiche Sprache wie die App, gemeinsamer Code, läuft auf x64 und ARM (Raspberry Pi) |
+| Server-DB | SQLite (Standard), PostgreSQL optional | reicht für ca. 5 gleichzeitige Nutzer |
+| Abgleich | Datensätze mit UUID, Änderungszeitpunkt und Versionszähler; Konfliktanzeige | offline-first |
+| Karten | `flutter_map` + OpenStreetMap, Offline-Kacheln (MBTiles) | online und offline |
+| PDF | `pdf`/`printing` (Dart) | gleiche Ausgabe auf allen Systemen |
+| Excel | Paket `excel` | Import der vorhandenen Listen |
+| Sicherheit | Argon2-Passwörter, Rollen, HTTPS, Audit-Log | Datenschutz |
+| Open Source | Lizenzdatei, README, CONTRIBUTING, CI (GitHub Actions) | Veröffentlichung |
 
 ## 7. Datenmodell (Grobentwurf)
 
 ```
-Organisation ─┬─ Einheit ── Mitglied ── Qualifikation(Ablauf)
-              ├─ Ressource (Fahrzeug/Boot/Gerät)
-              ├─ Thema/Katalog
-              └─ Übung ─┬─ Ablaufphase
-                        ├─ Zuordnung Einheit/Ressource/Verantwortliche
-                        ├─ Sicherheitscheckliste
-                        ├─ Anhang
-                        └─ Teilnahme (Mitglied, Stunden, Status)
-Vorlage (= Übung ohne Termin)   Benutzer ── Rolle
+Organisation(Profil) ─┬─ Einheit
+                      ├─ Person(Name, Personalnr.) ── Qualifikation
+                      ├─ Fahrzeug/Boot ── Funktion(benötigte Qualifikation)
+                      ├─ Material (Quelle: Materialkompass | manuell)
+                      └─ Übung ─┬─ Phase, Lernziel, Sicherheitscheck
+                                ├─ Einteilung(Fahrzeug, Funktion, Person)
+                                ├─ Funkplan-Eintrag
+                                ├─ Rollenkarte
+                                ├─ Materialposition
+                                ├─ Einsatzfax
+                                └─ Lageskizze(Kartenausschnitt, Symbole)
+Vorlage = Übung ohne Datum       Benutzer ── Rolle(Admin | Planer)
 ```
 
 ## 8. Vorgehen
 
-1. Fragen klären (unten) → Konzept v1.0
-2. Klickbarer Prototyp der Oberfläche (Dienstplan + Übungsblatt)
-3. MVP-Entwicklung in Iterationen, je Iteration lauffähige Version
-4. Testbetrieb in einer Wehr / Ortsgruppe, Feedback
-5. Installer + Docker-Paket, Handbuch
+1. ✅ Konzept v0.2 + klickbare Vorschau
+2. Offene Fragen klären → Konzept v1.0
+3. Flutter-Grundgerüst: lokale App mit Übung + Dienstplan
+4. Übungsmappe komplett + PDF
+5. Server + Abgleich
+6. Materialkompass, Excel-Import, Karten offline
+7. Installer und Docker-Image, Handbuch, Open-Source-Veröffentlichung
 
----
+## 9. Antworten Runde 1 (Kurzfassung)
 
-## 9. Offene Fragen
+Eigene Installation je Organisation · 5 Nutzer · Erwachsene und Jugend ·
+Priorität: Übungsausarbeitung > Dienstplan > Qualifikationen · keine Zusagen,
+keine Benachrichtigungen, keine Fristen · Sicherheitscheck Pflicht · Karten
+online und offline · Dokumente: Rollenkarten, Übungsplan, Einteilung,
+Funkplan, Materialliste, Einsatzfax · Import aus Excel · Materialkompass ·
+Windows/macOS/Linux · Server auf Linux, Windows, NAS, Raspberry Pi oder
+Mietserver · Fernzugriff durch Admin einstellbar · Tablet · Abgleich ·
+Rollen Admin und Planer · Name, Personalnr., Qualifikation · deutsches Recht ·
+Open Source · Flutter · rot/gelb.
 
-### A. Einsatzumfang
-1. Für **eine** Feuerwehr/Ortsgruppe oder für **mehrere** Organisationen auf einem Server (Mandanten)?
-2. Wie viele Nutzer gleichzeitig, wie viele Mitglieder insgesamt (ungefähr)?
-3. Soll eine Installation FW **und** DLRG gleichzeitig enthalten (gemeinsame Übungen), oder je Installation eine Organisation?
-4. Gibt es weitere Organisationen (THW, DRK, ASB, Wasserwacht, JUH, MHD)?
-5. Nur Erwachsene oder auch Jugendfeuerwehr / DLRG-Jugend (Jugendschutz, Eltern)?
+## 10. Offene Fragen (Runde 2)
 
-### B. Funktionen
-6. Was ist am wichtigsten: Jahresdienstplan, detaillierte Übungsausarbeitung, Anwesenheit/Stunden oder Qualifikationsverwaltung? (Reihenfolge)
-7. Sollen Mitglieder selbst zu-/absagen können?
-8. Benachrichtigungen per E-Mail/Messenger nötig? Gibt es einen Mailserver?
-9. Brauchen wir eine Gefährdungsbeurteilung/Sicherheitscheckliste als Pflichtfeld?
-10. Sollen Pflichtübungen/Fristen überwacht werden (z. B. Atemschutz, DRSA)? Welche konkret?
-11. Kartenfunktion (Übungsort auf Karte, Skizzen)? Online-Karten erlaubt oder strikt offline?
-12. Welche Ausdrucke/Exporte braucht ihr (Dienstplan-Aushang, Übungsblatt, Anwesenheitsliste, Jahresbericht)? Gibt es Vorlagen/Formulare, die nachgebildet werden sollen?
-13. Gibt es vorhandene Daten (Excel-Listen, alte Dienstpläne) zum Import?
-14. Anbindung an vorhandene Systeme gewünscht (z. B. FeuerOn, MP-Feuer, DLRG-ISC/Mitgliederverwaltung, Kalender wie Outlook/Google)?
+### Materialkompass
+1. Welches Produkt ist gemeint (Hersteller/Website)? Gibt es eine Schnittstelle (API) oder nur einen Export (CSV/Excel)?
+2. Habt ihr einen Zugang, mit dem ich testen kann, oder eine Schnittstellenbeschreibung?
+3. Welche Daten sollen übernommen werden: nur Material, oder auch Fahrzeuge, Standorte und Prüfstatus (z. B. „in Reparatur“)?
+4. Nur lesen, oder soll die App auch etwas zurückschreiben (z. B. „Material für Übung reserviert“)?
 
-### C. Betrieb & Technik
-15. Lokaler Betrieb: Welches Betriebssystem (Windows, macOS, Linux)?
-16. Netzwerkbetrieb: Auf welcher Hardware (Windows-PC, Linux-Server, NAS z. B. Synology, Raspberry Pi, gemieteter Server/Cloud)? Ist Docker möglich?
-17. Nur im internen Netz (Gerätehaus/Wachstation) oder auch von zu Hause / unterwegs erreichbar?
-18. Muss die App am Handy/Tablet gut bedienbar sein (z. B. Anwesenheit am Übungsort)? Offline am Übungsort nötig?
-19. Soll man einen lokal begonnenen Datenbestand später auf einen Server umziehen oder synchronisieren können?
-20. Wer betreibt/wartet die Installation (technische Vorkenntnisse)?
+### Übungsunterlagen
+5. **Einsatzfax**: Habt ihr ein Muster eurer Leitstelle? Soll es nur ausgedruckt werden, oder auch auf einem Alarmmonitor bzw. per E-Mail ankommen?
+6. **Rollenkarten**: Reichen die Felder der Vorschau (Rolle, Verletzungen, Verhalten, Schminken, Info)? Braucht ihr Vitalwerte (Puls, Blutdruck, SpO2) für den Sanitätsdienst?
+7. **Funkplan**: Sollen Rufnamen und Gesprächsgruppen als Stammdaten gepflegt werden? Braucht ihr auch Kanalpläne für Analogfunk?
+8. **Lageskizze**: Braucht ihr taktische Zeichen nach DV 102 (bzw. DLRG-Zeichen)?
+9. Für welches Gebiet sollen Offline-Karten verfügbar sein (Landkreis, Bundesland)?
+10. Gibt es weitere Unterlagen, z. B. Bewertungsbogen für Beobachter, Anwesenheitsliste oder Nachbesprechungsprotokoll?
 
-### D. Benutzer, Sicherheit, Datenschutz
-21. Login-Verfahren: eigene Benutzerkonten genügt, oder Anbindung an vorhandene Konten (z. B. Microsoft 365, LDAP)?
-22. Sind die vorgeschlagenen Rollen passend? Weitere Rollen?
-23. Welche Personendaten dürfen gespeichert werden (Name, Kontakt, Geburtsdatum, Qualifikationen, Gesundheitsdaten wie G26.3 – letzteres sensibel)?
-24. Gibt es Vorgaben eures Trägers (Kommune/Landesverband) zu Datenschutz oder IT?
+### Abläufe
+11. Braucht eine Übung eine **Freigabe** (z. B. durch die Wehrführung oder den TL), oder reicht der Sicherheitscheck?
+12. Sollen nach der Übung **Teilnahme** und **Nachbesprechung** erfasst werden, oder endet die App mit der Planung?
+13. Mehrere Planer an einer Übung: Reicht „letzte Änderung gewinnt mit Hinweis“, oder soll eine Übung beim Bearbeiten gesperrt werden?
 
-### E. Rahmen
-25. Sprache nur Deutsch?
-26. Lizenz/Weitergabe: nur intern, oder Open Source für andere Wehren/Ortsgruppen?
-27. Gibt es Vorlieben bei der Technik (Programmiersprache, Framework) oder Vorgaben?
-28. Gibt es einen Zeitrahmen / Wunschtermin für eine erste nutzbare Version?
-29. Gewünschtes Design (Farben FW rot / DLRG gelb-rot, Logos verwendbar)?
+### Betrieb
+14. Fernzugriff: Gibt es eine feste Adresse (Domain) oder einen Router mit DynDNS? Wäre ein VPN (z. B. WireGuard/FRITZ!Box) eine Möglichkeit? Ich empfehle bei wenig Erfahrung VPN statt offener Ports.
+15. Soll der Server zusätzlich eine **Browser-Version** anbieten (z. B. zum Ansehen von zu Hause ohne installierte App)?
+16. Tablet: iPad, Android oder beides? Sollen Übungen auf dem Tablet auch **bearbeitet** werden oder nur angesehen?
+17. Welche NAS-Marke ist vorhanden (z. B. Synology, QNAP)? Unterstützt sie Docker / Container Manager?
+
+### Anmeldung & Daten
+18. Frage 21 aus Runde 1 war unvollständig: Reichen **eigene Benutzerkonten** der App, oder soll zusätzlich eine Anmeldung über vorhandene Konten (Microsoft 365, LDAP, DLRG-/Verbandskonto) möglich sein?
+19. Wie sehen eure **Excel-Listen** aus? Eine Beispieldatei mit Spaltenüberschriften (ohne echte Daten) wäre ideal.
+20. Brauchen Planer auf dem Tablet auch offline Zugriff auf Personaldaten, oder genügt die Einteilung ohne Personalnummer?
+
+### Open Source & Name
+21. Welche Lizenz? Vorschlag: **EUPL-1.2** (europäisch, für Behörden und Vereine gut geeignet), sonst GPL-3.0 oder MIT.
+22. Wie soll die App heißen? (Arbeitstitel: „Übungsplaner“)
+23. Soll das GitHub-Repository öffentlich werden, sobald die erste Version fertig ist?
+24. Gefällt euch das Design der Vorschau? Was fehlt, was soll anders sein?
