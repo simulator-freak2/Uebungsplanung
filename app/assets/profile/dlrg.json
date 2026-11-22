@@ -1,0 +1,50 @@
+{
+  "id": "dlrg",
+  "name": "DLRG",
+  "qualifikationen": [
+    "Juniorretter", "DRSA Bronze", "DRSA Silber", "DRSA Gold", "Wasserretter",
+    "Bootsführer A", "Bootsführer B", "Strömungsretter 1", "Strömungsretter 2",
+    "Einsatztaucher", "Signalmann", "Sanitäter", "Sprechfunker",
+    "Gruppenführer Wasserrettung", "Zugführer Wasserrettung", "Wachleiter"
+  ],
+  "fuehrungsfunktionen": [
+    ["Einsatzleiter", "Zugführer Wasserrettung"],
+    ["Abschnittsleiter Wasser", "Gruppenführer Wasserrettung"],
+    ["Uferposten", null],
+    ["Übungsleitung", null],
+    ["Sicherheitsbeauftragter", "Wasserretter"],
+    ["Übungsbeobachter", null],
+    ["Mimenbetreuung", "Sanitäter"]
+  ],
+  "fahrzeugvorlagen": [
+    {
+      "typ": "Motorrettungsboot (MRB)", "art": "boot",
+      "funktionen": [
+        ["Bootsführer", "Bootsführer A"], ["Bootsgast", null],
+        ["Wasserretter", "Wasserretter"], ["Strömungsretter", "Strömungsretter 2"]
+      ],
+      "besetzungsmuster": {
+        "Bootsbesatzung (1/2)": ["Bootsführer", "Bootsgast", "Wasserretter"],
+        "Strömungseinsatz (1/3)": ["Bootsführer", "Bootsgast", "Wasserretter", "Strömungsretter"]
+      }
+    },
+    {
+      "typ": "GW-Wasserrettung", "art": "fahrzeug",
+      "funktionen": [
+        ["Gruppenführer", "Gruppenführer Wasserrettung"], ["Fahrer", null], ["Sanitäter", "Sanitäter"],
+        ["Einsatztaucher 1", "Einsatztaucher"], ["Einsatztaucher 2", "Einsatztaucher"], ["Signalmann", "Signalmann"]
+      ],
+      "besetzungsmuster": {
+        "Tauchgruppe (1/5)": ["Gruppenführer", "Fahrer", "Sanitäter", "Einsatztaucher 1", "Einsatztaucher 2", "Signalmann"],
+        "Wasserrettungstrupp (1/2)": ["Gruppenführer", "Fahrer", "Sanitäter"]
+      }
+    },
+    {
+      "typ": "MTW Wasserrettung", "art": "fahrzeug",
+      "funktionen": [["Fahrzeugführer", "Gruppenführer Wasserrettung"], ["Fahrer", null], ["Wasserretter 1", "Wasserretter"], ["Wasserretter 2", "Wasserretter"], ["Wasserretter 3", "Wasserretter"], ["Wasserretter 4", "Wasserretter"]],
+      "besetzungsmuster": {
+        "Wasserrettungstrupp (1/5)": ["Fahrzeugführer", "Fahrer", "Wasserretter 1", "Wasserretter 2", "Wasserretter 3", "Wasserretter 4"]
+      }
+    }
+  ]
+}

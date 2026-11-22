@@ -1,4 +1,4 @@
-# Übungsplaner – Konzept (v0.9, Entwurf für v1.0)
+# Übungsplaner – Konzept v1.0
 
 Planungssoftware für Übungen von **Feuerwehr**, **DLRG** und weiteren
 Hilfsorganisationen (THW, DRK, ASB, Wasserwacht, JUH, MHD). Jede Organisation
@@ -26,7 +26,7 @@ Nicht Teil der App: Zu- und Absagen, Benachrichtigungen, Überwachung von Friste
 |---|---|
 | Betrieb | eine Installation pro Organisation, ca. 5 gleichzeitige Nutzer |
 | Zielgruppen | Erwachsene und Jugend |
-| Rollen | Administrator, Planer/Ausbilder |
+| Rollen | Administrator, TL/Wehrführer (Freigabe), Planer/Ausbilder |
 | Anmeldung | eigene Benutzerkonten der App |
 | Personendaten | Name, Personalnummer, Qualifikationen; auch offline auf dem Tablet |
 | Rechtsrahmen | DSGVO, BDSG, Landesrecht |
@@ -44,11 +44,11 @@ Jede Übung besteht aus den folgenden Teilen. Alle sind einzeln und als gemeinsa
 |---|---|
 | **Übungsplan** | Eckdaten, Alarmstichwort, Lernziele, Lage, Ablauf in Phasen |
 | **Sicherheit** | Gefährdungsbeurteilung als Pflicht-Checkliste |
-| **Freigabe** | vom Admin ein- oder ausschaltbar; wenn eingeschaltet, gibt ein Admin die Übung frei |
+| **Freigabe** | vom Admin ein- oder ausschaltbar; wenn eingeschaltet, gibt die Rolle TL/Wehrführer die Übung frei |
 | **Lageskizze** | OpenStreetMap online; ohne Internet Offline-Karte des **Landkreises**; taktische Zeichen (DV 102, Wasserrettung) |
 | **Fahrzeugbesetzung** | Besetzungsmuster je Fahrzeug wählen, Personen per **Drag & Drop** verschieben (Tablet: antippen), Prüfung der Qualifikation, Führungs- und Sonderfunktionen (Einsatzleiter, Übungsleitung, Sicherheitsbeauftragter, Beobachter, Mimenbetreuung …) |
 | **Alarmierungsplan** | je Fahrzeug bzw. Trupp: Zeitpunkt von Alarmierung/Abruf, Ausrücken und Ankunft/Einsatzbeginn, Auslöser; als Tabelle und Zeitleiste |
-| **Alarmmeldung** | Übungsalarm im Aufbau der Divera-24/7-Meldung: Stichwort, Adresse, Sonderrechte/prioritär, Melder, alarmierte Fahrzeuge; deutlich als ÜBUNG gekennzeichnet |
+| **Alarmmeldung** | nur Ausdruck; Aufbau wie die Divera-24/7-Meldung: Stichwort, Adresse, Sonderrechte/prioritär, Melder, alarmierte Fahrzeuge; deutlich als ÜBUNG gekennzeichnet |
 | **Funkplan** | Rufname, Gerät, Funknetz (BOS digital TMO/DMO, BOS analog, DLRG-Betriebsfunk), Gruppe/Kanal, Aufgabe |
 | **Rollenkarten (Mimen)** | Name, Geburtsdatum, Alter, Vorerkrankungen, Erkrankungen, Symptome, Verletzungen, Story, Eskalationsstufen |
 | **Materialliste** | aus Materialkompass oder manuell |
@@ -98,7 +98,7 @@ Material und Fahrzeuge werden übernommen. Wenn der Admin es freischaltet, könn
 | Baustein | Wahl |
 |---|---|
 | App | Flutter 3, Material 3 mit eigenem Rot/Gelb-Design |
-| Zustand/Architektur | Riverpod, Feature-Ordner, Repository-Schicht |
+| Zustand/Architektur | Repository-Schicht, drift-Streams, `InheritedWidget` (bewusst ohne zusätzliches Framework) |
 | Lokale DB | SQLite über `drift` |
 | Server | Dart (`shelf`), ausgeliefert als ausführbare Datei (Linux/Windows, x64/ARM64) und als Docker-Image |
 | Server-DB | SQLite |
@@ -107,7 +107,7 @@ Material und Fahrzeuge werden übernommen. Wenn der Admin es freischaltet, könn
 | PDF | `pdf` / `printing` |
 | Excel/CSV | `excel`, `csv` |
 | Sicherheit | Argon2-Passwörter, Token-Anmeldung, HTTPS (selbstsigniertes Zertifikat mit Fingerprint-Bestätigung oder eigenes Zertifikat) |
-| Qualität | Unit- und Widget-Tests, GitHub Actions (Build Windows/macOS/Linux/Android) |
+| Qualität | Unit- und Widget-Tests, GitHub Actions (Analyse und Tests; Builds folgen in Etappe 8) |
 | Open Source | EUPL-1.2, README, CONTRIBUTING, Hinweise zu Drittlizenzen |
 
 ## 6. Datenmodell (Grobentwurf)
@@ -138,26 +138,28 @@ Vorlage = Übung ohne Datum           Benutzer ── Rolle(Admin | Planer)
 | Etappe | Inhalt |
 |---|---|
 | 0 | ✅ Konzept, Vorschau, Schnittstellenanforderungen |
-| 1 | Flutter-Projekt, Design, Stammdaten (Personal, Fahrzeuge, Funktionen, Besetzungsmuster, Stichworte), lokale DB |
+| 1 | ✅ Flutter-Projekt, Design, Stammdaten (Personal, Fahrzeuge, Funktionen, Besetzungsmuster, Stichworte), lokale DB |
 | 2 | Übung: Übungsplan, Sicherheit, Fahrzeugbesetzung mit Drag & Drop, Alarmierungsplan, Alarmmeldung |
 | 3 | Funkplan, Rollenkarten, Material, Beobachtungsbogen, Nachbesprechung, PDF-Übungsmappe |
 | 4 | Jahresdienstplan, Vorlagen, Excel-Import |
 | 5 | Server, Benutzer, Abgleich, Tablet-Ansicht (nur lesen) |
 | 6 | Karten mit Offline-Landkreis und taktischen Zeichen |
-| 7 | Materialkompass-Anbindung und Reservierung (sobald die API steht) |
+| 7 | Materialkompass-Anbindung und Reservierung mit Genehmigung (sobald die API steht) |
 | 8 | Installer (Windows/macOS/Linux), Docker-Image, Handbuch |
 
-## 8. Offene Fragen (Runde 3)
+## 8. Entscheidungen Runde 3
 
-Siehe Chat bzw. Abschnitt unten. Die Antworten werden hier eingetragen.
+| # | Thema | Entscheidung |
+|---|---|---|
+| 1 | Divera | Nur Ausdruck der Alarmmeldung. Die Auslösung in Divera macht der TL. |
+| 2 | Stichworte | Rheinland-Pfalz, Import aus der öffentlichen Stichworttabelle (CSV/Excel) |
+| 3 | Alarmierungsplan | Uhrzeiten **und** relative Zeiten (Übungsbeginn + x Min.) möglich |
+| 4 | Eskalationsstufen | stehen auf Rollenkarte, Beobachtungsbogen und in der Tablet-Ansicht der Übungsbeobachter |
+| 5 | Beobachtungspunkte | frei je Übung **und** zentral als Katalog einspielbar |
+| 6 | Freigabe | eigene Rolle **TL / Wehrführer** |
+| 7 | Mehrfachfunktionen | eine Person darf mehrere Funktionen gleichzeitig haben |
+| 8 | Taktische Zeichen | Quelle taktisches-zeichen.de (github.com/jonas-koeritz/Taktische-Zeichen). Die fertigen Zeichen aus den Releases sind CC0; der Quellcode steht unter CC BY 4.0. Namensnennung erfolgt trotzdem. |
+| 9 | Reservierung | in Materialkompass genehmigungspflichtig (Status `angefragt` → `bestaetigt`/`abgelehnt`) |
+| 10 | Start | Etappe 1 freigegeben |
 
-1. Alarmierung über Divera: Nur Ausdruck/Anzeige, oder soll die App später echte **Übungsalarme über die Divera-Schnittstelle** auslösen?
-2. Stichworte: Gibt es eine Datei eurer Leitstelle (Format)? Welches Bundesland?
-3. Alarmierungsplan: Uhrzeiten (19:15) oder relative Zeiten (Übungsbeginn + 15 Min.)?
-4. Eskalationsstufen: nur auf der Karte beschrieben, oder soll die Übungsleitung sie während der Übung auf dem Tablet „auslösen“ bzw. abhaken können?
-5. Beobachtungsbogen: Punkte je Übung frei, oder auch ein fester Katalog je Thema?
-6. Freigabe: Gibt ein Admin frei, oder braucht es eine eigene Rolle „Freigabe“ (z. B. Wehrführer, TL)?
-7. Dürfen Personen in einer Übung mehrere Funktionen gleichzeitig haben (z. B. Einsatzleiter und Fahrzeugführer ELW)?
-8. Taktische Zeichen: Einverstanden, ein freies Open-Source-Zeichenset zu verwenden?
-9. Reservierung in Materialkompass: Sofort bestätigt, oder muss dort jemand genehmigen?
-10. Darf ich nach Klärung mit Etappe 1 (Flutter-Projekt) beginnen?
+Rollen damit: **Administrator**, **TL / Wehrführer** (Freigabe), **Planer / Ausbilder**; Tablet-Ansicht für **Übungsbeobachter** (nur lesen).

@@ -148,10 +148,10 @@ Anfrage beim Anlegen:
 }
 ```
 
-Antwort `201 Created`:
+Antwort `201 Created` (zunächst `angefragt`):
 
 ```json
-{ "id": "…", "status": "bestaetigt", "fahrzeug_id": "…", "von": "…", "bis": "…",
+{ "id": "…", "status": "angefragt", "fahrzeug_id": "…", "von": "…", "bis": "…",
   "referenz": "uebungsplaner:3f2c…", "aktualisiert_am": "…" }
 ```
 
@@ -159,7 +159,8 @@ Antwort `201 Created`:
 |---|---|---|
 | R1 | Doppelbuchung wird mit `409 Conflict` abgelehnt; die Antwort nennt die kollidierende Belegung | MUSS |
 | R2 | Header `Idempotency-Key`: Wird dieselbe Anfrage erneut gesendet (z. B. nach Verbindungsabbruch), entsteht **keine** zweite Reservierung | MUSS |
-| R3 | `status` ist `bestaetigt`, `angefragt` (falls Materialkompass eine Genehmigung verlangt), `abgelehnt` oder `storniert` | MUSS |
+| R3 | Reservierungen sind **genehmigungspflichtig**: neue Reservierungen haben `status: "angefragt"`; ein Berechtigter in Materialkompass setzt `bestaetigt` oder `abgelehnt` (mit Begründung). Außerdem `storniert` | MUSS |
+| R3a | Der Übungsplaner fragt den Status über `GET /reservierungen?referenz=` bzw. `?geaendert_seit=` ab | MUSS |
 | R4 | Der Übungsplaner darf nur Reservierungen ändern oder stornieren, die er selbst angelegt hat (gleicher Schlüssel) | MUSS |
 | R5 | Reservierungen erscheinen im Materialkompass mit Zweck und Hinweis „aus Übungsplaner“ | SOLL |
 | R6 | Fahrzeuge mit Status `werkstatt` oder `ausser_dienst` können nicht reserviert werden (`422`) | SOLL |
