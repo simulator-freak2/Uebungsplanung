@@ -19,6 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
   late final repo = AppScope.of(context);
   late final _name = repo.settings.watch(SettingsRepository.orgName);
   late final _profile = repo.settings.watch(SettingsRepository.profileId);
+  late final _approval = repo.settings.watchBool(SettingsRepository.approvalRequired, fallback: true);
 
   /// Erstellt eine vollständige Kopie der Datenbank (SQLite „VACUUM INTO“).
   Future<void> _backup() async {
@@ -82,6 +83,22 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                       child: const Text('Einspielen'),
                     ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              SectionCard(
+                title: 'Abläufe',
+                child: StreamBuilder<bool>(
+                  stream: _approval,
+                  builder: (context, s) => SwitchListTile(
+                    key: const Key('setting-approval'),
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Freigabe von Übungen erforderlich'),
+                    subtitle: const Text('Übungen werden zur Freigabe vorgelegt und von TL / Wehrführer freigegeben. '
+                        'Benutzerrollen mit Anmeldung folgen mit dem Server (Etappe 5).'),
+                    value: s.data ?? true,
+                    onChanged: (v) => repo.settings.set(SettingsRepository.approvalRequired, '$v'),
                   ),
                 ),
               ),

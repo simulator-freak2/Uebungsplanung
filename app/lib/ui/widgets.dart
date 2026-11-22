@@ -65,22 +65,23 @@ class SectionCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 8,
-              runSpacing: 8,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(title, style: t.titleLarge),
-                    if (subtitle != null)
-                      Text(subtitle!, style: t.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: t.titleLarge),
+                      if (subtitle != null)
+                        Text(subtitle!, style: t.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                    ],
+                  ),
                 ),
-                if (actions.isNotEmpty) Wrap(spacing: 8, runSpacing: 8, children: actions),
+                if (actions.isNotEmpty) ...[
+                  const SizedBox(width: 8),
+                  Flexible(child: Wrap(alignment: WrapAlignment.end, spacing: 8, runSpacing: 8, children: actions)),
+                ],
               ],
             ),
             const SizedBox(height: 12),

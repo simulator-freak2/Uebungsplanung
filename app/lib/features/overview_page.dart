@@ -1,6 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 
+import '../data/database.dart';
+import '../data/exercise_repository.dart';
 import '../ui/theme.dart';
+import '../util/time.dart' as t;
 import '../ui/widgets.dart';
 
 class OverviewPage extends StatelessWidget {
@@ -24,6 +27,35 @@ class OverviewPage extends StatelessWidget {
               _Stat(label: 'Alarmstichworte', icon: Icons.notifications_active_outlined, stream: repo.keywords.watchAll().map((l) => l.length)),
               _Stat(label: 'Qualifikationen', icon: Icons.workspace_premium_outlined, stream: repo.qualifications.watchAll().map((l) => l.length)),
             ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: SectionCard(
+            title: 'Nächste Übungen',
+            child: StreamBuilder<List<Exercise>>(
+              stream: repo.exercises.watchAll(),
+              builder: (context, s) {
+                final today = DateTime.now();
+                final next = (s.data ?? const <Exercise>[])
+                    .where((e) => !e.date.isBefore(DateTime(today.year, today.month, today.day)))
+                    .take(5)
+                    .toList();
+                if (next.isEmpty) return const Text('Keine anstehenden Übungen. Neue Übungen legt ihr unter „Übungen“ an.');
+                return Column(children: [
+                  for (final e in next)
+                    ListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.event_outlined),
+                      title: Text(e.title),
+                      subtitle: Text('${t.dateLong(e.date)} · ${t.clock(e.startMinutes)} Uhr${e.unit == null ? '' : ' · ${e.unit}'}'),
+                      trailing: Text(ExerciseStatus.label(e.status, approvalRequired: true)),
+                    ),
+                ]);
+              },
+            ),
           ),
         ),
         const SizedBox(height: 16),

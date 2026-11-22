@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../data/repositories.dart';
+import '../features/exercises/exercises_page.dart';
 import '../features/keywords_page.dart';
 import '../features/overview_page.dart';
 import '../features/personal_page.dart';
@@ -22,8 +23,7 @@ final _destinations = <_Dest>[
   _Dest('Übersicht', Icons.home_outlined, (_) => const OverviewPage(), group: 'Planung'),
   _Dest('Dienstplan', Icons.calendar_month_outlined,
       (_) => const PlaceholderPage(title: 'Jahresdienstplan', stage: 'Etappe 4', icon: Icons.calendar_month_outlined)),
-  _Dest('Übungen', Icons.description_outlined,
-      (_) => const PlaceholderPage(title: 'Übungen', stage: 'Etappe 2 und 3', icon: Icons.description_outlined)),
+  _Dest('Übungen', Icons.description_outlined, (_) => const ExercisesSection()),
   _Dest('Vorlagen', Icons.library_books_outlined,
       (_) => const PlaceholderPage(title: 'Vorlagen', stage: 'Etappe 4', icon: Icons.library_books_outlined)),
   _Dest('Fahrzeuge & Funktionen', Icons.local_shipping_outlined, (_) => const VehiclesPage(), group: 'Stammdaten'),

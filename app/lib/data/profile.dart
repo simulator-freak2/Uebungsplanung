@@ -10,13 +10,16 @@ import 'repositories.dart';
 /// Fahrzeugvorlagen. Weitere Organisationen kommen durch eine neue
 /// JSON-Datei hinzu, ohne Programmänderung.
 class OrgProfile {
-  OrgProfile({required this.id, required this.name, required this.qualifications, required this.leadFunctions, required this.vehicleTemplates});
+  OrgProfile({required this.id, required this.name, required this.qualifications, required this.leadFunctions, required this.vehicleTemplates, this.safetyChecklist = const []});
 
   final String id;
   final String name;
   final List<String> qualifications;
   final List<(String, String?)> leadFunctions;
   final List<VehicleTemplate> vehicleTemplates;
+
+  /// Vorgabe für die Sicherheits-Checkliste neuer Übungen.
+  final List<String> safetyChecklist;
 
   static const available = {'feuerwehr': 'Feuerwehr', 'dlrg': 'DLRG'};
 
@@ -30,6 +33,7 @@ class OrgProfile {
       name: j['name'] as String,
       qualifications: [for (final q in j['qualifikationen'] as List) q as String],
       leadFunctions: [for (final f in j['fuehrungsfunktionen'] as List) pair(f)],
+      safetyChecklist: [for (final c in (j['sicherheitscheck'] as List?) ?? const []) c as String],
       vehicleTemplates: [
         for (final v in j['fahrzeugvorlagen'] as List)
           VehicleTemplate(

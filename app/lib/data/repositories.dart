@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import 'database.dart';
+import 'exercise_repository.dart';
 
 /// Zugriff auf alle Stammdaten. Gelöschte Datensätze werden nur markiert
 /// (siehe [SyncColumns]) und hier ausgefiltert.
@@ -10,7 +11,8 @@ class Repositories {
         qualifications = QualificationRepository(db),
         persons = PersonRepository(db),
         vehicles = VehicleRepository(db),
-        keywords = KeywordRepository(db);
+        keywords = KeywordRepository(db),
+        exercises = ExerciseRepository(db);
 
   final AppDatabase db;
   final SettingsRepository settings;
@@ -18,6 +20,7 @@ class Repositories {
   final PersonRepository persons;
   final VehicleRepository vehicles;
   final KeywordRepository keywords;
+  final ExerciseRepository exercises;
 }
 
 String _norm(String s) => s.trim().toLowerCase();
@@ -32,6 +35,11 @@ class SettingsRepository {
 
   static const orgName = 'org_name';
   static const profileId = 'profile_id';
+
+  /// „true“/„false“: Übungen müssen von TL/Wehrführer freigegeben werden.
+  static const approvalRequired = 'approval_required';
+
+  Stream<bool> watchBool(String key, {bool fallback = false}) => watch(key).map((v) => v == null ? fallback : v == 'true');
 
   Future<String?> get(String key) async {
     final row = await (db.select(db.settings)..where((t) => t.key.equals(key)))
@@ -301,6 +309,16 @@ class VehicleRepository {
           readsFrom: {db.vehicles, db.crewFunctions, db.crewPatterns, db.crewPatternFunctions})
       .watch()
       .asyncMap((_) => detail(vehicleId));
+
+  /// Alle Fahrzeuge mit Funktionen und Mustern; Schlüssel `null` = Führungsfunktionen.
+  Stream<Map<String?, VehicleDetail>> watchAllDetails() => db
+      .customSelect('SELECT 1',
+          readsFrom: {db.vehicles, db.crewFunctions, db.crewPatterns, db.crewPatternFunctions})
+      .watch()
+      .asyncMap((_) async {
+        final ids = (await (db.select(db.vehicles)..where((t) => t.deleted.equals(false))).get()).map((v) => v.id);
+        return {null: await detail(null), for (final id in ids) id: await detail(id)};
+      });
 
   Future<VehicleDetail> detail(String? vehicleId) async {
     final vehicle = vehicleId == null

@@ -22,9 +22,23 @@ einem eigenen Server abgleichen.
 - Datensicherung der Datenbank als Datei
 - Alle Datensätze haben schon die Felder für den späteren Server-Abgleich
 
-Übungen, Dienstplan und Vorlagen folgen in den Etappen 2 bis 4.
+## Stand: Etappe 2 (Übungen)
 
-![Besetzungsmuster](docs/screenshots/etappe1-besetzungsmuster.png)
+- **Übungsliste** (anstehend / vergangen) und **Übung anlegen** mit Datum, Beginn/Ende, Ort, Einheit, Thema, Alarmstichwort
+- **Übungsplan**: Eckdaten, Lernziele, Lage, Ablauf in Phasen
+- **Sicherheit & Gefährdungsbeurteilung**: Checkliste aus dem Profil, je Übung erweiterbar; Pflicht vor Freigabe
+- **Freigabe**: Entwurf → zur Freigabe vorlegen → Freigabe durch TL / Wehrführer (in den Einstellungen abschaltbar).
+  Die Rollenprüfung mit Anmeldung folgt mit dem Server (Etappe 5).
+- **Fahrzeugbesetzung**: Fahrzeuge einplanen, Besetzungsmuster wählen, Personen per **Drag & Drop**
+  (oder antippen) auf Funktionen setzen, tauschen, zurückziehen; Hinweis bei fehlender Qualifikation;
+  eine Person darf mehrere Funktionen haben
+- **Alarmierungsplan**: Alarmierung/Abruf, Ausrücken, Ankunft/Einsatz je Fahrzeug, Boot oder Trupp;
+  Eingabe als Uhrzeit (19:15) oder relativ (+15), Anzeige umschaltbar; Zeitleiste
+- **Alarmmeldung**: Stichwort, Adresse, Sonderrechte, Melder, alarmierte Fahrzeuge (aus dem Erstalarm);
+  **Drucken** und **PDF**, deutlich als ÜBUNG gekennzeichnet. Die Auslösung in Divera macht der TL.
+
+![Fahrzeugbesetzung](docs/screenshots/etappe2-fahrzeugbesetzung.png)
+![Alarmierungsplan](docs/screenshots/etappe2-alarmierungsplan.png)
 
 ## App starten (Entwickler)
 
@@ -54,5 +68,6 @@ Die Datenbank liegt im Anwendungsdatenordner (Windows `%APPDATA%`, macOS
 ## Lizenz
 
 EUPL-1.2, siehe `LICENSE`.
+Schrift im PDF: DejaVu Sans (freie Lizenz, siehe `app/assets/fonts/LICENSE-DejaVu.txt`).
 Taktische Zeichen (ab Etappe 6): Jonas Köritz, [taktisches-zeichen.de](https://taktisches-zeichen.de/),
 [github.com/jonas-koeritz/Taktische-Zeichen](https://github.com/jonas-koeritz/Taktische-Zeichen).

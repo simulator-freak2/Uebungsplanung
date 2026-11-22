@@ -139,7 +139,7 @@ Vorlage = Übung ohne Datum           Benutzer ── Rolle(Admin | Planer)
 |---|---|
 | 0 | ✅ Konzept, Vorschau, Schnittstellenanforderungen |
 | 1 | ✅ Flutter-Projekt, Design, Stammdaten (Personal, Fahrzeuge, Funktionen, Besetzungsmuster, Stichworte), lokale DB |
-| 2 | Übung: Übungsplan, Sicherheit, Fahrzeugbesetzung mit Drag & Drop, Alarmierungsplan, Alarmmeldung |
+| 2 | ✅ Übung: Übungsplan, Sicherheit, Freigabe, Fahrzeugbesetzung mit Drag & Drop, Alarmierungsplan, Alarmmeldung (Druck/PDF) |
 | 3 | Funkplan, Rollenkarten, Material, Beobachtungsbogen, Nachbesprechung, PDF-Übungsmappe |
 | 4 | Jahresdienstplan, Vorlagen, Excel-Import |
 | 5 | Server, Benutzer, Abgleich, Tablet-Ansicht (nur lesen) |
