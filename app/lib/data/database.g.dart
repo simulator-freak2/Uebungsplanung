@@ -1474,6 +1474,18 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _callSignsMeta = const VerificationMeta(
+    'callSigns',
+  );
+  @override
+  late final GeneratedColumn<String> callSigns = GeneratedColumn<String>(
+    'call_signs',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
@@ -1516,6 +1528,7 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     type,
     kind,
     callSign,
+    callSigns,
     status,
     externalId,
     sortOrder,
@@ -1573,6 +1586,12 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
         callSign.isAcceptableOrUnknown(data['call_sign']!, _callSignMeta),
       );
     }
+    if (data.containsKey('call_signs')) {
+      context.handle(
+        _callSignsMeta,
+        callSigns.isAcceptableOrUnknown(data['call_signs']!, _callSignsMeta),
+      );
+    }
     if (data.containsKey('status')) {
       context.handle(
         _statusMeta,
@@ -1628,6 +1647,10 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
         DriftSqlType.string,
         data['${effectivePrefix}call_sign'],
       ),
+      callSigns: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}call_signs'],
+      )!,
       status: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}status'],
@@ -1658,7 +1681,14 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
 
   /// `fahrzeug`, `boot` oder `anhaenger`.
   final String kind;
+
+  /// Haupt-Funkrufname (der erste aus [callSigns]); für Anzeigen und den
+  /// Abgleich mit Materialkompass.
   final String? callSign;
+
+  /// ab Schema-Version 6: alle Funkrufnamen als JSON-Liste von
+  /// {"netz", "rufname", "bezeichnung"} (siehe `VehicleCallSign`).
+  final String callSigns;
 
   /// `einsatzbereit`, `bedingt_einsatzbereit`, `ausser_dienst`, `werkstatt`.
   final String status;
@@ -1674,6 +1704,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     this.type,
     required this.kind,
     this.callSign,
+    required this.callSigns,
     required this.status,
     this.externalId,
     required this.sortOrder,
@@ -1692,6 +1723,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     if (!nullToAbsent || callSign != null) {
       map['call_sign'] = Variable<String>(callSign);
     }
+    map['call_signs'] = Variable<String>(callSigns);
     map['status'] = Variable<String>(status);
     if (!nullToAbsent || externalId != null) {
       map['external_id'] = Variable<String>(externalId);
@@ -1711,6 +1743,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       callSign: callSign == null && nullToAbsent
           ? const Value.absent()
           : Value(callSign),
+      callSigns: Value(callSigns),
       status: Value(status),
       externalId: externalId == null && nullToAbsent
           ? const Value.absent()
@@ -1732,6 +1765,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       type: serializer.fromJson<String?>(json['type']),
       kind: serializer.fromJson<String>(json['kind']),
       callSign: serializer.fromJson<String?>(json['callSign']),
+      callSigns: serializer.fromJson<String>(json['callSigns']),
       status: serializer.fromJson<String>(json['status']),
       externalId: serializer.fromJson<String?>(json['externalId']),
       sortOrder: serializer.fromJson<int>(json['sortOrder']),
@@ -1748,6 +1782,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       'type': serializer.toJson<String?>(type),
       'kind': serializer.toJson<String>(kind),
       'callSign': serializer.toJson<String?>(callSign),
+      'callSigns': serializer.toJson<String>(callSigns),
       'status': serializer.toJson<String>(status),
       'externalId': serializer.toJson<String?>(externalId),
       'sortOrder': serializer.toJson<int>(sortOrder),
@@ -1762,6 +1797,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     Value<String?> type = const Value.absent(),
     String? kind,
     Value<String?> callSign = const Value.absent(),
+    String? callSigns,
     String? status,
     Value<String?> externalId = const Value.absent(),
     int? sortOrder,
@@ -1773,6 +1809,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     type: type.present ? type.value : this.type,
     kind: kind ?? this.kind,
     callSign: callSign.present ? callSign.value : this.callSign,
+    callSigns: callSigns ?? this.callSigns,
     status: status ?? this.status,
     externalId: externalId.present ? externalId.value : this.externalId,
     sortOrder: sortOrder ?? this.sortOrder,
@@ -1786,6 +1823,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       type: data.type.present ? data.type.value : this.type,
       kind: data.kind.present ? data.kind.value : this.kind,
       callSign: data.callSign.present ? data.callSign.value : this.callSign,
+      callSigns: data.callSigns.present ? data.callSigns.value : this.callSigns,
       status: data.status.present ? data.status.value : this.status,
       externalId: data.externalId.present
           ? data.externalId.value
@@ -1804,6 +1842,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
           ..write('type: $type, ')
           ..write('kind: $kind, ')
           ..write('callSign: $callSign, ')
+          ..write('callSigns: $callSigns, ')
           ..write('status: $status, ')
           ..write('externalId: $externalId, ')
           ..write('sortOrder: $sortOrder')
@@ -1820,6 +1859,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     type,
     kind,
     callSign,
+    callSigns,
     status,
     externalId,
     sortOrder,
@@ -1835,6 +1875,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
           other.type == this.type &&
           other.kind == this.kind &&
           other.callSign == this.callSign &&
+          other.callSigns == this.callSigns &&
           other.status == this.status &&
           other.externalId == this.externalId &&
           other.sortOrder == this.sortOrder);
@@ -1848,6 +1889,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
   final Value<String?> type;
   final Value<String> kind;
   final Value<String?> callSign;
+  final Value<String> callSigns;
   final Value<String> status;
   final Value<String?> externalId;
   final Value<int> sortOrder;
@@ -1860,6 +1902,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     this.type = const Value.absent(),
     this.kind = const Value.absent(),
     this.callSign = const Value.absent(),
+    this.callSigns = const Value.absent(),
     this.status = const Value.absent(),
     this.externalId = const Value.absent(),
     this.sortOrder = const Value.absent(),
@@ -1873,6 +1916,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     this.type = const Value.absent(),
     this.kind = const Value.absent(),
     this.callSign = const Value.absent(),
+    this.callSigns = const Value.absent(),
     this.status = const Value.absent(),
     this.externalId = const Value.absent(),
     this.sortOrder = const Value.absent(),
@@ -1886,6 +1930,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     Expression<String>? type,
     Expression<String>? kind,
     Expression<String>? callSign,
+    Expression<String>? callSigns,
     Expression<String>? status,
     Expression<String>? externalId,
     Expression<int>? sortOrder,
@@ -1899,6 +1944,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
       if (type != null) 'type': type,
       if (kind != null) 'kind': kind,
       if (callSign != null) 'call_sign': callSign,
+      if (callSigns != null) 'call_signs': callSigns,
       if (status != null) 'status': status,
       if (externalId != null) 'external_id': externalId,
       if (sortOrder != null) 'sort_order': sortOrder,
@@ -1914,6 +1960,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     Value<String?>? type,
     Value<String>? kind,
     Value<String?>? callSign,
+    Value<String>? callSigns,
     Value<String>? status,
     Value<String?>? externalId,
     Value<int>? sortOrder,
@@ -1927,6 +1974,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
       type: type ?? this.type,
       kind: kind ?? this.kind,
       callSign: callSign ?? this.callSign,
+      callSigns: callSigns ?? this.callSigns,
       status: status ?? this.status,
       externalId: externalId ?? this.externalId,
       sortOrder: sortOrder ?? this.sortOrder,
@@ -1958,6 +2006,9 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     if (callSign.present) {
       map['call_sign'] = Variable<String>(callSign.value);
     }
+    if (callSigns.present) {
+      map['call_signs'] = Variable<String>(callSigns.value);
+    }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
@@ -1983,6 +2034,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
           ..write('type: $type, ')
           ..write('kind: $kind, ')
           ..write('callSign: $callSign, ')
+          ..write('callSigns: $callSigns, ')
           ..write('status: $status, ')
           ..write('externalId: $externalId, ')
           ..write('sortOrder: $sortOrder, ')
@@ -13016,6 +13068,7 @@ typedef $$VehiclesTableCreateCompanionBuilder = VehiclesCompanion Function({
   Value<String?> type,
   Value<String> kind,
   Value<String?> callSign,
+  Value<String> callSigns,
   Value<String> status,
   Value<String?> externalId,
   Value<int> sortOrder,
@@ -13029,6 +13082,7 @@ typedef $$VehiclesTableUpdateCompanionBuilder = VehiclesCompanion Function({
   Value<String?> type,
   Value<String> kind,
   Value<String?> callSign,
+  Value<String> callSigns,
   Value<String> status,
   Value<String?> externalId,
   Value<int> sortOrder,
@@ -13076,6 +13130,11 @@ class $$VehiclesTableFilterComposer
 
   ColumnFilters<String> get callSign => $composableBuilder(
     column: $table.callSign,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get callSigns => $composableBuilder(
+    column: $table.callSigns,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -13139,6 +13198,11 @@ class $$VehiclesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get callSigns => $composableBuilder(
+    column: $table.callSigns,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get status => $composableBuilder(
     column: $table.status,
     builder: (column) => ColumnOrderings(column),
@@ -13184,6 +13248,9 @@ class $$VehiclesTableAnnotationComposer
 
   GeneratedColumn<String> get callSign =>
       $composableBuilder(column: $table.callSign, builder: (column) => column);
+
+  GeneratedColumn<String> get callSigns =>
+      $composableBuilder(column: $table.callSigns, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
@@ -13232,6 +13299,7 @@ class $$VehiclesTableTableManager
                 Value<String?> type = const Value.absent(),
                 Value<String> kind = const Value.absent(),
                 Value<String?> callSign = const Value.absent(),
+                Value<String> callSigns = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<String?> externalId = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
@@ -13244,6 +13312,7 @@ class $$VehiclesTableTableManager
                 type: type,
                 kind: kind,
                 callSign: callSign,
+                callSigns: callSigns,
                 status: status,
                 externalId: externalId,
                 sortOrder: sortOrder,
@@ -13258,6 +13327,7 @@ class $$VehiclesTableTableManager
                 Value<String?> type = const Value.absent(),
                 Value<String> kind = const Value.absent(),
                 Value<String?> callSign = const Value.absent(),
+                Value<String> callSigns = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<String?> externalId = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
@@ -13270,6 +13340,7 @@ class $$VehiclesTableTableManager
                 type: type,
                 kind: kind,
                 callSign: callSign,
+                callSigns: callSigns,
                 status: status,
                 externalId: externalId,
                 sortOrder: sortOrder,

@@ -54,7 +54,13 @@ class Vehicles extends Table with SyncColumns {
 
   /// `fahrzeug`, `boot` oder `anhaenger`.
   TextColumn get kind => text().withDefault(const Constant('fahrzeug'))();
+  /// Haupt-Funkrufname (der erste aus [callSigns]); für Anzeigen und den
+  /// Abgleich mit Materialkompass.
   TextColumn get callSign => text().nullable()();
+
+  /// ab Schema-Version 6: alle Funkrufnamen als JSON-Liste von
+  /// {"netz", "rufname", "bezeichnung"} (siehe `VehicleCallSign`).
+  TextColumn get callSigns => text().withDefault(const Constant('[]'))();
 
   /// `einsatzbereit`, `bedingt_einsatzbereit`, `ausser_dienst`, `werkstatt`.
   TextColumn get status =>
@@ -342,7 +348,7 @@ class AppDatabase extends _$AppDatabase {
       ));
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -378,6 +384,19 @@ class AppDatabase extends _$AppDatabase {
             for (final c in <GeneratedColumn<Object>>[exerciseVehicles.reservationId, exerciseVehicles.reservationStatus, exerciseVehicles.reservationNote]) {
               await m.addColumn(exerciseVehicles, c);
             }
+          }
+          if (from < 6) {
+            final cols = (await customSelect("SELECT name FROM pragma_table_info('vehicles')").get()).map((r) => r.read<String>('name'));
+            if (cols.isEmpty) {
+              await m.createTable(vehicles);
+            } else if (!cols.contains('call_signs')) {
+              await m.addColumn(vehicles, vehicles.callSigns);
+            }
+            // Bisherigen Funkrufnamen als BOS-Digitalfunk-Rufnamen übernehmen.
+            await customStatement(
+              "UPDATE vehicles SET call_signs = json_array(json_object('netz', 'bos_digital', 'rufname', call_sign)) "
+              "WHERE call_sign IS NOT NULL AND call_sign <> '' AND call_signs = '[]'",
+            );
           }
           if (from >= 2 && from < 4) {
             for (final c in <GeneratedColumn<Object>>[exercises.mapLat, exercises.mapLon, exercises.mapZoom, exercises.sketch, exercises.sketchPng]) {

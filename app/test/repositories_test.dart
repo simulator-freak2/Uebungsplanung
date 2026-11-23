@@ -125,4 +125,55 @@ void main() {
     final raw = await repo.db.select(repo.db.keywords).get();
     expect(raw.single.deleted, isTrue);
   });
+
+  test('Fahrzeug mit mehreren Funkrufnamen (BOS digital, BOS analog, 2× DLRG-Betriebsfunk)', () async {
+    const calls = [
+      VehicleCallSign(network: 'bos_digital', callSign: 'Pelikan Musterstadt 87/1'),
+      VehicleCallSign(network: 'bos_analog', callSign: 'Pelikan Musterstadt 87/1'),
+      VehicleCallSign(network: 'dlrg_betriebsfunk', callSign: 'Adler Musterstadt 21', label: 'Boot'),
+      VehicleCallSign(network: 'dlrg_betriebsfunk', callSign: 'Adler Musterstadt 21/1', label: 'Bootsführer'),
+    ];
+    final id = await repo.vehicles.save(VehicleInput(
+      name: 'MRB 1',
+      kind: 'boot',
+      callSigns: [...calls, const VehicleCallSign(network: 'bos_analog', callSign: '  ')],
+    ));
+    var v = (await repo.vehicles.watchAll().first).single;
+    expect(v.allCallSigns, calls, reason: 'leere Rufnamen werden verworfen');
+    expect(v.callSign, 'Pelikan Musterstadt 87/1', reason: 'der erste gilt als Haupt-Funkrufname');
+
+    // Reihenfolge ändern und einen entfernen
+    await repo.vehicles.save(VehicleInput(id: id, name: 'MRB 1', kind: 'boot', callSigns: [calls[2], calls[3]]));
+    v = (await repo.vehicles.watchAll().first).single;
+    expect(v.allCallSigns, [calls[2], calls[3]]);
+    expect(v.callSign, 'Adler Musterstadt 21');
+
+    // Alle entfernen
+    await repo.vehicles.save(VehicleInput(id: id, name: 'MRB 1', kind: 'boot', callSigns: const []));
+    v = (await repo.vehicles.watchAll().first).single;
+    expect(v.allCallSigns, isEmpty);
+    expect(v.callSign, isNull);
+
+    // Einzelner Rufname wie bisher → BOS digital
+    await repo.vehicles.save(VehicleInput(name: 'HLF 20', callSign: 'Florian 1/46-1'));
+    final hlf = (await repo.vehicles.watchAll().first).firstWhere((x) => x.name == 'HLF 20');
+    expect(hlf.allCallSigns, const [VehicleCallSign(network: 'bos_digital', callSign: 'Florian 1/46-1')]);
+  });
+
+  test('Datenbank von Version 5: Funkrufname wird übernommen', () async {
+    final old = AppDatabase(NativeDatabase.memory(setup: (raw) {
+      raw.execute('CREATE TABLE vehicles (id TEXT NOT NULL PRIMARY KEY, updated_at INTEGER NOT NULL, deleted INTEGER NOT NULL DEFAULT 0, '
+          "name TEXT NOT NULL, type TEXT NULL, kind TEXT NOT NULL DEFAULT 'fahrzeug', call_sign TEXT NULL, "
+          "status TEXT NOT NULL DEFAULT 'einsatzbereit', external_id TEXT NULL, sort_order INTEGER NOT NULL DEFAULT 0)");
+      raw.execute("INSERT INTO vehicles (id, updated_at, name, call_sign) VALUES ('a', 0, 'HLF 20', 'Florian 1/46-1'), ('b', 0, 'MTW', NULL)");
+      raw.userVersion = 5;
+    }));
+    addTearDown(old.close);
+    final vs = await old.select(old.vehicles).get();
+    final hlf = vs.firstWhere((v) => v.id == 'a'), mtw = vs.firstWhere((v) => v.id == 'b');
+    expect(hlf.allCallSigns, const [VehicleCallSign(network: 'bos_digital', callSign: 'Florian 1/46-1')]);
+    expect(VehicleCallSign.decode(hlf.callSigns), hlf.allCallSigns);
+    expect(mtw.callSigns, '[]');
+    expect(mtw.allCallSigns, isEmpty);
+  });
 }

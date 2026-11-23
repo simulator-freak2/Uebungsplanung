@@ -283,4 +283,88 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     await closing;
   });
+
+  testWidgets('Fahrzeug mit mehreren Funkrufnamen, Auswahl im Funkplan per Dropdown', (tester) async {
+    tester.view.physicalSize = const Size(1600, 2000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    final repo = Repositories(AppDatabase(NativeDatabase.memory()));
+    final today = DateTime.now();
+    late String exId;
+    await tester.runAsync(() async {
+      await repo.settings.set(SettingsRepository.profileId, 'dlrg');
+      await repo.settings.set(SettingsRepository.orgName, 'DLRG Musterstadt');
+      exId = await repo.exercises.create(ExerciseInput(title: 'Personensuche See', date: DateTime(today.year, today.month, today.day + 3), startMinutes: 19 * 60));
+    });
+
+    await tester.pumpWidget(UebungsplanerApp(repo: repo, session: Session(repo)));
+    await pumpUntil(tester, find.text('Fahrzeuge & Funktionen'));
+
+    // Boot mit vier Funkrufnamen anlegen
+    await tester.tap(find.text('Fahrzeuge & Funktionen'));
+    await pumpUntil(tester, find.byKey(const Key('vehicle-add')));
+    await tester.tap(find.byKey(const Key('vehicle-add')));
+    await pumpUntil(tester, find.byKey(const Key('vehicle-name')));
+    await tester.enterText(find.byKey(const Key('vehicle-name')), 'MRB 1');
+    await tester.enterText(find.byKey(const Key('callsign-call-0')), 'Pelikan Musterstadt 87/1');
+    Future<void> addCall(int i, String net, String call, [String? label]) async {
+      await tester.tap(find.byKey(const Key('callsign-add')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(Key('callsign-net-$i')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(net).last);
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(Key('callsign-call-$i')), call);
+      if (label != null) await tester.enterText(find.byKey(Key('callsign-label-$i')), label);
+    }
+
+    await addCall(1, 'BOS analog', 'Pelikan Musterstadt 87/1');
+    await addCall(2, 'DLRG-Betriebsfunk', 'Adler Musterstadt 21', 'Boot');
+    await addCall(3, 'DLRG-Betriebsfunk', 'Adler Musterstadt 21/1', 'Bootsführer');
+    await tester.tap(find.byKey(const Key('vehicle-create')));
+    await pumpUntil(tester, find.text('Adler Musterstadt 21/1 (DLRG-Betriebsfunk, Bootsführer)'));
+    final vehicle = (await tester.runAsync(() => repo.vehicles.watchAll().first))!.single;
+    expect(vehicle.allCallSigns.map((c) => c.network), ['bos_digital', 'bos_analog', 'dlrg_betriebsfunk', 'dlrg_betriebsfunk']);
+    expect(vehicle.callSign, 'Pelikan Musterstadt 87/1');
+    await tester.runAsync(() => repo.exercises.addVehicle(exId, vehicle.id));
+
+    // Funkplan: Fahrzeug und Rufnamen per Dropdown wählen
+    await tester.tap(find.text('Übungen'));
+    await pumpUntil(tester, find.text('Personensuche See'));
+    await tester.tap(find.text('Personensuche See'));
+    await pumpUntil(tester, find.text('Eckdaten'));
+    await settle(tester);
+    await openTab(tester, 'Funk');
+    await tester.tap(find.byKey(const Key('radio-add')));
+    await pumpUntil(tester, find.byKey(const Key('radio-vehicle')));
+    await tester.tap(find.byKey(const Key('radio-vehicle')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.textContaining('MRB 1').last);
+    await tester.pumpAndSettle();
+    expect(tester.widget<TextField>(find.byKey(const Key('radio-call'))).controller!.text, 'Pelikan Musterstadt 87/1');
+    await tester.tap(find.byKey(ValueKey('radio-vehicle-call-${vehicle.id}')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Adler Musterstadt 21/1 (DLRG-Betriebsfunk, Bootsführer)').last);
+    await tester.pumpAndSettle();
+    expect(tester.widget<TextField>(find.byKey(const Key('radio-call'))).controller!.text, 'Adler Musterstadt 21/1');
+    await tester.tap(find.byKey(const Key('radio-save')));
+    await settle(tester);
+    var radio = (await tester.runAsync(() async => (await repo.exercises.detail(exId))!.radio))!;
+    expect(radio.single.callSign, 'Adler Musterstadt 21/1');
+    expect(radio.single.network, 'dlrg_betriebsfunk');
+    expect(radio.single.device, 'MRB 1');
+
+    // Alle übrigen Rufnamen der eingeplanten Fahrzeuge übernehmen
+    await tester.tap(find.byKey(const Key('radio-from-vehicles')));
+    await settle(tester);
+    radio = (await tester.runAsync(() async => (await repo.exercises.detail(exId))!.radio))!;
+    expect(radio.length, 4);
+
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 1));
+    final closing = repo.db.close();
+    await tester.pump(const Duration(seconds: 1));
+    await closing;
+  });
 }

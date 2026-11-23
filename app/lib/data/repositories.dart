@@ -1,8 +1,11 @@
 import 'package:drift/drift.dart';
 
+import 'call_signs.dart';
 import 'database.dart';
 import 'documents_repository.dart';
 import 'exercise_repository.dart';
+
+export 'call_signs.dart';
 
 /// Zugriff auf alle Stammdaten. Gelöschte Datensätze werden nur markiert
 /// (siehe [SyncColumns]) und hier ausgefiltert.
@@ -278,13 +281,30 @@ class VehicleDetail {
 }
 
 class VehicleInput {
-  VehicleInput({this.id, required this.name, this.type, this.kind = 'fahrzeug', this.callSign, this.status = 'einsatzbereit'});
+  VehicleInput({this.id, required this.name, this.type, this.kind = 'fahrzeug', this.callSign, this.callSigns, this.status = 'einsatzbereit'});
   final String? id;
   final String name;
   final String? type;
   final String kind;
+
+  /// Einzelner Funkrufname (BOS digital) – nur genutzt, wenn [callSigns] fehlt.
   final String? callSign;
+
+  /// Alle Funkrufnamen; der erste gilt als Haupt-Funkrufname.
+  final List<VehicleCallSign>? callSigns;
   final String status;
+
+  List<VehicleCallSign> get resolvedCallSigns {
+    if (callSigns != null) {
+      return [
+        for (final c in callSigns!)
+          if (c.callSign.trim().isNotEmpty)
+            VehicleCallSign(network: c.network, callSign: c.callSign.trim(), label: (c.label?.trim().isEmpty ?? true) ? null : c.label!.trim()),
+      ];
+    }
+    final c = callSign?.trim() ?? '';
+    return c.isEmpty ? const [] : [VehicleCallSign(network: 'bos_digital', callSign: c)];
+  }
 }
 
 /// Vorlage aus dem Organisationsprofil (z. B. „HLF 20“).
@@ -354,13 +374,15 @@ class VehicleRepository {
   Future<String> save(VehicleInput input) async {
     final now = AppDatabase.now();
     String? clean(String? s) => (s == null || s.trim().isEmpty) ? null : s.trim();
+    final calls = input.resolvedCallSigns;
     if (input.id == null) {
       final count = (await db.select(db.vehicles).get()).length;
       final row = await db.into(db.vehicles).insertReturning(VehiclesCompanion.insert(
             name: input.name.trim(),
             type: Value(clean(input.type)),
             kind: Value(input.kind),
-            callSign: Value(clean(input.callSign)),
+            callSign: Value(calls.firstOrNull?.callSign),
+            callSigns: Value(VehicleCallSign.encode(calls)),
             status: Value(input.status),
             sortOrder: Value(count),
           ));
@@ -370,7 +392,8 @@ class VehicleRepository {
           name: Value(input.name.trim()),
           type: Value(clean(input.type)),
           kind: Value(input.kind),
-          callSign: Value(clean(input.callSign)),
+          callSign: Value(calls.firstOrNull?.callSign),
+          callSigns: Value(VehicleCallSign.encode(calls)),
           status: Value(input.status),
           updatedAt: Value(now),
         ));
@@ -379,9 +402,9 @@ class VehicleRepository {
 
   /// Legt ein Fahrzeug mit allen Funktionen und Besetzungsmustern der Vorlage an.
   Future<String> createFromTemplate(VehicleTemplate t,
-      {required String name, String? callSign, required Future<String> Function(String) ensureQualification}) {
+      {required String name, String? callSign, List<VehicleCallSign>? callSigns, required Future<String> Function(String) ensureQualification}) {
     return db.transaction(() async {
-      final vid = await save(VehicleInput(name: name, type: t.type, kind: t.kind, callSign: callSign));
+      final vid = await save(VehicleInput(name: name, type: t.type, kind: t.kind, callSign: callSign, callSigns: callSigns));
       final fnIds = <String, String>{};
       for (final (fn, qual) in t.functions) {
         final qid = qual == null ? null : await ensureQualification(qual);

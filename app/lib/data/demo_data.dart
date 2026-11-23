@@ -61,7 +61,14 @@ Future<void> loadDemoData(Repositories repo, OrgProfile profile) async {
     vehicles[tpl.type] = await repo.vehicles.createFromTemplate(
       tpl,
       name: name,
-      callSign: '${fw ? 'Florian' : 'Pelikan'} Musterstadt ${wanted[tpl.type]}',
+      callSigns: [
+        VehicleCallSign(network: 'bos_digital', callSign: '${fw ? 'Florian' : 'Pelikan'} Musterstadt ${wanted[tpl.type]}'),
+        if (!fw) ...[
+          VehicleCallSign(network: 'bos_analog', callSign: 'Pelikan Musterstadt ${wanted[tpl.type]}'),
+          VehicleCallSign(network: 'dlrg_betriebsfunk', callSign: 'Adler Musterstadt ${tpl.kind == 'boot' ? '21' : '20'}', label: 'Fahrzeug'),
+          VehicleCallSign(network: 'dlrg_betriebsfunk', callSign: 'Adler Musterstadt ${tpl.kind == 'boot' ? '21/1' : '20/1'}', label: tpl.kind == 'boot' ? 'Bootsführer' : 'Einsatzleitung'),
+        ],
+      ],
       ensureQualification: q,
     );
   }

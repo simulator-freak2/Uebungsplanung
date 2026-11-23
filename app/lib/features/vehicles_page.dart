@@ -5,6 +5,7 @@ import '../data/profile.dart';
 import '../data/repositories.dart';
 import '../ui/theme.dart';
 import '../ui/widgets.dart';
+import 'call_sign_editor.dart';
 
 const vehicleStatus = {
   'einsatzbereit': 'einsatzbereit',
@@ -125,7 +126,11 @@ class _VehicleList extends StatelessWidget {
             key: ValueKey(v.id),
             sel: v.id == selected,
             title: Text(v.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-            subtitle: Text([if (v.type != null && v.type != v.name) v.type!, if (v.callSign != null) v.callSign!].join(' · ')),
+            subtitle: Text([
+              if (v.type != null && v.type != v.name) v.type!,
+              if (v.callSign != null) v.callSign!,
+              if (v.allCallSigns.length > 1) '+${v.allCallSigns.length - 1} Rufnamen',
+            ].join(' · ')),
             trailing: v.status == 'einsatzbereit' ? null : Tag(vehicleStatus[v.status] ?? v.status, color: const Color(0x33A85D00)),
             onTap: () => onSelect(v.id),
           ),
@@ -160,7 +165,14 @@ class _NewVehicleDialogState extends State<_NewVehicleDialog> {
   List<VehicleTemplate> _templates = const [];
   VehicleTemplate? _template;
   final _name = TextEditingController();
-  final _callSign = TextEditingController();
+  final _callSigns = CallSignEditController(const []);
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _callSigns.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -177,8 +189,8 @@ class _NewVehicleDialogState extends State<_NewVehicleDialog> {
     final name = _name.text.trim();
     final t = _template;
     final id = t == null
-        ? await repo.vehicles.save(VehicleInput(name: name, callSign: _callSign.text))
-        : await repo.vehicles.createFromTemplate(t, name: name, callSign: _callSign.text, ensureQualification: repo.qualifications.ensure);
+        ? await repo.vehicles.save(VehicleInput(name: name, callSigns: _callSigns.value))
+        : await repo.vehicles.createFromTemplate(t, name: name, callSigns: _callSigns.value, ensureQualification: repo.qualifications.ensure);
     if (mounted) Navigator.pop(context, id);
   }
 
@@ -187,8 +199,8 @@ class _NewVehicleDialogState extends State<_NewVehicleDialog> {
     return AlertDialog(
       title: const Text('Fahrzeug oder Boot anlegen'),
       content: SizedBox(
-        width: 440,
-        child: Column(
+        width: 640,
+        child: SingleChildScrollView(child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -210,9 +222,10 @@ class _NewVehicleDialogState extends State<_NewVehicleDialog> {
             const SizedBox(height: 12),
             TextField(key: const Key('vehicle-name'), controller: _name, decoration: const InputDecoration(labelText: 'Bezeichnung *', hintText: 'z. B. HLF 20'), onChanged: (_) => setState(() {})),
             const SizedBox(height: 12),
-            TextField(controller: _callSign, decoration: const InputDecoration(labelText: 'Funkrufname', hintText: 'z. B. Florian Musterstadt 1/46-1')),
+            const SizedBox(height: 16),
+            CallSignEditor(controller: _callSigns),
           ],
-        ),
+        )),
       ),
       actions: [
         TextButton(onPressed: () => Navigator.pop(context), child: const Text('Abbrechen')),
@@ -267,7 +280,7 @@ class _VehicleDetailViewState extends State<VehicleDetailView> {
     final ok = v.status == 'einsatzbereit';
     return SectionCard(
       title: v.name,
-      subtitle: [vehicleKinds[v.kind] ?? v.kind, if (v.type != null) v.type!, if (v.callSign != null) 'Funkrufname ${v.callSign}'].join(' · '),
+      subtitle: [vehicleKinds[v.kind] ?? v.kind, if (v.type != null) v.type!].join(' · '),
       actions: [
         OutlinedButton.icon(onPressed: () => _editVehicle(v), icon: const Icon(Icons.edit_outlined), label: const Text('Bearbeiten')),
         OutlinedButton.icon(
@@ -280,11 +293,19 @@ class _VehicleDetailViewState extends State<VehicleDetailView> {
           label: const Text('Löschen'),
         ),
       ],
-      child: Wrap(spacing: 8, children: [
-        Tag(vehicleStatus[v.status] ?? v.status,
-            color: ok ? AppColors.ok.withValues(alpha: 0.15) : AppColors.warn.withValues(alpha: 0.18),
-            textColor: ok ? AppColors.ok : AppColors.warn),
-        const Tag('Stammdaten lokal · Anbindung an Materialkompass in Vorbereitung'),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Wrap(spacing: 8, children: [
+          Tag(vehicleStatus[v.status] ?? v.status,
+              color: ok ? AppColors.ok.withValues(alpha: 0.15) : AppColors.warn.withValues(alpha: 0.18),
+              textColor: ok ? AppColors.ok : AppColors.warn),
+          const Tag('Stammdaten lokal · Anbindung an Materialkompass in Vorbereitung'),
+        ]),
+        if (v.allCallSigns.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          Wrap(spacing: 8, runSpacing: 8, children: [
+            for (final c in v.allCallSigns) Tag(callSignLabel(c), color: Theme.of(context).colorScheme.primaryContainer),
+          ]),
+        ],
       ]),
     );
   }
@@ -292,7 +313,7 @@ class _VehicleDetailViewState extends State<VehicleDetailView> {
   Future<void> _editVehicle(Vehicle v) async {
     final name = TextEditingController(text: v.name);
     final type = TextEditingController(text: v.type);
-    final call = TextEditingController(text: v.callSign);
+    final calls = CallSignEditController(v.allCallSigns);
     var kind = v.kind;
     var status = v.status;
     final ok = await showDialog<bool>(
@@ -301,13 +322,11 @@ class _VehicleDetailViewState extends State<VehicleDetailView> {
         builder: (ctx, setS) => AlertDialog(
           title: const Text('Fahrzeug bearbeiten'),
           content: SizedBox(
-            width: 440,
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
+            width: 640,
+            child: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, children: [
               TextField(controller: name, decoration: const InputDecoration(labelText: 'Bezeichnung *')),
               const SizedBox(height: 12),
               TextField(controller: type, decoration: const InputDecoration(labelText: 'Typ', hintText: 'z. B. HLF 20')),
-              const SizedBox(height: 12),
-              TextField(controller: call, decoration: const InputDecoration(labelText: 'Funkrufname')),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 initialValue: kind,
@@ -322,7 +341,9 @@ class _VehicleDetailViewState extends State<VehicleDetailView> {
                 items: [for (final e in vehicleStatus.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
                 onChanged: (x) => setS(() => status = x!),
               ),
-            ]),
+              const SizedBox(height: 16),
+              CallSignEditor(controller: calls),
+            ])),
           ),
           actions: [
             TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Abbrechen')),
@@ -332,7 +353,7 @@ class _VehicleDetailViewState extends State<VehicleDetailView> {
       ),
     );
     if (ok == true) {
-      await repo.vehicles.save(VehicleInput(id: v.id, name: name.text, type: type.text, kind: kind, callSign: call.text, status: status));
+      await repo.vehicles.save(VehicleInput(id: v.id, name: name.text, type: type.text, kind: kind, callSigns: calls.value, status: status));
     }
   }
 
