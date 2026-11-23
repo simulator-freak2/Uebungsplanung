@@ -46,8 +46,11 @@ dependencies:
   intl: ^0.20.3
   pdf: ^3.12.0
   printing: ^5.14.3
+  http: ^1.6.0
 
 dev_dependencies:
+  uebungsplaner_server:
+    path: ../server
   flutter_test:
     sdk: flutter
 

@@ -1,17 +1,19 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../data/repositories.dart';
+import '../sync/sync_service.dart';
 
-/// Stellt die Repositories für alle Seiten bereit.
+/// Stellt Repositories und Serververbindung für alle Seiten bereit.
 class AppScope extends InheritedWidget {
-  const AppScope({super.key, required this.repo, required super.child});
+  const AppScope({super.key, required this.repo, required this.session, required super.child});
   final Repositories repo;
+  final Session session;
 
-  static Repositories of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<AppScope>()!.repo;
+  static Repositories of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<AppScope>()!.repo;
+  static Session sessionOf(BuildContext context) => context.dependOnInheritedWidgetOfExactType<AppScope>()!.session;
 
   @override
-  bool updateShouldNotify(AppScope oldWidget) => oldWidget.repo != repo;
+  bool updateShouldNotify(AppScope oldWidget) => oldWidget.repo != repo || oldWidget.session != session;
 }
 
 /// Überschrift einer Seite mit optionalen Aktionen rechts.

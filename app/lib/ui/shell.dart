@@ -10,6 +10,7 @@ import '../features/observation_catalog_page.dart';
 import '../features/templates_page.dart';
 import '../features/settings_page.dart';
 import '../features/vehicles_page.dart';
+import '../sync/sync_ui.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -144,16 +145,7 @@ class _Sidebar extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  const Icon(Icons.circle, size: 9, color: AppColors.ok),
-                  const SizedBox(width: 8),
-                  Expanded(child: Text('Nur lokal · Daten auf diesem Gerät', style: TextStyle(fontSize: 12, color: c.onSurfaceVariant))),
-                ],
-              ),
-            ),
+            const Padding(padding: EdgeInsets.all(16), child: SyncStatusLine()),
           ],
         ),
       ),

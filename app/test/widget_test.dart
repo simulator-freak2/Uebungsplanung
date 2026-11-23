@@ -11,6 +11,7 @@ import 'package:uebungsplaner/data/exercise_repository.dart';
 import 'package:uebungsplaner/data/profile.dart';
 import 'package:uebungsplaner/data/repositories.dart';
 import 'package:uebungsplaner/main.dart';
+import 'package:uebungsplaner/sync/sync_service.dart';
 
 /// Wartet, bis [finder] etwas findet (Datenbank und Assets arbeiten asynchron).
 Future<void> pumpUntil(WidgetTester tester, Finder finder) async {
@@ -50,7 +51,7 @@ void main() {
     addTearDown(tester.view.reset);
 
     final repo = Repositories(AppDatabase(NativeDatabase.memory()));
-    await tester.pumpWidget(UebungsplanerApp(repo: repo));
+    await tester.pumpWidget(UebungsplanerApp(repo: repo, session: Session(repo)));
     await pumpUntil(tester, find.text('Willkommen im Übungsplaner'));
 
     // Einrichtung
@@ -123,7 +124,7 @@ void main() {
       await repo.keywords.save(KeywordInput(code: 'TH 2', description: 'VU P eingeklemmt'));
     });
 
-    await tester.pumpWidget(UebungsplanerApp(repo: repo));
+    await tester.pumpWidget(UebungsplanerApp(repo: repo, session: Session(repo)));
     await pumpUntil(tester, find.text('Übungen'));
     await tester.tap(find.text('Übungen'));
     await pumpUntil(tester, find.byKey(const Key('exercise-add')));
@@ -226,7 +227,7 @@ void main() {
       await repo.exercises.create(ExerciseInput(title: 'Atemschutz Innenangriff', date: DateTime(today.year, today.month, today.day + 3), startMinutes: 19 * 60));
     });
 
-    await tester.pumpWidget(UebungsplanerApp(repo: repo));
+    await tester.pumpWidget(UebungsplanerApp(repo: repo, session: Session(repo)));
     await pumpUntil(tester, find.text('Übungen'));
     await tester.tap(find.text('Übungen'));
     await pumpUntil(tester, find.text('Atemschutz Innenangriff'));

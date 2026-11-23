@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import '../data/demo_data.dart';
 import '../data/profile.dart';
 import '../data/repositories.dart';
+import '../sync/sync_ui.dart';
 import '../ui/widgets.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final c = Theme.of(context).colorScheme;
+    final session = AppScope.sessionOf(context);
     return ListView(
       padding: const EdgeInsets.only(bottom: 24),
       children: [
@@ -59,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       tooltip: 'Ändern',
                       onPressed: () async {
                         final n = await askText(context, title: 'Name der Organisation', initial: s.data ?? '');
-                        if (n != null) await repo.settings.set(SettingsRepository.orgName, n);
+                        if (n != null) await session.setShared(SettingsRepository.orgName, n);
                       },
                     ),
                   ),
@@ -97,23 +98,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     contentPadding: EdgeInsets.zero,
                     title: const Text('Freigabe von Übungen erforderlich'),
                     subtitle: const Text('Übungen werden zur Freigabe vorgelegt und von TL / Wehrführer freigegeben. '
-                        'Eine Anmeldung mit Benutzerrollen kommt mit dem Serverbetrieb.'),
+                        'Im Serverbetrieb dürfen nur Benutzer mit der Rolle TL / Wehrführer oder Administrator freigeben.'),
                     value: s.data ?? true,
-                    onChanged: (v) => repo.settings.set(SettingsRepository.approvalRequired, '$v'),
+                    onChanged: session.isAdmin ? (v) => session.setShared(SettingsRepository.approvalRequired, '$v') : null,
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              SectionCard(
-                title: 'Betriebsart',
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.computer),
-                  title: const Text('Nur lokal'),
-                  subtitle: Text('Die Daten liegen auf diesem Gerät. Der Abgleich mit einem Server kommt in einer späteren Version.',
-                      style: TextStyle(color: c.onSurfaceVariant)),
-                ),
-              ),
+              const ServerSettingsSection(),
               const SizedBox(height: 16),
               FutureBuilder<bool>(
                 future: canLoadDemo(repo),

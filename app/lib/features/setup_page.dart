@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../data/profile.dart';
 import '../data/repositories.dart';
+import '../sync/sync_ui.dart';
 import '../ui/theme.dart';
 import '../ui/widgets.dart';
 
@@ -22,10 +23,11 @@ class _SetupPageState extends State<SetupPage> {
     if (_name.text.trim().isEmpty) return;
     setState(() => _busy = true);
     final repo = AppScope.of(context);
+    final session = AppScope.sessionOf(context);
     final profile = await OrgProfile.load(_profile);
     await profile.applyTo(repo);
-    await repo.settings.set(SettingsRepository.profileId, _profile);
-    await repo.settings.set(SettingsRepository.orgName, _name.text.trim());
+    await session.setShared(SettingsRepository.profileId, _profile);
+    await session.setShared(SettingsRepository.orgName, _name.text.trim());
   }
 
   @override
@@ -78,6 +80,13 @@ class _SetupPageState extends State<SetupPage> {
                     Text('Weitere Organisationen (THW, DRK, ASB, Wasserwacht …) folgen als zusätzliche Profile.',
                         style: t.bodySmall),
                     const SizedBox(height: 24),
+                    OutlinedButton.icon(
+                      key: const Key('setup-server'),
+                      onPressed: _busy ? null : () => showConnectDialog(context),
+                      icon: const Icon(Icons.cloud_sync_outlined),
+                      label: const Text('Mit vorhandenem Übungsplaner-Server verbinden'),
+                    ),
+                    const SizedBox(height: 8),
                     FilledButton.icon(
                       key: const Key('setup-start'),
                       onPressed: _busy || _name.text.trim().isEmpty ? null : _start,

@@ -180,6 +180,7 @@ class _StatusActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repo = AppScope.of(context);
+    final session = AppScope.sessionOf(context);
     final e = detail.exercise;
     final safe = detail.safetyComplete;
     const missing = 'Erst die Sicherheits-Checkliste vollständig abhaken';
@@ -197,19 +198,43 @@ class _StatusActions extends StatelessWidget {
       case ExerciseStatus.submitted:
         return Wrap(spacing: 8, children: [
           OutlinedButton(onPressed: () => repo.exercises.setStatus(e.id, ExerciseStatus.draft), child: const Text('Zurückziehen')),
-          gated('Freigeben', Icons.verified_outlined, () async {
-            final name = await askText(context,
-                title: 'Übung freigeben',
-                label: 'Name TL / Wehrführer',
-                confirm: 'Freigeben');
-            if (name != null) await repo.exercises.setStatus(e.id, ExerciseStatus.approved, approvedBy: name);
-          }, key: const Key('exercise-approve')),
+          if (!session.canApprove)
+            const Tooltip(
+              message: 'Freigeben dürfen nur TL / Wehrführer und Administratoren',
+              child: FilledButton(onPressed: null, child: Text('Wartet auf Freigabe')),
+            )
+          else
+            gated('Freigeben', Icons.verified_outlined, () async {
+              String? name;
+              if (session.networked) {
+                // Angemeldet: Freigabe mit dem eigenen Namen.
+                final ok = await showDialog<bool>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text('Übung freigeben?'),
+                    content: Text('Freigabe durch ${session.user?.displayName}.'),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Abbrechen')),
+                      FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Freigeben')),
+                    ],
+                  ),
+                );
+                if (ok == true) name = session.user?.displayName;
+              } else {
+                name = await askText(context, title: 'Übung freigeben', label: 'Name TL / Wehrführer', confirm: 'Freigeben');
+              }
+              if (name != null) await repo.exercises.setStatus(e.id, ExerciseStatus.approved, approvedBy: name);
+            }, key: const Key('exercise-approve')),
         ]);
       default:
-        return OutlinedButton.icon(
-          onPressed: () => repo.exercises.setStatus(e.id, ExerciseStatus.draft),
-          icon: const Icon(Icons.undo),
-          label: Text(approvalRequired ? 'Freigabe aufheben' : 'Wieder bearbeiten'),
+        final mayReset = !approvalRequired || session.canApprove;
+        return Tooltip(
+          message: mayReset ? '' : 'Nur TL / Wehrführer und Administratoren',
+          child: OutlinedButton.icon(
+            onPressed: mayReset ? () => repo.exercises.setStatus(e.id, ExerciseStatus.draft) : null,
+            icon: const Icon(Icons.undo),
+            label: Text(approvalRequired ? 'Freigabe aufheben' : 'Wieder bearbeiten'),
+          ),
         );
     }
   }
