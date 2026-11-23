@@ -1,0 +1,3 @@
+Taktische Zeichen: Jonas Köritz, https://github.com/jonas-koeritz/Taktische-Zeichen (taktisches-zeichen.de).
+Quellcode CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), fertige Zeichen CC0 1.0.
+Für den Übungsplaner aus den Vorlagen erzeugt; eingebettete Schriftdefinition entfernt.

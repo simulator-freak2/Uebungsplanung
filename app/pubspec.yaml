@@ -47,6 +47,10 @@ dependencies:
   pdf: ^3.12.0
   printing: ^5.14.3
   http: ^1.6.0
+  flutter_map: ^8.3.2
+  latlong2: ^0.10.1
+  flutter_svg: ^2.5.0
+  sqlite3: ^3.9.2
 
 dev_dependencies:
   uebungsplaner_server:
@@ -78,6 +82,25 @@ flutter:
   assets:
     - assets/profile/
     - assets/fonts/
+    - assets/zeichen/
+    - assets/zeichen/Einrichtungen/
+    - assets/zeichen/Fahrzeuge/
+    - assets/zeichen/Fernmeldewesen/
+    - assets/zeichen/Feuerwehr_Einheiten/
+    - assets/zeichen/Feuerwehr_Fahrzeuge/
+    - assets/zeichen/Feuerwehr_Personen/
+    - assets/zeichen/Fuehrungsstellen/
+    - assets/zeichen/Gefahren/
+    - assets/zeichen/Massnahmen/
+    - assets/zeichen/Personen/
+    - assets/zeichen/Rettungswesen_Einrichtungen/
+    - assets/zeichen/Rettungswesen_Fahrzeuge/
+    - assets/zeichen/Schaeden/
+    - assets/zeichen/Sonstiges/
+    - assets/zeichen/Wasserrettung_Einheiten/
+    - assets/zeichen/Wasserrettung_Einrichtungen/
+    - assets/zeichen/Wasserrettung_Fahrzeuge/
+    - assets/zeichen/Wasserrettung_Personen/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

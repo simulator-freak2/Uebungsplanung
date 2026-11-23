@@ -4065,6 +4065,56 @@ class $ExercisesTable extends Exercises
         type: DriftSqlType.string,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _mapLatMeta = const VerificationMeta('mapLat');
+  @override
+  late final GeneratedColumn<double> mapLat = GeneratedColumn<double>(
+    'map_lat',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _mapLonMeta = const VerificationMeta('mapLon');
+  @override
+  late final GeneratedColumn<double> mapLon = GeneratedColumn<double>(
+    'map_lon',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _mapZoomMeta = const VerificationMeta(
+    'mapZoom',
+  );
+  @override
+  late final GeneratedColumn<double> mapZoom = GeneratedColumn<double>(
+    'map_zoom',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sketchMeta = const VerificationMeta('sketch');
+  @override
+  late final GeneratedColumn<String> sketch = GeneratedColumn<String>(
+    'sketch',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _sketchPngMeta = const VerificationMeta(
+    'sketchPng',
+  );
+  @override
+  late final GeneratedColumn<String> sketchPng = GeneratedColumn<String>(
+    'sketch_png',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -4094,6 +4144,11 @@ class $ExercisesTable extends Exercises
     debriefBad,
     debriefNotes,
     debriefParticipants,
+    mapLat,
+    mapLon,
+    mapZoom,
+    sketch,
+    sketchPng,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -4294,6 +4349,36 @@ class $ExercisesTable extends Exercises
         ),
       );
     }
+    if (data.containsKey('map_lat')) {
+      context.handle(
+        _mapLatMeta,
+        mapLat.isAcceptableOrUnknown(data['map_lat']!, _mapLatMeta),
+      );
+    }
+    if (data.containsKey('map_lon')) {
+      context.handle(
+        _mapLonMeta,
+        mapLon.isAcceptableOrUnknown(data['map_lon']!, _mapLonMeta),
+      );
+    }
+    if (data.containsKey('map_zoom')) {
+      context.handle(
+        _mapZoomMeta,
+        mapZoom.isAcceptableOrUnknown(data['map_zoom']!, _mapZoomMeta),
+      );
+    }
+    if (data.containsKey('sketch')) {
+      context.handle(
+        _sketchMeta,
+        sketch.isAcceptableOrUnknown(data['sketch']!, _sketchMeta),
+      );
+    }
+    if (data.containsKey('sketch_png')) {
+      context.handle(
+        _sketchPngMeta,
+        sketchPng.isAcceptableOrUnknown(data['sketch_png']!, _sketchPngMeta),
+      );
+    }
     return context;
   }
 
@@ -4411,6 +4496,26 @@ class $ExercisesTable extends Exercises
         DriftSqlType.string,
         data['${effectivePrefix}debrief_participants'],
       ),
+      mapLat: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}map_lat'],
+      ),
+      mapLon: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}map_lon'],
+      ),
+      mapZoom: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}map_zoom'],
+      ),
+      sketch: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sketch'],
+      )!,
+      sketchPng: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sketch_png'],
+      ),
     );
   }
 
@@ -4464,6 +4569,15 @@ class Exercise extends DataClass implements Insertable<Exercise> {
   final String debriefBad;
   final String? debriefNotes;
   final String? debriefParticipants;
+  final double? mapLat;
+  final double? mapLon;
+  final double? mapZoom;
+
+  /// Eingezeichnete Elemente als JSON (siehe `SketchItem`).
+  final String sketch;
+
+  /// Bild der Lageskizze für die Übungsmappe (PNG, Base64).
+  final String? sketchPng;
   const Exercise({
     required this.id,
     required this.updatedAt,
@@ -4492,6 +4606,11 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     required this.debriefBad,
     this.debriefNotes,
     this.debriefParticipants,
+    this.mapLat,
+    this.mapLon,
+    this.mapZoom,
+    required this.sketch,
+    this.sketchPng,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4551,6 +4670,19 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     if (!nullToAbsent || debriefParticipants != null) {
       map['debrief_participants'] = Variable<String>(debriefParticipants);
     }
+    if (!nullToAbsent || mapLat != null) {
+      map['map_lat'] = Variable<double>(mapLat);
+    }
+    if (!nullToAbsent || mapLon != null) {
+      map['map_lon'] = Variable<double>(mapLon);
+    }
+    if (!nullToAbsent || mapZoom != null) {
+      map['map_zoom'] = Variable<double>(mapZoom);
+    }
+    map['sketch'] = Variable<String>(sketch);
+    if (!nullToAbsent || sketchPng != null) {
+      map['sketch_png'] = Variable<String>(sketchPng);
+    }
     return map;
   }
 
@@ -4609,6 +4741,19 @@ class Exercise extends DataClass implements Insertable<Exercise> {
       debriefParticipants: debriefParticipants == null && nullToAbsent
           ? const Value.absent()
           : Value(debriefParticipants),
+      mapLat: mapLat == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mapLat),
+      mapLon: mapLon == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mapLon),
+      mapZoom: mapZoom == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mapZoom),
+      sketch: Value(sketch),
+      sketchPng: sketchPng == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sketchPng),
     );
   }
 
@@ -4649,6 +4794,11 @@ class Exercise extends DataClass implements Insertable<Exercise> {
       debriefParticipants: serializer.fromJson<String?>(
         json['debriefParticipants'],
       ),
+      mapLat: serializer.fromJson<double?>(json['mapLat']),
+      mapLon: serializer.fromJson<double?>(json['mapLon']),
+      mapZoom: serializer.fromJson<double?>(json['mapZoom']),
+      sketch: serializer.fromJson<String>(json['sketch']),
+      sketchPng: serializer.fromJson<String?>(json['sketchPng']),
     );
   }
   @override
@@ -4682,6 +4832,11 @@ class Exercise extends DataClass implements Insertable<Exercise> {
       'debriefBad': serializer.toJson<String>(debriefBad),
       'debriefNotes': serializer.toJson<String?>(debriefNotes),
       'debriefParticipants': serializer.toJson<String?>(debriefParticipants),
+      'mapLat': serializer.toJson<double?>(mapLat),
+      'mapLon': serializer.toJson<double?>(mapLon),
+      'mapZoom': serializer.toJson<double?>(mapZoom),
+      'sketch': serializer.toJson<String>(sketch),
+      'sketchPng': serializer.toJson<String?>(sketchPng),
     };
   }
 
@@ -4713,6 +4868,11 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     String? debriefBad,
     Value<String?> debriefNotes = const Value.absent(),
     Value<String?> debriefParticipants = const Value.absent(),
+    Value<double?> mapLat = const Value.absent(),
+    Value<double?> mapLon = const Value.absent(),
+    Value<double?> mapZoom = const Value.absent(),
+    String? sketch,
+    Value<String?> sketchPng = const Value.absent(),
   }) => Exercise(
     id: id ?? this.id,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -4749,6 +4909,11 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     debriefParticipants: debriefParticipants.present
         ? debriefParticipants.value
         : this.debriefParticipants,
+    mapLat: mapLat.present ? mapLat.value : this.mapLat,
+    mapLon: mapLon.present ? mapLon.value : this.mapLon,
+    mapZoom: mapZoom.present ? mapZoom.value : this.mapZoom,
+    sketch: sketch ?? this.sketch,
+    sketchPng: sketchPng.present ? sketchPng.value : this.sketchPng,
   );
   Exercise copyWithCompanion(ExercisesCompanion data) {
     return Exercise(
@@ -4805,6 +4970,11 @@ class Exercise extends DataClass implements Insertable<Exercise> {
       debriefParticipants: data.debriefParticipants.present
           ? data.debriefParticipants.value
           : this.debriefParticipants,
+      mapLat: data.mapLat.present ? data.mapLat.value : this.mapLat,
+      mapLon: data.mapLon.present ? data.mapLon.value : this.mapLon,
+      mapZoom: data.mapZoom.present ? data.mapZoom.value : this.mapZoom,
+      sketch: data.sketch.present ? data.sketch.value : this.sketch,
+      sketchPng: data.sketchPng.present ? data.sketchPng.value : this.sketchPng,
     );
   }
 
@@ -4837,7 +5007,12 @@ class Exercise extends DataClass implements Insertable<Exercise> {
           ..write('debriefGood: $debriefGood, ')
           ..write('debriefBad: $debriefBad, ')
           ..write('debriefNotes: $debriefNotes, ')
-          ..write('debriefParticipants: $debriefParticipants')
+          ..write('debriefParticipants: $debriefParticipants, ')
+          ..write('mapLat: $mapLat, ')
+          ..write('mapLon: $mapLon, ')
+          ..write('mapZoom: $mapZoom, ')
+          ..write('sketch: $sketch, ')
+          ..write('sketchPng: $sketchPng')
           ..write(')'))
         .toString();
   }
@@ -4871,6 +5046,11 @@ class Exercise extends DataClass implements Insertable<Exercise> {
     debriefBad,
     debriefNotes,
     debriefParticipants,
+    mapLat,
+    mapLon,
+    mapZoom,
+    sketch,
+    sketchPng,
   ]);
   @override
   bool operator ==(Object other) =>
@@ -4902,7 +5082,12 @@ class Exercise extends DataClass implements Insertable<Exercise> {
           other.debriefGood == this.debriefGood &&
           other.debriefBad == this.debriefBad &&
           other.debriefNotes == this.debriefNotes &&
-          other.debriefParticipants == this.debriefParticipants);
+          other.debriefParticipants == this.debriefParticipants &&
+          other.mapLat == this.mapLat &&
+          other.mapLon == this.mapLon &&
+          other.mapZoom == this.mapZoom &&
+          other.sketch == this.sketch &&
+          other.sketchPng == this.sketchPng);
 }
 
 class ExercisesCompanion extends UpdateCompanion<Exercise> {
@@ -4933,6 +5118,11 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
   final Value<String> debriefBad;
   final Value<String?> debriefNotes;
   final Value<String?> debriefParticipants;
+  final Value<double?> mapLat;
+  final Value<double?> mapLon;
+  final Value<double?> mapZoom;
+  final Value<String> sketch;
+  final Value<String?> sketchPng;
   final Value<int> rowid;
   const ExercisesCompanion({
     this.id = const Value.absent(),
@@ -4962,6 +5152,11 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     this.debriefBad = const Value.absent(),
     this.debriefNotes = const Value.absent(),
     this.debriefParticipants = const Value.absent(),
+    this.mapLat = const Value.absent(),
+    this.mapLon = const Value.absent(),
+    this.mapZoom = const Value.absent(),
+    this.sketch = const Value.absent(),
+    this.sketchPng = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ExercisesCompanion.insert({
@@ -4992,6 +5187,11 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     this.debriefBad = const Value.absent(),
     this.debriefNotes = const Value.absent(),
     this.debriefParticipants = const Value.absent(),
+    this.mapLat = const Value.absent(),
+    this.mapLon = const Value.absent(),
+    this.mapZoom = const Value.absent(),
+    this.sketch = const Value.absent(),
+    this.sketchPng = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : title = Value(title),
        date = Value(date);
@@ -5023,6 +5223,11 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     Expression<String>? debriefBad,
     Expression<String>? debriefNotes,
     Expression<String>? debriefParticipants,
+    Expression<double>? mapLat,
+    Expression<double>? mapLon,
+    Expression<double>? mapZoom,
+    Expression<String>? sketch,
+    Expression<String>? sketchPng,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -5055,6 +5260,11 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
       if (debriefNotes != null) 'debrief_notes': debriefNotes,
       if (debriefParticipants != null)
         'debrief_participants': debriefParticipants,
+      if (mapLat != null) 'map_lat': mapLat,
+      if (mapLon != null) 'map_lon': mapLon,
+      if (mapZoom != null) 'map_zoom': mapZoom,
+      if (sketch != null) 'sketch': sketch,
+      if (sketchPng != null) 'sketch_png': sketchPng,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -5087,6 +5297,11 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     Value<String>? debriefBad,
     Value<String?>? debriefNotes,
     Value<String?>? debriefParticipants,
+    Value<double?>? mapLat,
+    Value<double?>? mapLon,
+    Value<double?>? mapZoom,
+    Value<String>? sketch,
+    Value<String?>? sketchPng,
     Value<int>? rowid,
   }) {
     return ExercisesCompanion(
@@ -5117,6 +5332,11 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
       debriefBad: debriefBad ?? this.debriefBad,
       debriefNotes: debriefNotes ?? this.debriefNotes,
       debriefParticipants: debriefParticipants ?? this.debriefParticipants,
+      mapLat: mapLat ?? this.mapLat,
+      mapLon: mapLon ?? this.mapLon,
+      mapZoom: mapZoom ?? this.mapZoom,
+      sketch: sketch ?? this.sketch,
+      sketchPng: sketchPng ?? this.sketchPng,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -5205,6 +5425,21 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
     if (debriefParticipants.present) {
       map['debrief_participants'] = Variable<String>(debriefParticipants.value);
     }
+    if (mapLat.present) {
+      map['map_lat'] = Variable<double>(mapLat.value);
+    }
+    if (mapLon.present) {
+      map['map_lon'] = Variable<double>(mapLon.value);
+    }
+    if (mapZoom.present) {
+      map['map_zoom'] = Variable<double>(mapZoom.value);
+    }
+    if (sketch.present) {
+      map['sketch'] = Variable<String>(sketch.value);
+    }
+    if (sketchPng.present) {
+      map['sketch_png'] = Variable<String>(sketchPng.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -5241,6 +5476,11 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
           ..write('debriefBad: $debriefBad, ')
           ..write('debriefNotes: $debriefNotes, ')
           ..write('debriefParticipants: $debriefParticipants, ')
+          ..write('mapLat: $mapLat, ')
+          ..write('mapLon: $mapLon, ')
+          ..write('mapZoom: $mapZoom, ')
+          ..write('sketch: $sketch, ')
+          ..write('sketchPng: $sketchPng, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -13323,6 +13563,11 @@ typedef $$ExercisesTableCreateCompanionBuilder = ExercisesCompanion Function({
   Value<String> debriefBad,
   Value<String?> debriefNotes,
   Value<String?> debriefParticipants,
+  Value<double?> mapLat,
+  Value<double?> mapLon,
+  Value<double?> mapZoom,
+  Value<String> sketch,
+  Value<String?> sketchPng,
   Value<int> rowid,
 });
 typedef $$ExercisesTableUpdateCompanionBuilder = ExercisesCompanion Function({
@@ -13353,6 +13598,11 @@ typedef $$ExercisesTableUpdateCompanionBuilder = ExercisesCompanion Function({
   Value<String> debriefBad,
   Value<String?> debriefNotes,
   Value<String?> debriefParticipants,
+  Value<double?> mapLat,
+  Value<double?> mapLon,
+  Value<double?> mapZoom,
+  Value<String> sketch,
+  Value<String?> sketchPng,
   Value<int> rowid,
 });
 
@@ -13497,6 +13747,31 @@ class $$ExercisesTableFilterComposer
 
   ColumnFilters<String> get debriefParticipants => $composableBuilder(
     column: $table.debriefParticipants,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get mapLat => $composableBuilder(
+    column: $table.mapLat,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get mapLon => $composableBuilder(
+    column: $table.mapLon,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get mapZoom => $composableBuilder(
+    column: $table.mapZoom,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sketch => $composableBuilder(
+    column: $table.sketch,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sketchPng => $composableBuilder(
+    column: $table.sketchPng,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -13644,6 +13919,31 @@ class $$ExercisesTableOrderingComposer
     column: $table.debriefParticipants,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<double> get mapLat => $composableBuilder(
+    column: $table.mapLat,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get mapLon => $composableBuilder(
+    column: $table.mapLon,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get mapZoom => $composableBuilder(
+    column: $table.mapZoom,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sketch => $composableBuilder(
+    column: $table.sketch,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sketchPng => $composableBuilder(
+    column: $table.sketchPng,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ExercisesTableAnnotationComposer
@@ -13761,6 +14061,21 @@ class $$ExercisesTableAnnotationComposer
     column: $table.debriefParticipants,
     builder: (column) => column,
   );
+
+  GeneratedColumn<double> get mapLat =>
+      $composableBuilder(column: $table.mapLat, builder: (column) => column);
+
+  GeneratedColumn<double> get mapLon =>
+      $composableBuilder(column: $table.mapLon, builder: (column) => column);
+
+  GeneratedColumn<double> get mapZoom =>
+      $composableBuilder(column: $table.mapZoom, builder: (column) => column);
+
+  GeneratedColumn<String> get sketch =>
+      $composableBuilder(column: $table.sketch, builder: (column) => column);
+
+  GeneratedColumn<String> get sketchPng =>
+      $composableBuilder(column: $table.sketchPng, builder: (column) => column);
 }
 
 class $$ExercisesTableTableManager
@@ -13818,6 +14133,11 @@ class $$ExercisesTableTableManager
                 Value<String> debriefBad = const Value.absent(),
                 Value<String?> debriefNotes = const Value.absent(),
                 Value<String?> debriefParticipants = const Value.absent(),
+                Value<double?> mapLat = const Value.absent(),
+                Value<double?> mapLon = const Value.absent(),
+                Value<double?> mapZoom = const Value.absent(),
+                Value<String> sketch = const Value.absent(),
+                Value<String?> sketchPng = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ExercisesCompanion(
                 id: id,
@@ -13847,6 +14167,11 @@ class $$ExercisesTableTableManager
                 debriefBad: debriefBad,
                 debriefNotes: debriefNotes,
                 debriefParticipants: debriefParticipants,
+                mapLat: mapLat,
+                mapLon: mapLon,
+                mapZoom: mapZoom,
+                sketch: sketch,
+                sketchPng: sketchPng,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -13878,6 +14203,11 @@ class $$ExercisesTableTableManager
                 Value<String> debriefBad = const Value.absent(),
                 Value<String?> debriefNotes = const Value.absent(),
                 Value<String?> debriefParticipants = const Value.absent(),
+                Value<double?> mapLat = const Value.absent(),
+                Value<double?> mapLon = const Value.absent(),
+                Value<double?> mapZoom = const Value.absent(),
+                Value<String> sketch = const Value.absent(),
+                Value<String?> sketchPng = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ExercisesCompanion.insert(
                 id: id,
@@ -13907,6 +14237,11 @@ class $$ExercisesTableTableManager
                 debriefBad: debriefBad,
                 debriefNotes: debriefNotes,
                 debriefParticipants: debriefParticipants,
+                mapLat: mapLat,
+                mapLon: mapLon,
+                mapZoom: mapZoom,
+                sketch: sketch,
+                sketchPng: sketchPng,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

@@ -1,0 +1,1764 @@
+[
+ {
+  "kategorie": "Feuerwehr – Fahrzeuge",
+  "zeichen": [
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Abrollbehaelter_Container.svg",
+    "name": "Abrollbehälter Container"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Drehleiter_mit_Korb.svg",
+    "name": "Drehleiter mit Korb"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/ELW_1.svg",
+    "name": "ELW 1"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/ELW_2.svg",
+    "name": "ELW 2"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Feuerwehranhaenger.svg",
+    "name": "Feuerwehranhänger"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Feuerwehrboot.svg",
+    "name": "Feuerwehrboot"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Atemschutz.svg",
+    "name": "Gerätewagen Atemschutz"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Gefahrgut.svg",
+    "name": "Gerätewagen Gefahrgut"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Logistik.svg",
+    "name": "Gerätewagen Logistik"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Logistik_1.svg",
+    "name": "Gerätewagen Logistik 1"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Logistik_2.svg",
+    "name": "Gerätewagen Logistik 2"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/HLF.svg",
+    "name": "HLF"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/KTW.svg",
+    "name": "KTW"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Kommandowagen.svg",
+    "name": "Kommandowagen"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Kraftfahrzeug.svg",
+    "name": "Kraftfahrzeug"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg",
+    "name": "Kraftfahrzeug Geländegängig"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/LF_16-TS.svg",
+    "name": "LF 16-TS"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/LF_24-50.svg",
+    "name": "LF 24-50"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/LF_8-6.svg",
+    "name": "LF 8-6"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/LF_KatS.svg",
+    "name": "LF KatS"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Loeschfahrzeug.svg",
+    "name": "Löschfahrzeug"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/MTF.svg",
+    "name": "MTF"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/MTW.svg",
+    "name": "MTW"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/MZF.svg",
+    "name": "MZF"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Messfahrzeug.svg",
+    "name": "Messfahrzeug"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Notarzteinsatzfahrzeug.svg",
+    "name": "Notarzteinsatzfahrzeug"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Notarztwagen.svg",
+    "name": "Notarztwagen"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/RTW.svg",
+    "name": "RTW"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Reaktorerkundungskraftwagen.svg",
+    "name": "Reaktorerkundungskraftwagen"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Ruestwagen.svg",
+    "name": "Rüstwagen"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Schlauchwagen.svg",
+    "name": "Schlauchwagen"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/TLF_16-25.svg",
+    "name": "TLF 16-25"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/TLF_2000.svg",
+    "name": "TLF 2000"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/TLF_3000.svg",
+    "name": "TLF 3000"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/TLF_4000.svg",
+    "name": "TLF 4000"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Tankloeschfahrzeug.svg",
+    "name": "Tanklöschfahrzeug"
+   },
+   {
+    "datei": "Feuerwehr_Fahrzeuge/Wechselladerfahrzeug.svg",
+    "name": "Wechselladerfahrzeug"
+   }
+  ]
+ },
+ {
+  "kategorie": "Feuerwehr – Einheiten",
+  "zeichen": [
+   {
+    "datei": "Feuerwehr_Einheiten/ABC_Erkundungsgruppe.svg",
+    "name": "ABC Erkundungsgruppe"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Abteilung.svg",
+    "name": "Abteilung"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Bereitschaft.svg",
+    "name": "Bereitschaft"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Bezirksabteilungsfuehrung.svg",
+    "name": "Bezirksabteilungsführung"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Bezirksbereitschaftsfuehrung.svg",
+    "name": "Bezirksbereitschaftsführung"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Dekontaminationsgruppe_Geraet.svg",
+    "name": "Dekontaminationsgruppe Gerät"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Dekontaminationsgruppe_Personen.svg",
+    "name": "Dekontaminationsgruppe Personen"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Fernsprech_Bau_und_Betriebstrupp.svg",
+    "name": "Fernsprech Bau und Betriebstrupp"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Fuehrungsgruppe_Feuerwehrbereitschaft.svg",
+    "name": "Führungsgruppe Feuerwehrbereitschaft"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Fuehrungsgruppe_TEL.svg",
+    "name": "Führungsgruppe TEL"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Gefahrstoffzug_ABC_Zug.svg",
+    "name": "Gefahrstoffzug ABC Zug"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/IuK_Zug.svg",
+    "name": "IuK Zug"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Logistikzug.svg",
+    "name": "Logistikzug"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Loeschgruppe.svg",
+    "name": "Löschgruppe"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Loeschstaffel.svg",
+    "name": "Löschstaffel"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Loeschtrupp.svg",
+    "name": "Löschtrupp"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Loeschzug.svg",
+    "name": "Löschzug"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Loeschzug_Berufsfeuerwehr.svg",
+    "name": "Löschzug Berufsfeuerwehr"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Loeschzug_Freiwillige_Feuerwehr.svg",
+    "name": "Löschzug Freiwillige Feuerwehr"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Loeschzug_Wasser.svg",
+    "name": "Löschzug Wasser"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Loeschzug_Werkfeuerwehr.svg",
+    "name": "Löschzug Werkfeuerwehr"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/RettR-UAV_Erkundungsgruppe.svg",
+    "name": "RettR-UAV Erkundungsgruppe"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/RettR-UAV_Erkundungsstaffel.svg",
+    "name": "RettR-UAV Erkundungsstaffel"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/RettR-UAV_Erkundungstrupp.svg",
+    "name": "RettR-UAV Erkundungstrupp"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Sprechfunkbetriebstrupp.svg",
+    "name": "Sprechfunkbetriebstrupp"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Versorgungstrupp_Materialerhaltung.svg",
+    "name": "Versorgungstrupp Materialerhaltung"
+   },
+   {
+    "datei": "Feuerwehr_Einheiten/Versorgungstrupp_Verbrauchsgueter.svg",
+    "name": "Versorgungstrupp Verbrauchsgüter"
+   }
+  ]
+ },
+ {
+  "kategorie": "Feuerwehr – Personen",
+  "zeichen": [
+   {
+    "datei": "Feuerwehr_Personen/Abschnittsleiter_Feuerwehr.svg",
+    "name": "Abschnittsleiter Feuerwehr"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Abschnittsleiter_Luft.svg",
+    "name": "Abschnittsleiter Luft"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Angriffstruppfuehrer.svg",
+    "name": "Angriffstruppführer"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Angriffstruppmann.svg",
+    "name": "Angriffstruppmann"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Einsatzabschnittsleiter_Feuerwehr.svg",
+    "name": "Einsatzabschnittsleiter Feuerwehr"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Gruppenfuehrer.svg",
+    "name": "Gruppenführer"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Maschinist.svg",
+    "name": "Maschinist"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Melder.svg",
+    "name": "Melder"
+   },
+   {
+    "datei": "Feuerwehr_Personen/RettR_Bildauswerter.svg",
+    "name": "RettR Bildauswerter"
+   },
+   {
+    "datei": "Feuerwehr_Personen/RettR_Fachberater.svg",
+    "name": "RettR Fachberater"
+   },
+   {
+    "datei": "Feuerwehr_Personen/RettR_Flugleiter.svg",
+    "name": "RettR Flugleiter"
+   },
+   {
+    "datei": "Feuerwehr_Personen/RettR_Gruppenfuehrer.svg",
+    "name": "RettR Gruppenführer"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Schlauchtruppfuehrer.svg",
+    "name": "Schlauchtruppführer"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Schlauchtruppmann.svg",
+    "name": "Schlauchtruppmann"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Staffelfuehrer.svg",
+    "name": "Staffelführer"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Truppfuehrer.svg",
+    "name": "Truppführer"
+   },
+   {
+    "datei": "Feuerwehr_Personen/UAV_Flugleiter.svg",
+    "name": "UAV Flugleiter"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Wassertruppfuehrer.svg",
+    "name": "Wassertruppführer"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Wassertruppmann.svg",
+    "name": "Wassertruppmann"
+   },
+   {
+    "datei": "Feuerwehr_Personen/Zugfuehrer_Loeschzug.svg",
+    "name": "Zugführer Löschzug"
+   }
+  ]
+ },
+ {
+  "kategorie": "Wasserrettung – Fahrzeuge",
+  "zeichen": [
+   {
+    "datei": "Wasserrettung_Fahrzeuge/Anhaenger.svg",
+    "name": "Anhänger"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/Anhaenger_Stroemungsrettung.svg",
+    "name": "Anhänger Strömungsrettung"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/Anhaenger_Tauchen.svg",
+    "name": "Anhänger Tauchen"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/Boot.svg",
+    "name": "Boot"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/GW_Boot.svg",
+    "name": "GW Boot"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/GW_Boot_gelaendegaengig.svg",
+    "name": "GW Boot geländegängig"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/GW_Stroemungsrettung.svg",
+    "name": "GW Strömungsrettung"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/GW_Stroemungsrettung_gelaendegaengig.svg",
+    "name": "GW Strömungsrettung geländegängig"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/GW_Tauchen.svg",
+    "name": "GW Tauchen"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/GW_Tauchen_gelaendegaengig.svg",
+    "name": "GW Tauchen geländegängig"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/Hochwasserboot.svg",
+    "name": "Hochwasserboot"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/Kraftfahrzeug.svg",
+    "name": "Kraftfahrzeug"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/Kraftfahrzeug_gelaendegaengig.svg",
+    "name": "Kraftfahrzeug geländegängig"
+   },
+   {
+    "datei": "Wasserrettung_Fahrzeuge/Schlauchboot.svg",
+    "name": "Schlauchboot"
+   }
+  ]
+ },
+ {
+  "kategorie": "Wasserrettung – Einheiten",
+  "zeichen": [
+   {
+    "datei": "Wasserrettung_Einheiten/Bootsgruppe.svg",
+    "name": "Bootsgruppe"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Bootstrupp.svg",
+    "name": "Bootstrupp"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Fuehrungstrupp.svg",
+    "name": "Führungstrupp"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Logistiktrupp.svg",
+    "name": "Logistiktrupp"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Stroemungsrettungsgruppe.svg",
+    "name": "Strömungsrettungsgruppe"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Stroemungsrettungstrupp.svg",
+    "name": "Strömungsrettungstrupp"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Tauchgruppe.svg",
+    "name": "Tauchgruppe"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Tauchtrupp.svg",
+    "name": "Tauchtrupp"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Wasserrettungsgruppe.svg",
+    "name": "Wasserrettungsgruppe"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Wasserrettungstrupp.svg",
+    "name": "Wasserrettungstrupp"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Wasserrettungsverband.svg",
+    "name": "Wasserrettungsverband"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Wasserrettungszug.svg",
+    "name": "Wasserrettungszug"
+   },
+   {
+    "datei": "Wasserrettung_Einheiten/Zugtrupp.svg",
+    "name": "Zugtrupp"
+   }
+  ]
+ },
+ {
+  "kategorie": "Wasserrettung – Personen",
+  "zeichen": [
+   {
+    "datei": "Wasserrettung_Personen/Einsatzkraft.svg",
+    "name": "Einsatzkraft"
+   },
+   {
+    "datei": "Wasserrettung_Personen/Einsatzleiter_Wasserrettungsdienst.svg",
+    "name": "Einsatzleiter Wasserrettungsdienst"
+   },
+   {
+    "datei": "Wasserrettung_Personen/Fachberater.svg",
+    "name": "Fachberater"
+   },
+   {
+    "datei": "Wasserrettung_Personen/Fuehrungskraft.svg",
+    "name": "Führungskraft"
+   },
+   {
+    "datei": "Wasserrettung_Personen/Gruppenfuehrer.svg",
+    "name": "Gruppenführer"
+   },
+   {
+    "datei": "Wasserrettung_Personen/Truppfuehrer.svg",
+    "name": "Truppführer"
+   },
+   {
+    "datei": "Wasserrettung_Personen/Verbandfuehrer.svg",
+    "name": "Verbandführer"
+   },
+   {
+    "datei": "Wasserrettung_Personen/Zugfuehrer.svg",
+    "name": "Zugführer"
+   }
+  ]
+ },
+ {
+  "kategorie": "Wasserrettung – Einrichtungen",
+  "zeichen": [
+   {
+    "datei": "Wasserrettung_Einrichtungen/Mobile_Wasserrettungsstation.svg",
+    "name": "Mobile Wasserrettungsstation"
+   },
+   {
+    "datei": "Wasserrettung_Einrichtungen/Wasserrettungsstation.svg",
+    "name": "Wasserrettungsstation"
+   }
+  ]
+ },
+ {
+  "kategorie": "Rettungsdienst – Fahrzeuge",
+  "zeichen": [
+   {
+    "datei": "Rettungswesen_Fahrzeuge/Abrollbehaelter_MANV.svg",
+    "name": "Abrollbehälter MANV"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/Geraetewagen_Logistik.svg",
+    "name": "Gerätewagen Logistik"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/Geraetewagen_Sanitaet.svg",
+    "name": "Gerätewagen Sanität"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/Geraetewagen_TeSi.svg",
+    "name": "Gerätewagen TeSi"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/KTW.svg",
+    "name": "KTW"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/Kraftfahrzeug.svg",
+    "name": "Kraftfahrzeug"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg",
+    "name": "Kraftfahrzeug Geländegängig"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/MTW.svg",
+    "name": "MTW"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/Notarzteinsatzfahrzeug.svg",
+    "name": "Notarzteinsatzfahrzeug"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/Notarztwagen.svg",
+    "name": "Notarztwagen"
+   },
+   {
+    "datei": "Rettungswesen_Fahrzeuge/RTW.svg",
+    "name": "RTW"
+   }
+  ]
+ },
+ {
+  "kategorie": "Rettungsdienst – Einrichtungen",
+  "zeichen": [
+   {
+    "datei": "Rettungswesen_Einrichtungen/Arztbesetzte_Patientenablage.svg",
+    "name": "Arztbesetzte Patientenablage"
+   },
+   {
+    "datei": "Rettungswesen_Einrichtungen/Patientenablage.svg",
+    "name": "Patientenablage"
+   },
+   {
+    "datei": "Rettungswesen_Einrichtungen/Sammelplatz_fuer_Betroffene.svg",
+    "name": "Sammelplatz für Betroffene"
+   }
+  ]
+ },
+ {
+  "kategorie": "Gefahren",
+  "zeichen": [
+   {
+    "datei": "Gefahren/Akute_Gefahr.svg",
+    "name": "Akute Gefahr"
+   },
+   {
+    "datei": "Gefahren/Akute_Gefahr_durch_Explosion.svg",
+    "name": "Akute Gefahr durch Explosion"
+   },
+   {
+    "datei": "Gefahren/Akute_Gefahr_durch_Explosivstoffe.svg",
+    "name": "Akute Gefahr durch Explosivstoffe"
+   },
+   {
+    "datei": "Gefahren/Akute_Gefahr_durch_Gas.svg",
+    "name": "Akute Gefahr durch Gas"
+   },
+   {
+    "datei": "Gefahren/Akute_Gefahr_durch_Luftmangel.svg",
+    "name": "Akute Gefahr durch Luftmangel"
+   },
+   {
+    "datei": "Gefahren/Akute_Gefahr_durch_Mineraloel.svg",
+    "name": "Akute Gefahr durch Mineralöl"
+   },
+   {
+    "datei": "Gefahren/Akute_Gefahr_durch_Radioaktivitaet.svg",
+    "name": "Akute Gefahr durch Radioaktivität"
+   },
+   {
+    "datei": "Gefahren/Akute_Gefahr_durch_Wassereinbruch.svg",
+    "name": "Akute Gefahr durch Wassereinbruch"
+   },
+   {
+    "datei": "Gefahren/Akute_Gefahr_durch_elektrischen_Strom.svg",
+    "name": "Akute Gefahr durch elektrischen Strom"
+   },
+   {
+    "datei": "Gefahren/Akute_Gefahr_durch_gefaehrliche_Stoffe.svg",
+    "name": "Akute Gefahr durch gefährliche Stoffe"
+   },
+   {
+    "datei": "Gefahren/Entstehungsbrand.svg",
+    "name": "Entstehungsbrand"
+   },
+   {
+    "datei": "Gefahren/Flaechenbrand.svg",
+    "name": "Flächenbrand"
+   },
+   {
+    "datei": "Gefahren/Fortentwickelter_Brand.svg",
+    "name": "Fortentwickelter Brand"
+   },
+   {
+    "datei": "Gefahren/Gefahr.svg",
+    "name": "Gefahr"
+   },
+   {
+    "datei": "Gefahren/Gefahr_durch_Explosion.svg",
+    "name": "Gefahr durch Explosion"
+   },
+   {
+    "datei": "Gefahren/Gefahr_durch_Explosivstoffe.svg",
+    "name": "Gefahr durch Explosivstoffe"
+   },
+   {
+    "datei": "Gefahren/Gefahr_durch_Gas.svg",
+    "name": "Gefahr durch Gas"
+   },
+   {
+    "datei": "Gefahren/Gefahr_durch_Luftmangel.svg",
+    "name": "Gefahr durch Luftmangel"
+   },
+   {
+    "datei": "Gefahren/Gefahr_durch_Mineraloel.svg",
+    "name": "Gefahr durch Mineralöl"
+   },
+   {
+    "datei": "Gefahren/Gefahr_durch_Radioaktivitaet.svg",
+    "name": "Gefahr durch Radioaktivität"
+   },
+   {
+    "datei": "Gefahren/Gefahr_durch_Wassereinbruch.svg",
+    "name": "Gefahr durch Wassereinbruch"
+   },
+   {
+    "datei": "Gefahren/Gefahr_durch_elektrischen_Strom.svg",
+    "name": "Gefahr durch elektrischen Strom"
+   },
+   {
+    "datei": "Gefahren/Gefahr_durch_gefaehrliche_Stoffe.svg",
+    "name": "Gefahr durch gefährliche Stoffe"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr.svg",
+    "name": "Vermutete Gefahr"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr_durch_Explosion.svg",
+    "name": "Vermutete Gefahr durch Explosion"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr_durch_Explosivstoffe.svg",
+    "name": "Vermutete Gefahr durch Explosivstoffe"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr_durch_Gas.svg",
+    "name": "Vermutete Gefahr durch Gas"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr_durch_Luftmangel.svg",
+    "name": "Vermutete Gefahr durch Luftmangel"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr_durch_Mineraloel.svg",
+    "name": "Vermutete Gefahr durch Mineralöl"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr_durch_Radioaktivitaet.svg",
+    "name": "Vermutete Gefahr durch Radioaktivität"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr_durch_Wassereinbruch.svg",
+    "name": "Vermutete Gefahr durch Wassereinbruch"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr_durch_elektrischen_Strom.svg",
+    "name": "Vermutete Gefahr durch elektrischen Strom"
+   },
+   {
+    "datei": "Gefahren/Vermutete_Gefahr_durch_gefaehrliche_Stoffe.svg",
+    "name": "Vermutete Gefahr durch gefährliche Stoffe"
+   },
+   {
+    "datei": "Gefahren/Vollbrand.svg",
+    "name": "Vollbrand"
+   }
+  ]
+ },
+ {
+  "kategorie": "Schäden",
+  "zeichen": [
+   {
+    "datei": "Schaeden/Angeschlagen.svg",
+    "name": "Angeschlagen"
+   },
+   {
+    "datei": "Schaeden/Angeschlagener_Raum.svg",
+    "name": "Angeschlagener Raum"
+   },
+   {
+    "datei": "Schaeden/Angeschlagener_Raum_Halber_Raum.svg",
+    "name": "Angeschlagener Raum Halber Raum"
+   },
+   {
+    "datei": "Schaeden/Angeschlagener_Raum_Schwalbennest.svg",
+    "name": "Angeschlagener Raum Schwalbennest"
+   },
+   {
+    "datei": "Schaeden/Ausgefuellter_Raum.svg",
+    "name": "Ausgefüllter Raum"
+   },
+   {
+    "datei": "Schaeden/Ausgefuellter_Raum_Schichtung.svg",
+    "name": "Ausgefüllter Raum Schichtung"
+   },
+   {
+    "datei": "Schaeden/Ausgefuellter_Raum_Wasser.svg",
+    "name": "Ausgefüllter Raum Wasser"
+   },
+   {
+    "datei": "Schaeden/Blockiert.svg",
+    "name": "Blockiert"
+   },
+   {
+    "datei": "Schaeden/Randtruemmer.svg",
+    "name": "Randtrümmer"
+   },
+   {
+    "datei": "Schaeden/Rutschflaeche.svg",
+    "name": "Rutschfläche"
+   },
+   {
+    "datei": "Schaeden/Schichtung.svg",
+    "name": "Schichtung"
+   },
+   {
+    "datei": "Schaeden/Teilblockiert.svg",
+    "name": "Teilblockiert"
+   },
+   {
+    "datei": "Schaeden/Teilzerstoert.svg",
+    "name": "Teilzerstört"
+   },
+   {
+    "datei": "Schaeden/Zerstoert.svg",
+    "name": "Zerstört"
+   },
+   {
+    "datei": "Schaeden/Ueberschwemmtes_Gebiet.svg",
+    "name": "Überschwemmtes Gebiet"
+   }
+  ]
+ },
+ {
+  "kategorie": "Maßnahmen",
+  "zeichen": [
+   {
+    "datei": "Massnahmen/Beleuchten.svg",
+    "name": "Beleuchten"
+   },
+   {
+    "datei": "Massnahmen/Bergen.svg",
+    "name": "Bergen"
+   },
+   {
+    "datei": "Massnahmen/Betreuung.svg",
+    "name": "Betreuung"
+   },
+   {
+    "datei": "Massnahmen/Brandbekaempfung.svg",
+    "name": "Brandbekämpfung"
+   },
+   {
+    "datei": "Massnahmen/Brueckenbau.svg",
+    "name": "Brückenbau"
+   },
+   {
+    "datei": "Massnahmen/CBRN-Schutz.svg",
+    "name": "CBRN-Schutz"
+   },
+   {
+    "datei": "Massnahmen/Deichverteidigung.svg",
+    "name": "Deichverteidigung"
+   },
+   {
+    "datei": "Massnahmen/Dekontaminieren.svg",
+    "name": "Dekontaminieren"
+   },
+   {
+    "datei": "Massnahmen/Drohnenflug.svg",
+    "name": "Drohnenflug"
+   },
+   {
+    "datei": "Massnahmen/Einsatz_von_Wasserfahrzeugen.svg",
+    "name": "Einsatz von Wasserfahrzeugen"
+   },
+   {
+    "datei": "Massnahmen/Elektroversorgung.svg",
+    "name": "Elektroversorgung"
+   },
+   {
+    "datei": "Massnahmen/Erkunden.svg",
+    "name": "Erkunden"
+   },
+   {
+    "datei": "Massnahmen/Heben_von_Lasten.svg",
+    "name": "Heben von Lasten"
+   },
+   {
+    "datei": "Massnahmen/Kampfmittelraeumung.svg",
+    "name": "Kampfmittelräumung"
+   },
+   {
+    "datei": "Massnahmen/Lotsen.svg",
+    "name": "Lotsen"
+   },
+   {
+    "datei": "Massnahmen/Massnahme.svg",
+    "name": "Maßnahme"
+   },
+   {
+    "datei": "Massnahmen/Ortung_mittels_Rettungshund.svg",
+    "name": "Ortung mittels Rettungshund"
+   },
+   {
+    "datei": "Massnahmen/Pumpen.svg",
+    "name": "Pumpen"
+   },
+   {
+    "datei": "Massnahmen/Retten_aus_Hoehen_und_Tiefen.svg",
+    "name": "Retten aus Höhen und Tiefen"
+   },
+   {
+    "datei": "Massnahmen/Raeumen.svg",
+    "name": "Räumen"
+   },
+   {
+    "datei": "Massnahmen/Schlachten.svg",
+    "name": "Schlachten"
+   },
+   {
+    "datei": "Massnahmen/Sprengen.svg",
+    "name": "Sprengen"
+   },
+   {
+    "datei": "Massnahmen/Technische_Hilfeleistung.svg",
+    "name": "Technische Hilfeleistung"
+   },
+   {
+    "datei": "Massnahmen/Transportieren.svg",
+    "name": "Transportieren"
+   },
+   {
+    "datei": "Massnahmen/Verpflegung.svg",
+    "name": "Verpflegung"
+   },
+   {
+    "datei": "Massnahmen/Wasserrettung.svg",
+    "name": "Wasserrettung"
+   },
+   {
+    "datei": "Massnahmen/Wasserversorgung.svg",
+    "name": "Wasserversorgung"
+   },
+   {
+    "datei": "Massnahmen/Oelschadenbekaempfung.svg",
+    "name": "Ölschadenbekämpfung"
+   }
+  ]
+ },
+ {
+  "kategorie": "Personen",
+  "zeichen": [
+   {
+    "datei": "Personen/Einsatzabschnittsleiter.svg",
+    "name": "Einsatzabschnittsleiter"
+   },
+   {
+    "datei": "Personen/Einsatzleiter.svg",
+    "name": "Einsatzleiter"
+   },
+   {
+    "datei": "Personen/Flugleiter.svg",
+    "name": "Flugleiter"
+   },
+   {
+    "datei": "Personen/Gerettete_Person.svg",
+    "name": "Gerettete Person"
+   },
+   {
+    "datei": "Personen/Gruppenfuehrer.svg",
+    "name": "Gruppenführer"
+   },
+   {
+    "datei": "Personen/Melder.svg",
+    "name": "Melder"
+   },
+   {
+    "datei": "Personen/Person.svg",
+    "name": "Person"
+   },
+   {
+    "datei": "Personen/Person_mit_Sonderfunktion.svg",
+    "name": "Person mit Sonderfunktion"
+   },
+   {
+    "datei": "Personen/Tote_Person.svg",
+    "name": "Tote Person"
+   },
+   {
+    "datei": "Personen/Transportierte_Person.svg",
+    "name": "Transportierte Person"
+   },
+   {
+    "datei": "Personen/Truppfuehrer.svg",
+    "name": "Truppführer"
+   },
+   {
+    "datei": "Personen/Untereinsatzabschnittsleiter.svg",
+    "name": "Untereinsatzabschnittsleiter"
+   },
+   {
+    "datei": "Personen/Verbandfuehrer_I.svg",
+    "name": "Verbandführer I"
+   },
+   {
+    "datei": "Personen/Verbandfuehrer_II.svg",
+    "name": "Verbandführer II"
+   },
+   {
+    "datei": "Personen/Verbandfuehrer_III.svg",
+    "name": "Verbandführer III"
+   },
+   {
+    "datei": "Personen/Verletzte_Person.svg",
+    "name": "Verletzte Person"
+   },
+   {
+    "datei": "Personen/Vermisste_Person.svg",
+    "name": "Vermisste Person"
+   },
+   {
+    "datei": "Personen/Verschuettete_Person.svg",
+    "name": "Verschüttete Person"
+   },
+   {
+    "datei": "Personen/Zu_transportierende_Person.svg",
+    "name": "Zu transportierende Person"
+   },
+   {
+    "datei": "Personen/Zugfuehrer.svg",
+    "name": "Zugführer"
+   }
+  ]
+ },
+ {
+  "kategorie": "Führungsstellen",
+  "zeichen": [
+   {
+    "datei": "Fuehrungsstellen/Abschnittsfuehrungsstelle.svg",
+    "name": "Abschnittsführungsstelle"
+   },
+   {
+    "datei": "Fuehrungsstellen/BR500.svg",
+    "name": "BR500"
+   },
+   {
+    "datei": "Fuehrungsstellen/BW.svg",
+    "name": "BW"
+   },
+   {
+    "datei": "Fuehrungsstellen/EAL.svg",
+    "name": "EAL"
+   },
+   {
+    "datei": "Fuehrungsstellen/EL.svg",
+    "name": "EL"
+   },
+   {
+    "datei": "Fuehrungsstellen/ELO.svg",
+    "name": "ELO"
+   },
+   {
+    "datei": "Fuehrungsstellen/Feldlager.svg",
+    "name": "Feldlager"
+   },
+   {
+    "datei": "Fuehrungsstellen/Fuehrungsstab.svg",
+    "name": "Führungsstab"
+   },
+   {
+    "datei": "Fuehrungsstellen/Fuehrungsstelle.svg",
+    "name": "Führungsstelle"
+   },
+   {
+    "datei": "Fuehrungsstellen/HK.svg",
+    "name": "HK"
+   },
+   {
+    "datei": "Fuehrungsstellen/KatSL.svg",
+    "name": "KatSL"
+   },
+   {
+    "datei": "Fuehrungsstellen/LG.svg",
+    "name": "LG"
+   },
+   {
+    "datei": "Fuehrungsstellen/LK.svg",
+    "name": "LK"
+   },
+   {
+    "datei": "Fuehrungsstellen/LuK.svg",
+    "name": "LuK"
+   },
+   {
+    "datei": "Fuehrungsstellen/PuMA.svg",
+    "name": "PuMA"
+   },
+   {
+    "datei": "Fuehrungsstellen/Stadt.svg",
+    "name": "Stadt"
+   },
+   {
+    "datei": "Fuehrungsstellen/TEL.svg",
+    "name": "TEL"
+   },
+   {
+    "datei": "Fuehrungsstellen/UEAL.svg",
+    "name": "UEAL"
+   },
+   {
+    "datei": "Fuehrungsstellen/OeEL.svg",
+    "name": "ÖEL"
+   }
+  ]
+ },
+ {
+  "kategorie": "Einrichtungen",
+  "zeichen": [
+   {
+    "datei": "Einrichtungen/Behandlungsplatz.svg",
+    "name": "Behandlungsplatz"
+   },
+   {
+    "datei": "Einrichtungen/Belegungsstelle.svg",
+    "name": "Belegungsstelle"
+   },
+   {
+    "datei": "Einrichtungen/Bereitstellungsraum.svg",
+    "name": "Bereitstellungsraum"
+   },
+   {
+    "datei": "Einrichtungen/Bereitstellungsraum_mit_Fuehrungsstelle.svg",
+    "name": "Bereitstellungsraum mit Führungsstelle"
+   },
+   {
+    "datei": "Einrichtungen/Bereitstellungsraum_mit_Meldekopf.svg",
+    "name": "Bereitstellungsraum mit Meldekopf"
+   },
+   {
+    "datei": "Einrichtungen/Betreuungsstelle.svg",
+    "name": "Betreuungsstelle"
+   },
+   {
+    "datei": "Einrichtungen/Dekontaminationsplatz.svg",
+    "name": "Dekontaminationsplatz"
+   },
+   {
+    "datei": "Einrichtungen/Elektroversorgung.svg",
+    "name": "Elektroversorgung"
+   },
+   {
+    "datei": "Einrichtungen/Entsorgungsstelle.svg",
+    "name": "Entsorgungsstelle"
+   },
+   {
+    "datei": "Einrichtungen/Feldlager.svg",
+    "name": "Feldlager"
+   },
+   {
+    "datei": "Einrichtungen/Feuerwehr_Einsatzzentrale.svg",
+    "name": "Feuerwehr Einsatzzentrale"
+   },
+   {
+    "datei": "Einrichtungen/Halteplatz_fuer_Fahrzeuge_zum_Verletztentransport.svg",
+    "name": "Halteplatz für Fahrzeuge zum Verletztentransport"
+   },
+   {
+    "datei": "Einrichtungen/Hubschrauberlandeplatz.svg",
+    "name": "Hubschrauberlandeplatz"
+   },
+   {
+    "datei": "Einrichtungen/Integrierte_Leitstelle.svg",
+    "name": "Integrierte Leitstelle"
+   },
+   {
+    "datei": "Einrichtungen/Leitstelle.svg",
+    "name": "Leitstelle"
+   },
+   {
+    "datei": "Einrichtungen/Logistikstuetzpunkt.svg",
+    "name": "Logistikstützpunkt"
+   },
+   {
+    "datei": "Einrichtungen/Lotsenstelle.svg",
+    "name": "Lotsenstelle"
+   },
+   {
+    "datei": "Einrichtungen/Meldekopf.svg",
+    "name": "Meldekopf"
+   },
+   {
+    "datei": "Einrichtungen/Sammelstelle.svg",
+    "name": "Sammelstelle"
+   },
+   {
+    "datei": "Einrichtungen/Stelle.svg",
+    "name": "Stelle"
+   },
+   {
+    "datei": "Einrichtungen/Stelle_Betrieb.svg",
+    "name": "Stelle Betrieb"
+   },
+   {
+    "datei": "Einrichtungen/Stelle_Infrastruktur.svg",
+    "name": "Stelle Infrastruktur"
+   },
+   {
+    "datei": "Einrichtungen/Trinkwasserversorgung.svg",
+    "name": "Trinkwasserversorgung"
+   },
+   {
+    "datei": "Einrichtungen/Versorgungsstelle_Materialerhaltung.svg",
+    "name": "Versorgungsstelle Materialerhaltung"
+   },
+   {
+    "datei": "Einrichtungen/Versorgungsstelle_Verbrauchsgueter.svg",
+    "name": "Versorgungsstelle Verbrauchsgüter"
+   },
+   {
+    "datei": "Einrichtungen/Versorgungsstelle_Verpflegung.svg",
+    "name": "Versorgungsstelle Verpflegung"
+   },
+   {
+    "datei": "Einrichtungen/Wache.svg",
+    "name": "Wache"
+   },
+   {
+    "datei": "Einrichtungen/Werkstatt.svg",
+    "name": "Werkstatt"
+   }
+  ]
+ },
+ {
+  "kategorie": "Fahrzeuge (allgemein)",
+  "zeichen": [
+   {
+    "datei": "Fahrzeuge/Abrollbehaelter_Container.svg",
+    "name": "Abrollbehälter Container"
+   },
+   {
+    "datei": "Fahrzeuge/Anhaenger.svg",
+    "name": "Anhänger"
+   },
+   {
+    "datei": "Fahrzeuge/Fahrrad.svg",
+    "name": "Fahrrad"
+   },
+   {
+    "datei": "Fahrzeuge/Fahrzeug.svg",
+    "name": "Fahrzeug"
+   },
+   {
+    "datei": "Fahrzeuge/Flugzeug.svg",
+    "name": "Flugzeug"
+   },
+   {
+    "datei": "Fahrzeuge/Hubschrauber.svg",
+    "name": "Hubschrauber"
+   },
+   {
+    "datei": "Fahrzeuge/Kettenfahrzeug.svg",
+    "name": "Kettenfahrzeug"
+   },
+   {
+    "datei": "Fahrzeuge/Kraftfahrzeug.svg",
+    "name": "Kraftfahrzeug"
+   },
+   {
+    "datei": "Fahrzeuge/Kraftfahrzeug_gelaendegaengig.svg",
+    "name": "Kraftfahrzeug geländegängig"
+   },
+   {
+    "datei": "Fahrzeuge/Kraftrad.svg",
+    "name": "Kraftrad"
+   },
+   {
+    "datei": "Fahrzeuge/Schienenfahrzeug.svg",
+    "name": "Schienenfahrzeug"
+   },
+   {
+    "datei": "Fahrzeuge/Wasserfahrzeug.svg",
+    "name": "Wasserfahrzeug"
+   },
+   {
+    "datei": "Fahrzeuge/Wechselladerfahrzeug.svg",
+    "name": "Wechselladerfahrzeug"
+   }
+  ]
+ },
+ {
+  "kategorie": "Fernmeldewesen",
+  "zeichen": [
+   {
+    "datei": "Fernmeldewesen/AWINAP-AWITEL.svg",
+    "name": "AWINAP-AWITEL"
+   },
+   {
+    "datei": "Fernmeldewesen/AWINAP-Funkbruecke-2m.svg",
+    "name": "AWINAP-Funkbrücke-2m"
+   },
+   {
+    "datei": "Fernmeldewesen/AWINAP-Funkbruecke-4m.svg",
+    "name": "AWINAP-Funkbrücke-4m"
+   },
+   {
+    "datei": "Fernmeldewesen/AWINAP-Funkbruecke.svg",
+    "name": "AWINAP-Funkbrücke"
+   },
+   {
+    "datei": "Fernmeldewesen/AWINAP-OB.svg",
+    "name": "AWINAP-OB"
+   },
+   {
+    "datei": "Fernmeldewesen/AWINAP-Telefonnetz.svg",
+    "name": "AWINAP-Telefonnetz"
+   },
+   {
+    "datei": "Fernmeldewesen/AWINAP.svg",
+    "name": "AWINAP"
+   },
+   {
+    "datei": "Fernmeldewesen/Abholpunkt.svg",
+    "name": "Abholpunkt"
+   },
+   {
+    "datei": "Fernmeldewesen/Anschlusspunkt.svg",
+    "name": "Anschlusspunkt"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne.svg",
+    "name": "Antenne"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_Bake.svg",
+    "name": "Antenne Bake"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_Empfang.svg",
+    "name": "Antenne Empfang"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_Peil.svg",
+    "name": "Antenne Peil"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_Peiler.svg",
+    "name": "Antenne Peiler"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_Pol_H.svg",
+    "name": "Antenne Pol H"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_Pol_V.svg",
+    "name": "Antenne Pol V"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_Pol_Zirk.svg",
+    "name": "Antenne Pol Zirk"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_Richt.svg",
+    "name": "Antenne Richt"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_SE_Gleichzeitig.svg",
+    "name": "Antenne SE Gleichzeitig"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_SE_Wechselnd.svg",
+    "name": "Antenne SE Wechselnd"
+   },
+   {
+    "datei": "Fernmeldewesen/Antenne_Sende.svg",
+    "name": "Antenne Sende"
+   },
+   {
+    "datei": "Fernmeldewesen/Basisstation.svg",
+    "name": "Basisstation"
+   },
+   {
+    "datei": "Fernmeldewesen/Basisstation_DECT.svg",
+    "name": "Basisstation DECT"
+   },
+   {
+    "datei": "Fernmeldewesen/Bedingung.svg",
+    "name": "Bedingung"
+   },
+   {
+    "datei": "Fernmeldewesen/Bedingung_AWITEL.svg",
+    "name": "Bedingung AWITEL"
+   },
+   {
+    "datei": "Fernmeldewesen/Bedingung_DMO.svg",
+    "name": "Bedingung DMO"
+   },
+   {
+    "datei": "Fernmeldewesen/Bedingung_Fax.svg",
+    "name": "Bedingung Fax"
+   },
+   {
+    "datei": "Fernmeldewesen/Bedingung_Nebenstelle.svg",
+    "name": "Bedingung Nebenstelle"
+   },
+   {
+    "datei": "Fernmeldewesen/Bedingung_OB.svg",
+    "name": "Bedingung OB"
+   },
+   {
+    "datei": "Fernmeldewesen/Bedingung_TMO.svg",
+    "name": "Bedingung TMO"
+   },
+   {
+    "datei": "Fernmeldewesen/Bedingung_Telefon.svg",
+    "name": "Bedingung Telefon"
+   },
+   {
+    "datei": "Fernmeldewesen/Datenfernsprechverbindung.svg",
+    "name": "Datenfernsprechverbindung"
+   },
+   {
+    "datei": "Fernmeldewesen/Datenfunk.svg",
+    "name": "Datenfunk"
+   },
+   {
+    "datei": "Fernmeldewesen/Datenverbindung.svg",
+    "name": "Datenverbindung"
+   },
+   {
+    "datei": "Fernmeldewesen/Digitaler_Sprechfunk.svg",
+    "name": "Digitaler Sprechfunk"
+   },
+   {
+    "datei": "Fernmeldewesen/Endgeraet_Fernsprechen.svg",
+    "name": "Endgerät Fernsprechen"
+   },
+   {
+    "datei": "Fernmeldewesen/Endgeraet_Sprechfunk.svg",
+    "name": "Endgerät Sprechfunk"
+   },
+   {
+    "datei": "Fernmeldewesen/Fahrzeugfunkgeraet_digital.svg",
+    "name": "Fahrzeugfunkgerät digital"
+   },
+   {
+    "datei": "Fernmeldewesen/Faxgeraet.svg",
+    "name": "Faxgerät"
+   },
+   {
+    "datei": "Fernmeldewesen/Fernsprechen_ueber_Draht.svg",
+    "name": "Fernsprechen über Draht"
+   },
+   {
+    "datei": "Fernmeldewesen/Fernsprechen_ueber_Funk.svg",
+    "name": "Fernsprechen über Funk"
+   },
+   {
+    "datei": "Fernmeldewesen/Fernsprechvermittlung.svg",
+    "name": "Fernsprechvermittlung"
+   },
+   {
+    "datei": "Fernmeldewesen/Fernsprechvermittlung_OB10.svg",
+    "name": "Fernsprechvermittlung OB10"
+   },
+   {
+    "datei": "Fernmeldewesen/Fernsprechvermittlung_OB10_2AZ.svg",
+    "name": "Fernsprechvermittlung OB10 2AZ"
+   },
+   {
+    "datei": "Fernmeldewesen/Fernsprechvermittlung_OB20.svg",
+    "name": "Fernsprechvermittlung OB20"
+   },
+   {
+    "datei": "Fernmeldewesen/Fernsprechvermittlung_OB30.svg",
+    "name": "Fernsprechvermittlung OB30"
+   },
+   {
+    "datei": "Fernmeldewesen/Fernsprechvermittlung_OB30_4AZ.svg",
+    "name": "Fernsprechvermittlung OB30 4AZ"
+   },
+   {
+    "datei": "Fernmeldewesen/Fernsprechvermittlung_Waehlbetrieb.svg",
+    "name": "Fernsprechvermittlung Wählbetrieb"
+   },
+   {
+    "datei": "Fernmeldewesen/Firewall.svg",
+    "name": "Firewall"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_10.svg",
+    "name": "FuG 10"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_10a.svg",
+    "name": "FuG 10a"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_11b.svg",
+    "name": "FuG 11b"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_13b.svg",
+    "name": "FuG 13b"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_7b.svg",
+    "name": "FuG 7b"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_8.svg",
+    "name": "FuG 8"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_8b.svg",
+    "name": "FuG 8b"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_8b1.svg",
+    "name": "FuG 8b1"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_8b1_Relais.svg",
+    "name": "FuG 8b1 Relais"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_8c.svg",
+    "name": "FuG 8c"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_8c_Relais.svg",
+    "name": "FuG 8c Relais"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_9.svg",
+    "name": "FuG 9"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_9c.svg",
+    "name": "FuG 9c"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_9c_Relais.svg",
+    "name": "FuG 9c Relais"
+   },
+   {
+    "datei": "Fernmeldewesen/FuG_Relais.svg",
+    "name": "FuG Relais"
+   },
+   {
+    "datei": "Fernmeldewesen/Funk_Feststation_digital.svg",
+    "name": "Funk Feststation digital"
+   },
+   {
+    "datei": "Fernmeldewesen/Funkstation.svg",
+    "name": "Funkstation"
+   },
+   {
+    "datei": "Fernmeldewesen/Handfunkgeraet_digital.svg",
+    "name": "Handfunkgerät digital"
+   },
+   {
+    "datei": "Fernmeldewesen/Hub.svg",
+    "name": "Hub"
+   },
+   {
+    "datei": "Fernmeldewesen/Kabel_Akb.svg",
+    "name": "Kabel Akb"
+   },
+   {
+    "datei": "Fernmeldewesen/Kabel_FFkb.svg",
+    "name": "Kabel FFkb"
+   },
+   {
+    "datei": "Fernmeldewesen/Kabel_Fkb.svg",
+    "name": "Kabel Fkb"
+   },
+   {
+    "datei": "Fernmeldewesen/Kabel_LWL.svg",
+    "name": "Kabel LWL"
+   },
+   {
+    "datei": "Fernmeldewesen/Kabel_Vkb.svg",
+    "name": "Kabel Vkb"
+   },
+   {
+    "datei": "Fernmeldewesen/Kabelbau.svg",
+    "name": "Kabelbau"
+   },
+   {
+    "datei": "Fernmeldewesen/Kabelbau_leicht.svg",
+    "name": "Kabelbau leicht"
+   },
+   {
+    "datei": "Fernmeldewesen/Kabelbau_schwer.svg",
+    "name": "Kabelbau schwer"
+   },
+   {
+    "datei": "Fernmeldewesen/Kofferfunkgeraet_digital.svg",
+    "name": "Kofferfunkgerät digital"
+   },
+   {
+    "datei": "Fernmeldewesen/Laengenverbindung-1.svg",
+    "name": "Längenverbindung-1"
+   },
+   {
+    "datei": "Fernmeldewesen/Laengenverbindung-2.svg",
+    "name": "Längenverbindung-2"
+   },
+   {
+    "datei": "Fernmeldewesen/Modem.svg",
+    "name": "Modem"
+   },
+   {
+    "datei": "Fernmeldewesen/Netzwerkbruecke.svg",
+    "name": "Netzwerkbrücke"
+   },
+   {
+    "datei": "Fernmeldewesen/Netzuebergang.svg",
+    "name": "Netzübergang"
+   },
+   {
+    "datei": "Fernmeldewesen/OB_Telefon.svg",
+    "name": "OB Telefon"
+   },
+   {
+    "datei": "Fernmeldewesen/PC.svg",
+    "name": "PC"
+   },
+   {
+    "datei": "Fernmeldewesen/RS2.svg",
+    "name": "RS2"
+   },
+   {
+    "datei": "Fernmeldewesen/RS2_2m-2m.svg",
+    "name": "RS2 2m-2m"
+   },
+   {
+    "datei": "Fernmeldewesen/RS2_2m-4m.svg",
+    "name": "RS2 2m-4m"
+   },
+   {
+    "datei": "Fernmeldewesen/RS2_4m-4m.svg",
+    "name": "RS2 4m-4m"
+   },
+   {
+    "datei": "Fernmeldewesen/Relaisfunkbetrieb.svg",
+    "name": "Relaisfunkbetrieb"
+   },
+   {
+    "datei": "Fernmeldewesen/Repeaterstation.svg",
+    "name": "Repeaterstation"
+   },
+   {
+    "datei": "Fernmeldewesen/Richtfunk.svg",
+    "name": "Richtfunk"
+   },
+   {
+    "datei": "Fernmeldewesen/Richtfunk_Endstelle.svg",
+    "name": "Richtfunk Endstelle"
+   },
+   {
+    "datei": "Fernmeldewesen/Richtfunk_Endstelle_mit_Uebertragungstechnik.svg",
+    "name": "Richtfunk Endstelle mit Übertragungstechnik"
+   },
+   {
+    "datei": "Fernmeldewesen/Richtfunk_Relaisstelle.svg",
+    "name": "Richtfunk Relaisstelle"
+   },
+   {
+    "datei": "Fernmeldewesen/Router.svg",
+    "name": "Router"
+   },
+   {
+    "datei": "Fernmeldewesen/Server.svg",
+    "name": "Server"
+   },
+   {
+    "datei": "Fernmeldewesen/Switch.svg",
+    "name": "Switch"
+   },
+   {
+    "datei": "Fernmeldewesen/Untersuchungsstelle.svg",
+    "name": "Untersuchungsstelle"
+   },
+   {
+    "datei": "Fernmeldewesen/Verteiler.svg",
+    "name": "Verteiler"
+   },
+   {
+    "datei": "Fernmeldewesen/Waehltelefon.svg",
+    "name": "Wähltelefon"
+   },
+   {
+    "datei": "Fernmeldewesen/Waehltelefon_AWITEL.svg",
+    "name": "Wähltelefon AWITEL"
+   },
+   {
+    "datei": "Fernmeldewesen/Waehltelefon_IP.svg",
+    "name": "Wähltelefon IP"
+   },
+   {
+    "datei": "Fernmeldewesen/Waehltelefon_ISDN.svg",
+    "name": "Wähltelefon ISDN"
+   },
+   {
+    "datei": "Fernmeldewesen/Waehltelefon_Satellit.svg",
+    "name": "Wähltelefon Satellit"
+   },
+   {
+    "datei": "Fernmeldewesen/Waehltelefon_Up0.svg",
+    "name": "Wähltelefon Up0"
+   },
+   {
+    "datei": "Fernmeldewesen/Waehltelefon_analog.svg",
+    "name": "Wähltelefon analog"
+   },
+   {
+    "datei": "Fernmeldewesen/Uebertrager-1.svg",
+    "name": "Übertrager-1"
+   },
+   {
+    "datei": "Fernmeldewesen/Uebertrager-2.svg",
+    "name": "Übertrager-2"
+   }
+  ]
+ },
+ {
+  "kategorie": "Sonstiges",
+  "zeichen": [
+   {
+    "datei": "Sonstiges/Ausgangspunkt.svg",
+    "name": "Ausgangspunkt"
+   },
+   {
+    "datei": "Sonstiges/Bewegung_in_zwei_Richtungen.svg",
+    "name": "Bewegung in zwei Richtungen"
+   },
+   {
+    "datei": "Sonstiges/Deutlich_erhoehte_Aktivitaet.svg",
+    "name": "Deutlich erhöhte Aktivität"
+   },
+   {
+    "datei": "Sonstiges/Endpunkt.svg",
+    "name": "Endpunkt"
+   },
+   {
+    "datei": "Sonstiges/Ereignis.svg",
+    "name": "Ereignis"
+   },
+   {
+    "datei": "Sonstiges/Geringfuegig_erhoehte_Aktivitaet.svg",
+    "name": "Geringfügig erhöhte Aktivität"
+   },
+   {
+    "datei": "Sonstiges/Moderat_erhoehte_Aktivitaet.svg",
+    "name": "Moderat erhöhte Aktivität"
+   },
+   {
+    "datei": "Sonstiges/Ortsfest.svg",
+    "name": "Ortsfest"
+   },
+   {
+    "datei": "Sonstiges/Rettungshund.svg",
+    "name": "Rettungshund"
+   },
+   {
+    "datei": "Sonstiges/Richtung.svg",
+    "name": "Richtung"
+   },
+   {
+    "datei": "Sonstiges/Sammeln.svg",
+    "name": "Sammeln"
+   },
+   {
+    "datei": "Sonstiges/Stark_erhoehte_Aktivitaet.svg",
+    "name": "Stark erhöhte Aktivität"
+   },
+   {
+    "datei": "Sonstiges/Tendenz_fallend.svg",
+    "name": "Tendenz fallend"
+   },
+   {
+    "datei": "Sonstiges/Tendenz_steigend.svg",
+    "name": "Tendenz steigend"
+   },
+   {
+    "datei": "Sonstiges/Tendenz_unveraendert.svg",
+    "name": "Tendenz unverändert"
+   },
+   {
+    "datei": "Sonstiges/Tier.svg",
+    "name": "Tier"
+   },
+   {
+    "datei": "Sonstiges/Totes_Tier.svg",
+    "name": "Totes Tier"
+   },
+   {
+    "datei": "Sonstiges/Verletztes_Tier.svg",
+    "name": "Verletztes Tier"
+   }
+  ]
+ }
+]

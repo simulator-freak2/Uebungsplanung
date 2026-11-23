@@ -303,6 +303,15 @@ class ExerciseRepository {
 
   Future<void> delete(String id) => _write(id, const ExercisesCompanion(deleted: Value(true)));
 
+  // ----------------------------------------------------------- Lageskizze
+
+  Future<void> setMapView(String id, double lat, double lon, double zoom) =>
+      _write(id, ExercisesCompanion(mapLat: Value(lat), mapLon: Value(lon), mapZoom: Value(zoom)));
+
+  Future<void> setSketch(String id, String json) => _write(id, ExercisesCompanion(sketch: Value(json)));
+
+  Future<void> setSketchPng(String id, String? base64Png) => _write(id, ExercisesCompanion(sketchPng: Value(base64Png)));
+
   /// Kopiert eine Übung mit allen Unterlagen – als Vorlage ([asTemplate])
   /// oder als neue Übung. Nicht übernommen werden Besetzung (Personen),
   /// Bewertungen, Nachbesprechung, Freigabe und abgehakte Prüfpunkte.
@@ -327,6 +336,11 @@ class ExerciseRepository {
               alarmVehicles: Value(e.alarmVehicles),
               category: Value(e.category),
               isTemplate: Value(asTemplate),
+              mapLat: Value(e.mapLat),
+              mapLon: Value(e.mapLon),
+              mapZoom: Value(e.mapZoom),
+              sketch: Value(e.sketch),
+              sketchPng: Value(e.sketchPng),
             ));
         final id = row.id;
         for (final p in d.phases) {

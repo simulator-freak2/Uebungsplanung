@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:pdf/pdf.dart';
@@ -6,12 +7,14 @@ import 'package:pdf/widgets.dart' as pw;
 import '../data/documents_repository.dart';
 import '../data/exercise_repository.dart';
 import '../data/repositories.dart';
+import '../map/sketch.dart';
 import '../util/time.dart' as t;
 import 'alarm_pdf.dart';
 
 /// Teile der Übungsmappe.
 enum MapSection {
   plan('Übungsplan'),
+  sketch('Lageskizze'),
   crew('Fahrzeugbesetzung'),
   alarmPlan('Alarmierungsplan'),
   alarms('Alarmmeldungen'),
@@ -35,7 +38,11 @@ class ExerciseMapData {
     required this.qualificationNames,
     required this.alarmSheets,
     required this.approvalRequired,
+    this.symbolNames = const {},
   });
+
+  /// Asset-Pfad → Name der taktischen Zeichen (für die Legende).
+  final Map<String?, String> symbolNames;
 
   final String organisation;
   final ExerciseDetail detail;
@@ -146,6 +153,35 @@ Future<Uint8List> buildExerciseMap(ExerciseMapData data, Set<MapSection> section
                 pw.Expanded(child: pw.Text(c.description)),
               ]),
             ),
+        ]);
+  }
+
+  // -------------------------------------------------------------- Lageskizze
+  if (sections.contains(MapSection.sketch)) {
+    final items = decodeSketch(e.sketch);
+    page('Lageskizze', () => [
+          if (e.sketchPng == null)
+            pw.Text('Noch kein Bild der Lageskizze. In der App unter „Lageskizze“ → „Für Übungsmappe übernehmen“.')
+          else
+            pw.Center(child: pw.Image(pw.MemoryImage(base64Decode(e.sketchPng!)), fit: pw.BoxFit.contain, height: 480)),
+          if (items.any((i) => i.label.isNotEmpty || i.type == 'symbol')) ...[
+            h2('Legende'),
+            table(['Element', 'Beschriftung'], [
+              for (final i in items)
+                if (i.type == 'symbol' || i.label.isNotEmpty)
+                  [
+                    switch (i.type) {
+                      'symbol' => data.symbolNames[i.symbol] ?? 'Zeichen',
+                      'line' => 'Linie',
+                      'area' => 'Fläche',
+                      _ => 'Text',
+                    },
+                    i.label,
+                  ],
+            ]),
+          ],
+          pw.SizedBox(height: 6),
+          pw.Text('Kartenquelle siehe Vermerk im Bild · Taktische Zeichen: taktisches-zeichen.de', style: const pw.TextStyle(fontSize: 7, color: _grey)),
         ]);
   }
 

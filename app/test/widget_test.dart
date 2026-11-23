@@ -172,7 +172,7 @@ void main() {
     expect(d.personsByFunction[gfFunction.id], [becker.person.id]);
 
     // Alarmierungsplan aus eingeplanten Fahrzeugen
-    await openTab(tester, 'Alarmierungsplan');
+    await openTab(tester, 'Alarmplan');
     await pumpUntil(tester, find.text('1 eingeplantes Fahrzeug übernehmen'));
     await settle(tester);
     await tester.tap(find.text('1 eingeplantes Fahrzeug übernehmen'));

@@ -146,6 +146,17 @@ class Exercises extends Table with SyncColumns {
   TextColumn get debriefBad => text().withDefault(const Constant('[]'))();
   TextColumn get debriefNotes => text().nullable()();
   TextColumn get debriefParticipants => text().nullable()();
+
+  // ab Schema-Version 4: Lageskizze
+  RealColumn get mapLat => real().nullable()();
+  RealColumn get mapLon => real().nullable()();
+  RealColumn get mapZoom => real().nullable()();
+
+  /// Eingezeichnete Elemente als JSON (siehe `SketchItem`).
+  TextColumn get sketch => text().withDefault(const Constant('[]'))();
+
+  /// Bild der Lageskizze für die Übungsmappe (PNG, Base64).
+  TextColumn get sketchPng => text().nullable()();
 }
 
 /// Ablaufphase; Zeit als Minuten relativ zum Übungsbeginn.
@@ -306,7 +317,7 @@ class AppDatabase extends _$AppDatabase {
       ));
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -333,6 +344,11 @@ class AppDatabase extends _$AppDatabase {
             final List<TableInfo<Table, Object?>> added = [radioEntries, roleCards, materialItems, observationItems, observationTemplates, lessons];
             for (final t in added) {
               await m.createTable(t);
+            }
+          }
+          if (from >= 2 && from < 4) {
+            for (final c in <GeneratedColumn<Object>>[exercises.mapLat, exercises.mapLon, exercises.mapZoom, exercises.sketch, exercises.sketchPng]) {
+              await m.addColumn(exercises, c);
             }
           }
         },

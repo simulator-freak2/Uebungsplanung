@@ -6,6 +6,7 @@ import 'package:printing/printing.dart';
 
 import '../../data/exercise_repository.dart';
 import '../../data/repositories.dart';
+import '../../map/sketch.dart';
 import '../../pdf/exercise_pdf.dart';
 import '../../ui/widgets.dart';
 import '../../util/time.dart' as t;
@@ -28,7 +29,19 @@ Future<ExerciseMapData> loadMapData(Repositories repo, ExerciseDetail d) async {
     qualificationNames: {for (final q in quals) q.id: q.name},
     alarmSheets: alarmSheetsFor(d, [for (final v in vehicles.values) ?v.vehicle], org),
     approvalRequired: approval,
+    symbolNames: await _symbolNames(d),
   );
+}
+
+Future<Map<String?, String>> _symbolNames(ExerciseDetail d) async {
+  final items = decodeSketch(d.exercise.sketch).where((i) => i.symbol != null);
+  if (items.isEmpty) return const {};
+  try {
+    final c = await SymbolCatalog.load();
+    return {for (final i in items) i.symbol: c.nameOf(i.symbol!)};
+  } catch (_) {
+    return const {};
+  }
 }
 
 /// Dialog: Teile der Übungsmappe wählen, dann drucken oder als PDF speichern.

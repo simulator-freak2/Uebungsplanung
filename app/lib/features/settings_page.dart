@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import '../data/demo_data.dart';
 import '../data/profile.dart';
 import '../data/repositories.dart';
+import '../map/map_settings.dart';
 import '../sync/sync_ui.dart';
 import '../ui/widgets.dart';
 
@@ -107,6 +108,8 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 16),
               const ServerSettingsSection(),
               const SizedBox(height: 16),
+              const MapSettingsCard(),
+              const SizedBox(height: 16),
               FutureBuilder<bool>(
                 future: canLoadDemo(repo),
                 builder: (context, s) => s.data != true
@@ -151,8 +154,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Text(
                   'Übungsplaner – Übungsplanung für Feuerwehr, DLRG und weitere Hilfsorganisationen.\n'
                   'Lizenz: EUPL-1.2 (European Union Public Licence).\n'
-                  'Taktische Zeichen (geplant): Jonas Köritz, taktisches-zeichen.de, '
-                  'github.com/jonas-koeritz/Taktische-Zeichen.',
+                  'Taktische Zeichen: Jonas Köritz, taktisches-zeichen.de (CC0 / CC BY 4.0), '
+                  'github.com/jonas-koeritz/Taktische-Zeichen. Kartendaten: © OpenStreetMap-Mitwirkende (ODbL).',
                 ),
               ),
             ],

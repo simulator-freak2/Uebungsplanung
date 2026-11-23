@@ -53,21 +53,46 @@ Oben rechts:
 - **Zur Freigabe vorlegen / Freigeben**: Das geht erst, wenn die Sicherheits-Checkliste vollständig ist. Die Freigabe erteilt TL oder Wehrführer mit Namen. Sie lässt sich in den Einstellungen abschalten.
 - **⋮**: Beobachter-Ansicht (große Schrift, nur lesen, z. B. fürs Tablet), Als Vorlage speichern, Übung kopieren, Löschen.
 
-## 4. Dienstplan und Vorlagen
+## 4. Lageskizze und Karten
+
+Reiter **Lageskizze** in jeder Übung:
+
+- **Taktisches Zeichen** wählen (über 400 Zeichen von taktisches-zeichen.de, mit Suche) und auf die Karte tippen
+- **Linie** (z. B. Absperrung, Schlauchleitung), **Fläche** (z. B. Gefahrenbereich, Suchabschnitt), **Text**
+- Element antippen: beschriften, Farbe ändern, verschieben, löschen
+- **Ort suchen** (benötigt Internet) oder die Karte von Hand verschieben
+- **Für Übungsmappe übernehmen** speichert ein Bild; es erscheint als Seite „Lageskizze“ mit Legende in der Mappe
+
+**Kartenquelle** (Einstellungen → Karten, gilt je Gerät):
+
+- *Online*: OpenStreetMap
+- *Offline*: eine **MBTiles-Datei** eures Landkreises
+- *Offline, sonst online*: Offline-Karte, fehlende Bereiche aus dem Internet
+
+**Offline-Karte erstellen** (einmalig, z. B. mit dem kostenlosen Programm QGIS):
+
+1. In QGIS die amtliche Karte eures Landes als WMS-Dienst einbinden (Rheinland-Pfalz: Geobasisdaten des
+   Landesamts für Vermessung und Geobasisinformation, frei nutzbar mit Quellenangabe) oder eine andere Karte, die ihr offline nutzen dürft.
+2. *Verarbeitung → Werkzeugkiste → „XYZ-Kacheln erzeugen (MBTiles)“*: Ausdehnung = Landkreis,
+   Zoom 10 bis 17 (für Einsatzstellen ggf. bis 18), Format PNG oder JPG.
+3. Bei den Metadaten unter *Attribution* die Quellenangabe eintragen (erscheint auf Karte und Mappe).
+4. Im Übungsplaner unter *Einstellungen → Karten → Datei wählen*.
+
+Hinweis: Die Kacheln von tile.openstreetmap.org dürfen nicht massenhaft heruntergeladen werden; deshalb
+erzeugt die App selbst keine Offline-Karten.
+
+## 5. Dienstplan und Vorlagen
 
 - **Dienstplan**: Jahresübersicht nach Monaten, farbig nach Kategorie (Praxis, Theorie, Sonderdienst, Jugend). Den Aushang gibt es als PDF oder direkt zum Drucken.
 - **Vorlagen**: Aus einer Vorlage wird mit einem Klick eine neue Übung. Vorlagen lassen sich als Datei (`.uebung.json`) **exportieren und importieren**, z. B. für andere Wehren oder Ortsgruppen. Personen sind nie in der Datei. Fahrzeuge und Stichworte werden über ihren Namen zugeordnet.
 
-## 5. Datensicherung
+## 6. Datensicherung
 
 **Einstellungen → Datensicherung → Sichern** speichert eine komplette Kopie der Datenbank. Am besten regelmäßig sichern, z. B. auf einen USB-Stick.
 
 Zurückspielen: Programm beenden und die Sicherungsdatei als `uebungsplaner.sqlite` in den Datenordner (siehe oben) kopieren.
 
-## 6. Was noch fehlt (geplant)
+## 7. Was noch fehlt (geplant)
 
-- Server und Abgleich zwischen mehreren Geräten, Anmeldung mit Rollen (Admin, TL/Wehrführer, Planer)
-- Tablet-Apps (iPad/Android) – bis dahin die Beobachter-Ansicht am Laptop nutzen
-- Lageskizze auf Karte (online/offline, Landkreis) mit taktischen Zeichen
 - Anbindung an Materialkompass (Material, Fahrzeuge, Reservierung mit Genehmigung)
 - Import der Stichworttabelle Rheinland-Pfalz (sobald die Quelle vorliegt)

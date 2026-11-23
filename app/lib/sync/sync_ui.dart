@@ -207,7 +207,7 @@ class SyncStatusLine extends StatelessWidget {
         final (color, text) = switch (s.state) {
           SyncState.local => (AppColors.ok, 'Nur lokal · Daten auf diesem Gerät'),
           SyncState.syncing => (AppColors.yellow, 'Abgleich läuft …'),
-          SyncState.idle => (AppColors.ok, 'Abgeglichen${s.lastSync == null ? '' : ' ${_ago(s.lastSync!)}'} · ${s.user?.displayName ?? ''} (${s.roleLabel})'),
+          SyncState.idle => (AppColors.ok, '${s.lastSync == null ? 'Verbunden' : 'Abgeglichen ${_ago(s.lastSync!)}'} · ${s.user?.displayName ?? ''} (${s.roleLabel})'),
           SyncState.offline => (AppColors.warn, 'Server nicht erreichbar – Änderungen werden später übertragen'),
           SyncState.error => (c.error, 'Fehler beim Abgleich: ${s.message ?? ''}'),
           SyncState.loggedOut => (c.error, 'Abgemeldet'),

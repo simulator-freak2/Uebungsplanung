@@ -74,6 +74,8 @@ Future<String> exportTemplate(Repositories repo, String exerciseId) async {
         },
     ],
     'material': [for (final m in d.material) {'name': m.name, 'standort': m.location, 'menge': m.quantity}],
+    'karte': {'lat': e.mapLat, 'lon': e.mapLon, 'zoom': e.mapZoom},
+    'lageskizze': jsonDecode(e.sketch),
     'beobachtung': [for (final o in d.observations) o.description],
   };
   return const JsonEncoder.withIndent('  ').convert(json);
@@ -123,6 +125,10 @@ Future<TemplateImportResult> importTemplate(Repositories repo, String text) asyn
           alarmVehicles: Value(s(alarm['fahrzeuge'])),
           category: Value(s(j['kategorie']) ?? 'praxis'),
           isTemplate: const Value(true),
+          mapLat: Value(((j['karte'] as Map?)?['lat'] as num?)?.toDouble()),
+          mapLon: Value(((j['karte'] as Map?)?['lon'] as num?)?.toDouble()),
+          mapZoom: Value(((j['karte'] as Map?)?['zoom'] as num?)?.toDouble()),
+          sketch: Value(jsonEncode(j['lageskizze'] ?? const [])),
         ));
     final id = row.id;
     final ex = repo.exercises;
