@@ -21,7 +21,7 @@ class OrgProfile {
   /// Vorgabe für die Sicherheits-Checkliste neuer Übungen.
   final List<String> safetyChecklist;
 
-  static const available = {'feuerwehr': 'Feuerwehr', 'dlrg': 'DLRG'};
+  static const available = {'feuerwehr': 'Feuerwehr', 'dlrg': 'DLRG', 'thw': 'THW', 'drk': 'DRK', 'wasserwacht': 'Wasserwacht'};
 
   static Future<OrgProfile> load(String id) async =>
       OrgProfile.fromJson(jsonDecode(await rootBundle.loadString('assets/profile/$id.json')) as Map<String, dynamic>);

@@ -1,0 +1,177 @@
+{
+  "id": "drk",
+  "name": "DRK",
+  "qualifikationen": [
+    "Erste Hilfe",
+    "Sanitätshelfer",
+    "Sanitäter",
+    "Rettungshelfer",
+    "Rettungssanitäter",
+    "Notfallsanitäter",
+    "Notarzt",
+    "Sprechfunker",
+    "Gruppenführer",
+    "Zugführer",
+    "Verbandführer",
+    "Betreuungshelfer",
+    "Kraftfahrer",
+    "Jugendrotkreuz"
+  ],
+  "fuehrungsfunktionen": [
+    [
+      "Einsatzleiter",
+      "Zugführer"
+    ],
+    [
+      "Abschnittsleiter Sanitätsdienst",
+      "Gruppenführer"
+    ],
+    [
+      "Übungsleitung",
+      null
+    ],
+    [
+      "Sicherheitsbeauftragter",
+      "Gruppenführer"
+    ],
+    [
+      "Übungsbeobachter",
+      null
+    ],
+    [
+      "Mimenbetreuung",
+      "Sanitäter"
+    ]
+  ],
+  "fahrzeugvorlagen": [
+    {
+      "typ": "KTW",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Fahrzeugführer",
+          "Rettungssanitäter"
+        ],
+        [
+          "Fahrer",
+          "Sanitäter"
+        ]
+      ],
+      "besetzungsmuster": {
+        "Besatzung (1/1)": [
+          "Fahrzeugführer",
+          "Fahrer"
+        ]
+      }
+    },
+    {
+      "typ": "RTW",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Fahrzeugführer",
+          "Notfallsanitäter"
+        ],
+        [
+          "Fahrer",
+          "Rettungssanitäter"
+        ]
+      ],
+      "besetzungsmuster": {
+        "Besatzung (1/1)": [
+          "Fahrzeugführer",
+          "Fahrer"
+        ]
+      }
+    },
+    {
+      "typ": "GW-San",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Gruppenführer",
+          "Gruppenführer"
+        ],
+        [
+          "Fahrer",
+          "Kraftfahrer"
+        ],
+        [
+          "Sanitäter 1",
+          "Sanitäter"
+        ],
+        [
+          "Sanitäter 2",
+          "Sanitäter"
+        ],
+        [
+          "Sanitätshelfer 1",
+          "Sanitätshelfer"
+        ],
+        [
+          "Sanitätshelfer 2",
+          "Sanitätshelfer"
+        ]
+      ],
+      "besetzungsmuster": {
+        "Gruppe (1/5)": [
+          "Gruppenführer",
+          "Fahrer",
+          "Sanitäter 1",
+          "Sanitäter 2",
+          "Sanitätshelfer 1",
+          "Sanitätshelfer 2"
+        ]
+      }
+    },
+    {
+      "typ": "MTW",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Fahrzeugführer",
+          "Gruppenführer"
+        ],
+        [
+          "Fahrer",
+          "Kraftfahrer"
+        ],
+        [
+          "Helfer 1",
+          null
+        ],
+        [
+          "Helfer 2",
+          null
+        ],
+        [
+          "Helfer 3",
+          null
+        ],
+        [
+          "Helfer 4",
+          null
+        ]
+      ],
+      "besetzungsmuster": {
+        "Trupp (1/5)": [
+          "Fahrzeugführer",
+          "Fahrer",
+          "Helfer 1",
+          "Helfer 2",
+          "Helfer 3",
+          "Helfer 4"
+        ]
+      }
+    }
+  ],
+  "sicherheitscheck": [
+    "Gefährdungsbeurteilung erstellt und mit allen Beteiligten besprochen",
+    "Sicherheitsbeauftragter benannt und eingewiesen",
+    "Persönliche Schutzausrüstung vollständig",
+    "Erste-Hilfe-Ausstattung und Notrufmöglichkeit vor Ort",
+    "Abbruchsignal festgelegt und bekannt gegeben („Übung Stopp“ über Funk)",
+    "Echte Einsätze: Einsatzbereitschaft während der Übung geklärt",
+    "Hygiene- und Infektionsschutz beachtet"
+  ]
+}

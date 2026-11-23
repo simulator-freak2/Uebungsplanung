@@ -69,15 +69,12 @@ class _SetupPageState extends State<SetupPage> {
                     const SizedBox(height: 16),
                     Text('Profil', style: t.labelLarge),
                     const SizedBox(height: 8),
-                    SegmentedButton<String>(
-                      segments: [
-                        for (final e in OrgProfile.available.entries) ButtonSegment(value: e.key, label: Text(e.value)),
-                      ],
-                      selected: {_profile},
-                      onSelectionChanged: (s) => setState(() => _profile = s.first),
-                    ),
+                    Wrap(spacing: 8, runSpacing: 8, children: [
+                      for (final e in OrgProfile.available.entries)
+                        ChoiceChip(label: Text(e.value), selected: _profile == e.key, onSelected: (_) => setState(() => _profile = e.key)),
+                    ]),
                     const SizedBox(height: 8),
-                    Text('Weitere Organisationen (THW, DRK, ASB, Wasserwacht …) folgen als zusätzliche Profile.',
+                    Text('Die Kataloge (Qualifikationen, Funktionen, Fahrzeuge) lassen sich danach frei anpassen. Weitere Profile (ASB, JUH, MHD …) entstehen durch eine JSON-Datei unter assets/profile.',
                         style: t.bodySmall),
                     const SizedBox(height: 24),
                     OutlinedButton.icon(

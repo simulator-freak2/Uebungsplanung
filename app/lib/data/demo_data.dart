@@ -4,8 +4,11 @@ import 'profile.dart';
 import 'repositories.dart';
 
 /// Ob Beispieldaten angeboten werden: nur bei leerem Bestand.
+/// Beispieldaten gibt es für die Profile Feuerwehr und DLRG.
 Future<bool> canLoadDemo(Repositories repo) async =>
-    (await repo.persons.all()).isEmpty && (await repo.exercises.watchAll().first).isEmpty;
+    const {'feuerwehr', 'dlrg', null}.contains(await repo.settings.get(SettingsRepository.profileId)) &&
+    (await repo.persons.all()).isEmpty &&
+    (await repo.exercises.watchAll().first).isEmpty;
 
 /// Fiktive Beispieldaten zum Ausprobieren (Personal, Fahrzeuge, Stichworte,
 /// Dienstplan und eine vollständig ausgearbeitete Übung).
