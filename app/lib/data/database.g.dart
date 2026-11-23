@@ -6467,6 +6467,40 @@ class $ExerciseVehiclesTable extends ExerciseVehicles
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
+  static const VerificationMeta _reservationIdMeta = const VerificationMeta(
+    'reservationId',
+  );
+  @override
+  late final GeneratedColumn<String> reservationId = GeneratedColumn<String>(
+    'reservation_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reservationStatusMeta = const VerificationMeta(
+    'reservationStatus',
+  );
+  @override
+  late final GeneratedColumn<String> reservationStatus =
+      GeneratedColumn<String>(
+        'reservation_status',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _reservationNoteMeta = const VerificationMeta(
+    'reservationNote',
+  );
+  @override
+  late final GeneratedColumn<String> reservationNote = GeneratedColumn<String>(
+    'reservation_note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -6476,6 +6510,9 @@ class $ExerciseVehiclesTable extends ExerciseVehicles
     vehicleId,
     patternId,
     sortOrder,
+    reservationId,
+    reservationStatus,
+    reservationNote,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -6532,6 +6569,33 @@ class $ExerciseVehiclesTable extends ExerciseVehicles
         sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
       );
     }
+    if (data.containsKey('reservation_id')) {
+      context.handle(
+        _reservationIdMeta,
+        reservationId.isAcceptableOrUnknown(
+          data['reservation_id']!,
+          _reservationIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reservation_status')) {
+      context.handle(
+        _reservationStatusMeta,
+        reservationStatus.isAcceptableOrUnknown(
+          data['reservation_status']!,
+          _reservationStatusMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reservation_note')) {
+      context.handle(
+        _reservationNoteMeta,
+        reservationNote.isAcceptableOrUnknown(
+          data['reservation_note']!,
+          _reservationNoteMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -6569,6 +6633,18 @@ class $ExerciseVehiclesTable extends ExerciseVehicles
         DriftSqlType.int,
         data['${effectivePrefix}sort_order'],
       )!,
+      reservationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reservation_id'],
+      ),
+      reservationStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reservation_status'],
+      ),
+      reservationNote: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reservation_note'],
+      ),
     );
   }
 
@@ -6586,6 +6662,11 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
   final String vehicleId;
   final String? patternId;
   final int sortOrder;
+  final String? reservationId;
+
+  /// `angefragt`, `bestaetigt`, `abgelehnt`, `storniert`
+  final String? reservationStatus;
+  final String? reservationNote;
   const ExerciseVehicle({
     required this.id,
     required this.updatedAt,
@@ -6594,6 +6675,9 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
     required this.vehicleId,
     this.patternId,
     required this.sortOrder,
+    this.reservationId,
+    this.reservationStatus,
+    this.reservationNote,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -6607,6 +6691,15 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
       map['pattern_id'] = Variable<String>(patternId);
     }
     map['sort_order'] = Variable<int>(sortOrder);
+    if (!nullToAbsent || reservationId != null) {
+      map['reservation_id'] = Variable<String>(reservationId);
+    }
+    if (!nullToAbsent || reservationStatus != null) {
+      map['reservation_status'] = Variable<String>(reservationStatus);
+    }
+    if (!nullToAbsent || reservationNote != null) {
+      map['reservation_note'] = Variable<String>(reservationNote);
+    }
     return map;
   }
 
@@ -6621,6 +6714,15 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
           ? const Value.absent()
           : Value(patternId),
       sortOrder: Value(sortOrder),
+      reservationId: reservationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reservationId),
+      reservationStatus: reservationStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reservationStatus),
+      reservationNote: reservationNote == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reservationNote),
     );
   }
 
@@ -6637,6 +6739,11 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
       vehicleId: serializer.fromJson<String>(json['vehicleId']),
       patternId: serializer.fromJson<String?>(json['patternId']),
       sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      reservationId: serializer.fromJson<String?>(json['reservationId']),
+      reservationStatus: serializer.fromJson<String?>(
+        json['reservationStatus'],
+      ),
+      reservationNote: serializer.fromJson<String?>(json['reservationNote']),
     );
   }
   @override
@@ -6650,6 +6757,9 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
       'vehicleId': serializer.toJson<String>(vehicleId),
       'patternId': serializer.toJson<String?>(patternId),
       'sortOrder': serializer.toJson<int>(sortOrder),
+      'reservationId': serializer.toJson<String?>(reservationId),
+      'reservationStatus': serializer.toJson<String?>(reservationStatus),
+      'reservationNote': serializer.toJson<String?>(reservationNote),
     };
   }
 
@@ -6661,6 +6771,9 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
     String? vehicleId,
     Value<String?> patternId = const Value.absent(),
     int? sortOrder,
+    Value<String?> reservationId = const Value.absent(),
+    Value<String?> reservationStatus = const Value.absent(),
+    Value<String?> reservationNote = const Value.absent(),
   }) => ExerciseVehicle(
     id: id ?? this.id,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -6669,6 +6782,15 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
     vehicleId: vehicleId ?? this.vehicleId,
     patternId: patternId.present ? patternId.value : this.patternId,
     sortOrder: sortOrder ?? this.sortOrder,
+    reservationId: reservationId.present
+        ? reservationId.value
+        : this.reservationId,
+    reservationStatus: reservationStatus.present
+        ? reservationStatus.value
+        : this.reservationStatus,
+    reservationNote: reservationNote.present
+        ? reservationNote.value
+        : this.reservationNote,
   );
   ExerciseVehicle copyWithCompanion(ExerciseVehiclesCompanion data) {
     return ExerciseVehicle(
@@ -6681,6 +6803,15 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
       vehicleId: data.vehicleId.present ? data.vehicleId.value : this.vehicleId,
       patternId: data.patternId.present ? data.patternId.value : this.patternId,
       sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      reservationId: data.reservationId.present
+          ? data.reservationId.value
+          : this.reservationId,
+      reservationStatus: data.reservationStatus.present
+          ? data.reservationStatus.value
+          : this.reservationStatus,
+      reservationNote: data.reservationNote.present
+          ? data.reservationNote.value
+          : this.reservationNote,
     );
   }
 
@@ -6693,7 +6824,10 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
           ..write('exerciseId: $exerciseId, ')
           ..write('vehicleId: $vehicleId, ')
           ..write('patternId: $patternId, ')
-          ..write('sortOrder: $sortOrder')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('reservationId: $reservationId, ')
+          ..write('reservationStatus: $reservationStatus, ')
+          ..write('reservationNote: $reservationNote')
           ..write(')'))
         .toString();
   }
@@ -6707,6 +6841,9 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
     vehicleId,
     patternId,
     sortOrder,
+    reservationId,
+    reservationStatus,
+    reservationNote,
   );
   @override
   bool operator ==(Object other) =>
@@ -6718,7 +6855,10 @@ class ExerciseVehicle extends DataClass implements Insertable<ExerciseVehicle> {
           other.exerciseId == this.exerciseId &&
           other.vehicleId == this.vehicleId &&
           other.patternId == this.patternId &&
-          other.sortOrder == this.sortOrder);
+          other.sortOrder == this.sortOrder &&
+          other.reservationId == this.reservationId &&
+          other.reservationStatus == this.reservationStatus &&
+          other.reservationNote == this.reservationNote);
 }
 
 class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
@@ -6729,6 +6869,9 @@ class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
   final Value<String> vehicleId;
   final Value<String?> patternId;
   final Value<int> sortOrder;
+  final Value<String?> reservationId;
+  final Value<String?> reservationStatus;
+  final Value<String?> reservationNote;
   final Value<int> rowid;
   const ExerciseVehiclesCompanion({
     this.id = const Value.absent(),
@@ -6738,6 +6881,9 @@ class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
     this.vehicleId = const Value.absent(),
     this.patternId = const Value.absent(),
     this.sortOrder = const Value.absent(),
+    this.reservationId = const Value.absent(),
+    this.reservationStatus = const Value.absent(),
+    this.reservationNote = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ExerciseVehiclesCompanion.insert({
@@ -6748,6 +6894,9 @@ class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
     required String vehicleId,
     this.patternId = const Value.absent(),
     this.sortOrder = const Value.absent(),
+    this.reservationId = const Value.absent(),
+    this.reservationStatus = const Value.absent(),
+    this.reservationNote = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : exerciseId = Value(exerciseId),
        vehicleId = Value(vehicleId);
@@ -6759,6 +6908,9 @@ class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
     Expression<String>? vehicleId,
     Expression<String>? patternId,
     Expression<int>? sortOrder,
+    Expression<String>? reservationId,
+    Expression<String>? reservationStatus,
+    Expression<String>? reservationNote,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -6769,6 +6921,9 @@ class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
       if (vehicleId != null) 'vehicle_id': vehicleId,
       if (patternId != null) 'pattern_id': patternId,
       if (sortOrder != null) 'sort_order': sortOrder,
+      if (reservationId != null) 'reservation_id': reservationId,
+      if (reservationStatus != null) 'reservation_status': reservationStatus,
+      if (reservationNote != null) 'reservation_note': reservationNote,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -6781,6 +6936,9 @@ class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
     Value<String>? vehicleId,
     Value<String?>? patternId,
     Value<int>? sortOrder,
+    Value<String?>? reservationId,
+    Value<String?>? reservationStatus,
+    Value<String?>? reservationNote,
     Value<int>? rowid,
   }) {
     return ExerciseVehiclesCompanion(
@@ -6791,6 +6949,9 @@ class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
       vehicleId: vehicleId ?? this.vehicleId,
       patternId: patternId ?? this.patternId,
       sortOrder: sortOrder ?? this.sortOrder,
+      reservationId: reservationId ?? this.reservationId,
+      reservationStatus: reservationStatus ?? this.reservationStatus,
+      reservationNote: reservationNote ?? this.reservationNote,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -6819,6 +6980,15 @@ class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
     if (sortOrder.present) {
       map['sort_order'] = Variable<int>(sortOrder.value);
     }
+    if (reservationId.present) {
+      map['reservation_id'] = Variable<String>(reservationId.value);
+    }
+    if (reservationStatus.present) {
+      map['reservation_status'] = Variable<String>(reservationStatus.value);
+    }
+    if (reservationNote.present) {
+      map['reservation_note'] = Variable<String>(reservationNote.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -6835,6 +7005,9 @@ class ExerciseVehiclesCompanion extends UpdateCompanion<ExerciseVehicle> {
           ..write('vehicleId: $vehicleId, ')
           ..write('patternId: $patternId, ')
           ..write('sortOrder: $sortOrder, ')
+          ..write('reservationId: $reservationId, ')
+          ..write('reservationStatus: $reservationStatus, ')
+          ..write('reservationNote: $reservationNote, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -11390,6 +11563,570 @@ class LessonsCompanion extends UpdateCompanion<Lesson> {
   }
 }
 
+class $MkMaterialsTable extends MkMaterials
+    with TableInfo<$MkMaterialsTable, MkMaterial> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MkMaterialsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _inventoryNoMeta = const VerificationMeta(
+    'inventoryNo',
+  );
+  @override
+  late final GeneratedColumn<String> inventoryNo = GeneratedColumn<String>(
+    'inventory_no',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _quantityMeta = const VerificationMeta(
+    'quantity',
+  );
+  @override
+  late final GeneratedColumn<double> quantity = GeneratedColumn<double>(
+    'quantity',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _unitMeta = const VerificationMeta('unit');
+  @override
+  late final GeneratedColumn<String> unit = GeneratedColumn<String>(
+    'unit',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _vehicleIdMeta = const VerificationMeta(
+    'vehicleId',
+  );
+  @override
+  late final GeneratedColumn<String> vehicleId = GeneratedColumn<String>(
+    'vehicle_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _locationMeta = const VerificationMeta(
+    'location',
+  );
+  @override
+  late final GeneratedColumn<String> location = GeneratedColumn<String>(
+    'location',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    category,
+    inventoryNo,
+    quantity,
+    unit,
+    vehicleId,
+    location,
+    status,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'mk_materials';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MkMaterial> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    }
+    if (data.containsKey('inventory_no')) {
+      context.handle(
+        _inventoryNoMeta,
+        inventoryNo.isAcceptableOrUnknown(
+          data['inventory_no']!,
+          _inventoryNoMeta,
+        ),
+      );
+    }
+    if (data.containsKey('quantity')) {
+      context.handle(
+        _quantityMeta,
+        quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta),
+      );
+    }
+    if (data.containsKey('unit')) {
+      context.handle(
+        _unitMeta,
+        unit.isAcceptableOrUnknown(data['unit']!, _unitMeta),
+      );
+    }
+    if (data.containsKey('vehicle_id')) {
+      context.handle(
+        _vehicleIdMeta,
+        vehicleId.isAcceptableOrUnknown(data['vehicle_id']!, _vehicleIdMeta),
+      );
+    }
+    if (data.containsKey('location')) {
+      context.handle(
+        _locationMeta,
+        location.isAcceptableOrUnknown(data['location']!, _locationMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MkMaterial map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MkMaterial(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      ),
+      inventoryNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}inventory_no'],
+      ),
+      quantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}quantity'],
+      ),
+      unit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit'],
+      ),
+      vehicleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}vehicle_id'],
+      ),
+      location: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}location'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      ),
+    );
+  }
+
+  @override
+  $MkMaterialsTable createAlias(String alias) {
+    return $MkMaterialsTable(attachedDatabase, alias);
+  }
+}
+
+class MkMaterial extends DataClass implements Insertable<MkMaterial> {
+  final String id;
+  final String name;
+  final String? category;
+  final String? inventoryNo;
+  final double? quantity;
+  final String? unit;
+  final String? vehicleId;
+  final String? location;
+  final String? status;
+  const MkMaterial({
+    required this.id,
+    required this.name,
+    this.category,
+    this.inventoryNo,
+    this.quantity,
+    this.unit,
+    this.vehicleId,
+    this.location,
+    this.status,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
+    if (!nullToAbsent || inventoryNo != null) {
+      map['inventory_no'] = Variable<String>(inventoryNo);
+    }
+    if (!nullToAbsent || quantity != null) {
+      map['quantity'] = Variable<double>(quantity);
+    }
+    if (!nullToAbsent || unit != null) {
+      map['unit'] = Variable<String>(unit);
+    }
+    if (!nullToAbsent || vehicleId != null) {
+      map['vehicle_id'] = Variable<String>(vehicleId);
+    }
+    if (!nullToAbsent || location != null) {
+      map['location'] = Variable<String>(location);
+    }
+    if (!nullToAbsent || status != null) {
+      map['status'] = Variable<String>(status);
+    }
+    return map;
+  }
+
+  MkMaterialsCompanion toCompanion(bool nullToAbsent) {
+    return MkMaterialsCompanion(
+      id: Value(id),
+      name: Value(name),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+      inventoryNo: inventoryNo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(inventoryNo),
+      quantity: quantity == null && nullToAbsent
+          ? const Value.absent()
+          : Value(quantity),
+      unit: unit == null && nullToAbsent ? const Value.absent() : Value(unit),
+      vehicleId: vehicleId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(vehicleId),
+      location: location == null && nullToAbsent
+          ? const Value.absent()
+          : Value(location),
+      status: status == null && nullToAbsent
+          ? const Value.absent()
+          : Value(status),
+    );
+  }
+
+  factory MkMaterial.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MkMaterial(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      category: serializer.fromJson<String?>(json['category']),
+      inventoryNo: serializer.fromJson<String?>(json['inventoryNo']),
+      quantity: serializer.fromJson<double?>(json['quantity']),
+      unit: serializer.fromJson<String?>(json['unit']),
+      vehicleId: serializer.fromJson<String?>(json['vehicleId']),
+      location: serializer.fromJson<String?>(json['location']),
+      status: serializer.fromJson<String?>(json['status']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'category': serializer.toJson<String?>(category),
+      'inventoryNo': serializer.toJson<String?>(inventoryNo),
+      'quantity': serializer.toJson<double?>(quantity),
+      'unit': serializer.toJson<String?>(unit),
+      'vehicleId': serializer.toJson<String?>(vehicleId),
+      'location': serializer.toJson<String?>(location),
+      'status': serializer.toJson<String?>(status),
+    };
+  }
+
+  MkMaterial copyWith({
+    String? id,
+    String? name,
+    Value<String?> category = const Value.absent(),
+    Value<String?> inventoryNo = const Value.absent(),
+    Value<double?> quantity = const Value.absent(),
+    Value<String?> unit = const Value.absent(),
+    Value<String?> vehicleId = const Value.absent(),
+    Value<String?> location = const Value.absent(),
+    Value<String?> status = const Value.absent(),
+  }) => MkMaterial(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    category: category.present ? category.value : this.category,
+    inventoryNo: inventoryNo.present ? inventoryNo.value : this.inventoryNo,
+    quantity: quantity.present ? quantity.value : this.quantity,
+    unit: unit.present ? unit.value : this.unit,
+    vehicleId: vehicleId.present ? vehicleId.value : this.vehicleId,
+    location: location.present ? location.value : this.location,
+    status: status.present ? status.value : this.status,
+  );
+  MkMaterial copyWithCompanion(MkMaterialsCompanion data) {
+    return MkMaterial(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      category: data.category.present ? data.category.value : this.category,
+      inventoryNo: data.inventoryNo.present
+          ? data.inventoryNo.value
+          : this.inventoryNo,
+      quantity: data.quantity.present ? data.quantity.value : this.quantity,
+      unit: data.unit.present ? data.unit.value : this.unit,
+      vehicleId: data.vehicleId.present ? data.vehicleId.value : this.vehicleId,
+      location: data.location.present ? data.location.value : this.location,
+      status: data.status.present ? data.status.value : this.status,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MkMaterial(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('category: $category, ')
+          ..write('inventoryNo: $inventoryNo, ')
+          ..write('quantity: $quantity, ')
+          ..write('unit: $unit, ')
+          ..write('vehicleId: $vehicleId, ')
+          ..write('location: $location, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    category,
+    inventoryNo,
+    quantity,
+    unit,
+    vehicleId,
+    location,
+    status,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MkMaterial &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.category == this.category &&
+          other.inventoryNo == this.inventoryNo &&
+          other.quantity == this.quantity &&
+          other.unit == this.unit &&
+          other.vehicleId == this.vehicleId &&
+          other.location == this.location &&
+          other.status == this.status);
+}
+
+class MkMaterialsCompanion extends UpdateCompanion<MkMaterial> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String?> category;
+  final Value<String?> inventoryNo;
+  final Value<double?> quantity;
+  final Value<String?> unit;
+  final Value<String?> vehicleId;
+  final Value<String?> location;
+  final Value<String?> status;
+  final Value<int> rowid;
+  const MkMaterialsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.category = const Value.absent(),
+    this.inventoryNo = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.vehicleId = const Value.absent(),
+    this.location = const Value.absent(),
+    this.status = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MkMaterialsCompanion.insert({
+    required String id,
+    required String name,
+    this.category = const Value.absent(),
+    this.inventoryNo = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.vehicleId = const Value.absent(),
+    this.location = const Value.absent(),
+    this.status = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name);
+  static Insertable<MkMaterial> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? category,
+    Expression<String>? inventoryNo,
+    Expression<double>? quantity,
+    Expression<String>? unit,
+    Expression<String>? vehicleId,
+    Expression<String>? location,
+    Expression<String>? status,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (category != null) 'category': category,
+      if (inventoryNo != null) 'inventory_no': inventoryNo,
+      if (quantity != null) 'quantity': quantity,
+      if (unit != null) 'unit': unit,
+      if (vehicleId != null) 'vehicle_id': vehicleId,
+      if (location != null) 'location': location,
+      if (status != null) 'status': status,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MkMaterialsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String?>? category,
+    Value<String?>? inventoryNo,
+    Value<double?>? quantity,
+    Value<String?>? unit,
+    Value<String?>? vehicleId,
+    Value<String?>? location,
+    Value<String?>? status,
+    Value<int>? rowid,
+  }) {
+    return MkMaterialsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      category: category ?? this.category,
+      inventoryNo: inventoryNo ?? this.inventoryNo,
+      quantity: quantity ?? this.quantity,
+      unit: unit ?? this.unit,
+      vehicleId: vehicleId ?? this.vehicleId,
+      location: location ?? this.location,
+      status: status ?? this.status,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (inventoryNo.present) {
+      map['inventory_no'] = Variable<String>(inventoryNo.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<double>(quantity.value);
+    }
+    if (unit.present) {
+      map['unit'] = Variable<String>(unit.value);
+    }
+    if (vehicleId.present) {
+      map['vehicle_id'] = Variable<String>(vehicleId.value);
+    }
+    if (location.present) {
+      map['location'] = Variable<String>(location.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MkMaterialsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('category: $category, ')
+          ..write('inventoryNo: $inventoryNo, ')
+          ..write('quantity: $quantity, ')
+          ..write('unit: $unit, ')
+          ..write('vehicleId: $vehicleId, ')
+          ..write('location: $location, ')
+          ..write('status: $status, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -11425,6 +12162,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ObservationTemplatesTable observationTemplates =
       $ObservationTemplatesTable(this);
   late final $LessonsTable lessons = $LessonsTable(this);
+  late final $MkMaterialsTable mkMaterials = $MkMaterialsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -11451,6 +12189,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     observationItems,
     observationTemplates,
     lessons,
+    mkMaterials,
   ];
 }
 
@@ -14789,6 +15528,9 @@ typedef $$ExerciseVehiclesTableCreateCompanionBuilder =
       required String vehicleId,
       Value<String?> patternId,
       Value<int> sortOrder,
+      Value<String?> reservationId,
+      Value<String?> reservationStatus,
+      Value<String?> reservationNote,
       Value<int> rowid,
     });
 typedef $$ExerciseVehiclesTableUpdateCompanionBuilder =
@@ -14800,6 +15542,9 @@ typedef $$ExerciseVehiclesTableUpdateCompanionBuilder =
       Value<String> vehicleId,
       Value<String?> patternId,
       Value<int> sortOrder,
+      Value<String?> reservationId,
+      Value<String?> reservationStatus,
+      Value<String?> reservationNote,
       Value<int> rowid,
     });
 
@@ -14844,6 +15589,21 @@ class $$ExerciseVehiclesTableFilterComposer
 
   ColumnFilters<int> get sortOrder => $composableBuilder(
     column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reservationId => $composableBuilder(
+    column: $table.reservationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reservationStatus => $composableBuilder(
+    column: $table.reservationStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reservationNote => $composableBuilder(
+    column: $table.reservationNote,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -14891,6 +15651,21 @@ class $$ExerciseVehiclesTableOrderingComposer
     column: $table.sortOrder,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get reservationId => $composableBuilder(
+    column: $table.reservationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reservationStatus => $composableBuilder(
+    column: $table.reservationStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reservationNote => $composableBuilder(
+    column: $table.reservationNote,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ExerciseVehiclesTableAnnotationComposer
@@ -14924,6 +15699,21 @@ class $$ExerciseVehiclesTableAnnotationComposer
 
   GeneratedColumn<int> get sortOrder =>
       $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  GeneratedColumn<String> get reservationId => $composableBuilder(
+    column: $table.reservationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reservationStatus => $composableBuilder(
+    column: $table.reservationStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reservationNote => $composableBuilder(
+    column: $table.reservationNote,
+    builder: (column) => column,
+  );
 }
 
 class $$ExerciseVehiclesTableTableManager
@@ -14970,6 +15760,9 @@ class $$ExerciseVehiclesTableTableManager
                 Value<String> vehicleId = const Value.absent(),
                 Value<String?> patternId = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
+                Value<String?> reservationId = const Value.absent(),
+                Value<String?> reservationStatus = const Value.absent(),
+                Value<String?> reservationNote = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ExerciseVehiclesCompanion(
                 id: id,
@@ -14979,6 +15772,9 @@ class $$ExerciseVehiclesTableTableManager
                 vehicleId: vehicleId,
                 patternId: patternId,
                 sortOrder: sortOrder,
+                reservationId: reservationId,
+                reservationStatus: reservationStatus,
+                reservationNote: reservationNote,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -14990,6 +15786,9 @@ class $$ExerciseVehiclesTableTableManager
                 required String vehicleId,
                 Value<String?> patternId = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
+                Value<String?> reservationId = const Value.absent(),
+                Value<String?> reservationStatus = const Value.absent(),
+                Value<String?> reservationNote = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ExerciseVehiclesCompanion.insert(
                 id: id,
@@ -14999,6 +15798,9 @@ class $$ExerciseVehiclesTableTableManager
                 vehicleId: vehicleId,
                 patternId: patternId,
                 sortOrder: sortOrder,
+                reservationId: reservationId,
+                reservationStatus: reservationStatus,
+                reservationNote: reservationNote,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -17404,6 +18206,293 @@ typedef $$LessonsTableProcessedTableManager =
       Lesson,
       PrefetchHooks Function()
     >;
+typedef $$MkMaterialsTableCreateCompanionBuilder =
+    MkMaterialsCompanion Function({
+      required String id,
+      required String name,
+      Value<String?> category,
+      Value<String?> inventoryNo,
+      Value<double?> quantity,
+      Value<String?> unit,
+      Value<String?> vehicleId,
+      Value<String?> location,
+      Value<String?> status,
+      Value<int> rowid,
+    });
+typedef $$MkMaterialsTableUpdateCompanionBuilder =
+    MkMaterialsCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<String?> category,
+      Value<String?> inventoryNo,
+      Value<double?> quantity,
+      Value<String?> unit,
+      Value<String?> vehicleId,
+      Value<String?> location,
+      Value<String?> status,
+      Value<int> rowid,
+    });
+
+class $$MkMaterialsTableFilterComposer
+    extends Composer<_$AppDatabase, $MkMaterialsTable> {
+  $$MkMaterialsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get inventoryNo => $composableBuilder(
+    column: $table.inventoryNo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get vehicleId => $composableBuilder(
+    column: $table.vehicleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get location => $composableBuilder(
+    column: $table.location,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MkMaterialsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MkMaterialsTable> {
+  $$MkMaterialsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get inventoryNo => $composableBuilder(
+    column: $table.inventoryNo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get vehicleId => $composableBuilder(
+    column: $table.vehicleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get location => $composableBuilder(
+    column: $table.location,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MkMaterialsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MkMaterialsTable> {
+  $$MkMaterialsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get inventoryNo => $composableBuilder(
+    column: $table.inventoryNo,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get quantity =>
+      $composableBuilder(column: $table.quantity, builder: (column) => column);
+
+  GeneratedColumn<String> get unit =>
+      $composableBuilder(column: $table.unit, builder: (column) => column);
+
+  GeneratedColumn<String> get vehicleId =>
+      $composableBuilder(column: $table.vehicleId, builder: (column) => column);
+
+  GeneratedColumn<String> get location =>
+      $composableBuilder(column: $table.location, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+}
+
+class $$MkMaterialsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MkMaterialsTable,
+          MkMaterial,
+          $$MkMaterialsTableFilterComposer,
+          $$MkMaterialsTableOrderingComposer,
+          $$MkMaterialsTableAnnotationComposer,
+          $$MkMaterialsTableCreateCompanionBuilder,
+          $$MkMaterialsTableUpdateCompanionBuilder,
+          (
+            MkMaterial,
+            BaseReferences<_$AppDatabase, $MkMaterialsTable, MkMaterial>,
+          ),
+          MkMaterial,
+          PrefetchHooks Function()
+        > {
+  $$MkMaterialsTableTableManager(_$AppDatabase db, $MkMaterialsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MkMaterialsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MkMaterialsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MkMaterialsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> category = const Value.absent(),
+                Value<String?> inventoryNo = const Value.absent(),
+                Value<double?> quantity = const Value.absent(),
+                Value<String?> unit = const Value.absent(),
+                Value<String?> vehicleId = const Value.absent(),
+                Value<String?> location = const Value.absent(),
+                Value<String?> status = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MkMaterialsCompanion(
+                id: id,
+                name: name,
+                category: category,
+                inventoryNo: inventoryNo,
+                quantity: quantity,
+                unit: unit,
+                vehicleId: vehicleId,
+                location: location,
+                status: status,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String name,
+                Value<String?> category = const Value.absent(),
+                Value<String?> inventoryNo = const Value.absent(),
+                Value<double?> quantity = const Value.absent(),
+                Value<String?> unit = const Value.absent(),
+                Value<String?> vehicleId = const Value.absent(),
+                Value<String?> location = const Value.absent(),
+                Value<String?> status = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MkMaterialsCompanion.insert(
+                id: id,
+                name: name,
+                category: category,
+                inventoryNo: inventoryNo,
+                quantity: quantity,
+                unit: unit,
+                vehicleId: vehicleId,
+                location: location,
+                status: status,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MkMaterialsTable, MkMaterial>(table),
+                  BaseReferences<_$AppDatabase, $MkMaterialsTable, MkMaterial>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MkMaterialsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MkMaterialsTable,
+      MkMaterial,
+      $$MkMaterialsTableFilterComposer,
+      $$MkMaterialsTableOrderingComposer,
+      $$MkMaterialsTableAnnotationComposer,
+      $$MkMaterialsTableCreateCompanionBuilder,
+      $$MkMaterialsTableUpdateCompanionBuilder,
+      (
+        MkMaterial,
+        BaseReferences<_$AppDatabase, $MkMaterialsTable, MkMaterial>,
+      ),
+      MkMaterial,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -17450,4 +18539,6 @@ class $AppDatabaseManager {
       $$ObservationTemplatesTableTableManager(_db, _db.observationTemplates);
   $$LessonsTableTableManager get lessons =>
       $$LessonsTableTableManager(_db, _db.lessons);
+  $$MkMaterialsTableTableManager get mkMaterials =>
+      $$MkMaterialsTableTableManager(_db, _db.mkMaterials);
 }

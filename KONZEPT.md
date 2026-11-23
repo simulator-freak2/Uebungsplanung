@@ -142,10 +142,10 @@ Vorlage = Übung ohne Datum           Benutzer ── Rolle(Admin | Planer)
 | 2 | ✅ Übung: Übungsplan, Sicherheit, Freigabe, Fahrzeugbesetzung mit Drag & Drop, Alarmierungsplan, Alarmmeldung (Druck/PDF) |
 | 3 | ✅ Funkplan, Rollenkarten, Material, Beobachtungsbogen (mit Katalog), Nachbesprechung, PDF-Übungsmappe, Beobachter-Ansicht, mehrere Alarmmeldungen je Alarmierungszeitpunkt |
 | 4 | ✅ Jahresdienstplan, Vorlagen (inkl. Austausch als Datei), Excel-Import |
-| 5 | Server, Benutzer, Abgleich, Tablet-Ansicht (nur lesen) |
-| 6 | Karten mit Offline-Landkreis und taktischen Zeichen |
-| 7 | Materialkompass-Anbindung und Reservierung mit Genehmigung (sobald die API steht) |
-| 8 | ◐ Builds für Windows/macOS/Linux per GitHub Actions und Anleitung erledigt; Installer und Docker-Image (für den Server) offen |
+| 5 | ✅ Server, Benutzer und Rollen, Abgleich, Tablet-/Beobachter-Ansicht (nur lesen) |
+| 6 | ✅ Lageskizze: Karte online/offline (MBTiles), taktische Zeichen, Bild in der Übungsmappe |
+| 7 | ✅ Materialkompass-Anbindung (gegen Nachbildung der Schnittstelle getestet), Reservierung mit Genehmigung |
+| 8 | ✅ Builds Windows/macOS/Linux/Android, Server für Linux (x64/ARM), Windows und Docker, Anleitungen |
 
 ## 8. Entscheidungen Runde 3
 

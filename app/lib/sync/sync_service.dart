@@ -21,7 +21,7 @@ abstract final class SyncKeys {
 }
 
 /// Einstellungen, die für alle Geräte gelten und vom Server kommen.
-const sharedSettingKeys = {SettingsRepository.orgName, SettingsRepository.profileId, SettingsRepository.approvalRequired};
+const sharedSettingKeys = {SettingsRepository.orgName, SettingsRepository.profileId, SettingsRepository.approvalRequired, 'mk_reservations'};
 
 enum SyncState { local, idle, syncing, offline, error, loggedOut }
 
@@ -77,6 +77,7 @@ class Session extends ChangeNotifier {
     } else {
       state = SyncState.idle;
       _start();
+      unawaited(syncNow());
     }
     notifyListeners();
   }
@@ -154,7 +155,7 @@ class Session extends ChangeNotifier {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 30), (_) => syncNow());
     _changes ??= db.tableUpdates().listen((u) {
-      if (u.any((t) => t.table == db.settings.actualTableName)) return;
+      if (u.every((t) => t.table == db.settings.actualTableName || t.table == db.mkMaterials.actualTableName)) return;
       _debounce?.cancel();
       _debounce = Timer(const Duration(seconds: 2), syncNow);
     });
@@ -212,7 +213,9 @@ class Session extends ChangeNotifier {
     }
   }
 
-  Iterable<TableInfo> get _tables => db.allTables.where((t) => t.actualTableName != db.settings.actualTableName);
+  /// Abgeglichen werden alle Tabellen außer Einstellungen und lokalen Zwischenspeichern.
+  Iterable<TableInfo> get _tables =>
+      db.allTables.where((t) => t.actualTableName != db.settings.actualTableName && t.actualTableName != db.mkMaterials.actualTableName);
 
   /// Lokale Änderungen seit dem letzten Hochladen (Datensätze als
   /// Spaltenwerte, wie sie in der Datenbank stehen).

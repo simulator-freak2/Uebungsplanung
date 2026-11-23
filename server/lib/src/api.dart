@@ -6,7 +6,7 @@ import 'package:shelf_router/shelf_router.dart';
 
 import 'store.dart';
 
-const serverVersion = '1.0.0';
+const serverVersion = '2.0.0';
 
 /// HTTP-Schnittstelle des Servers (`/api/v1/...`).
 class Api {

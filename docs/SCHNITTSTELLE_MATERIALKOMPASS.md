@@ -185,3 +185,11 @@ Antwort `201 Created` (zunächst `angefragt`):
    - Zuerst wird `verfuegbarkeit` geprüft, dann `POST /reservierungen` mit `Idempotency-Key` gesendet.
    - Ohne Verbindung wird die Reservierung vorgemerkt und beim nächsten Abgleich gesendet. Der Planer sieht dann „Reservierung ausstehend“.
 4. Wird eine Übung verschoben oder gelöscht, wird die Reservierung geändert (`PATCH`) bzw. storniert (`DELETE`).
+
+## 7. Referenz zum Testen
+
+Der Übungsplaner enthält eine Nachbildung dieser Schnittstelle, gegen die er getestet wird:
+`app/tool/fake_materialkompass.dart` (Start: `dart run tool/fake_materialkompass.dart` im Ordner `app`,
+Adresse `http://127.0.0.1:8098/api/v1`, Schlüssel `geheim`). Sie zeigt die erwarteten Antworten
+(Blättern mit `naechster_cursor`, `geloescht`, Verfügbarkeit, Reservierung mit `Idempotency-Key`,
+Status `angefragt` → `bestaetigt`/`abgelehnt`).

@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../data/database.dart';
 import '../../data/documents_repository.dart';
 import '../../data/exercise_repository.dart';
+import '../../materialkompass/mk_ui.dart';
 import '../../ui/widgets.dart';
 
 /// Funkplan: Rufname, Gerät, Funknetz, Gruppe/Kanal, Aufgabe.
@@ -225,8 +226,13 @@ class MaterialTab extends StatelessWidget {
       children: [
         SectionCard(
           title: 'Materialliste',
-          subtitle: 'Die Übernahme aus Materialkompass folgt, sobald die Schnittstelle steht',
+          subtitle: 'Manuell oder aus Materialkompass (Einstellungen → Materialkompass)',
           actions: [
+            OutlinedButton.icon(
+              onPressed: () => pickMkMaterial(context, d.exercise.id),
+              icon: const Icon(Icons.inventory_2_outlined),
+              label: const Text('Aus Materialkompass'),
+            ),
             FilledButton.tonalIcon(
               key: const Key('material-add'),
               onPressed: edit,
@@ -244,6 +250,7 @@ class MaterialTab extends StatelessWidget {
                       DataColumn(label: Text('Material')),
                       DataColumn(label: Text('Standort / verlastet auf')),
                       DataColumn(label: Text('Menge')),
+                      DataColumn(label: Text('Quelle')),
                       DataColumn(label: Text('')),
                     ],
                     rows: [
@@ -254,6 +261,7 @@ class MaterialTab extends StatelessWidget {
                             DataCell(Text(m.name, style: const TextStyle(fontWeight: FontWeight.w600))),
                             DataCell(Text(m.location ?? '')),
                             DataCell(Text(m.quantity ?? '')),
+                            DataCell(m.source == 'materialkompass' ? const Tag('Materialkompass') : const Text('manuell')),
                             DataCell(
                               IconButton(
                                 tooltip: 'Löschen',

@@ -5,6 +5,7 @@ import '../../data/exercise_repository.dart';
 import '../../data/repositories.dart';
 import '../../ui/theme.dart';
 import '../../ui/widgets.dart';
+import '../../materialkompass/mk_ui.dart';
 import '../vehicles_page.dart' show vehicleStatus;
 
 /// Was beim Ziehen transportiert wird: die Person und – wenn sie aus einer
@@ -317,7 +318,12 @@ class _VehicleCard extends StatelessWidget {
                 ],
               ),
             ),
-            if (v != null && v.status != 'einsatzbereit')
+            if (!lead && v != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
+              child: Align(alignment: Alignment.centerLeft, child: ReservationControl(detail: state.d, exerciseVehicle: ev!, vehicle: v)),
+            ),
+          if (v != null && v.status != 'einsatzbereit')
               Padding(
                 padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
                 child: Align(

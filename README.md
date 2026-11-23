@@ -10,8 +10,17 @@ einem eigenen Server abgleichen.
 | `vorschau/index.html` | klickbare Vorschau (HTML, fiktive Daten) |
 | `docs/SCHNITTSTELLE_MATERIALKOMPASS.md` | Anforderungen an die Materialkompass-API |
 | `app/` | die Flutter-App |
+| `server/` | der Übungsplaner-Server (Dart) |
 
-## Stand: Version 1.0 (lokal nutzbar)
+## Stand: Version 2.0
+
+Neu gegenüber 1.0: **Server** mit Benutzerrollen und Abgleich mehrerer Geräte ([`docs/SERVER.md`](docs/SERVER.md)),
+**Tablet-App** (Android, nur ansehen), **Lageskizze** mit Karte (online/offline) und taktischen Zeichen,
+**Materialkompass**-Anbindung mit Fahrzeugreservierung.
+
+![Lageskizze](docs/screenshots/v2-lageskizze.png)
+
+### Funktionen aus Version 1.0
 
 **Anleitung für Anwender:** [`docs/ANLEITUNG.md`](docs/ANLEITUNG.md). Dort steht auch, wie ihr die fertigen Programme für Windows, macOS und Linux bekommt.
 

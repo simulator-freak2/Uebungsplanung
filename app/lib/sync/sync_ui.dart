@@ -385,7 +385,11 @@ class _UsersCardState extends State<_UsersCard> {
       child: FutureBuilder<List<ServerUser>>(
         future: _users,
         builder: (context, snap) {
-          if (snap.hasError) return Text('${snap.error}');
+          if (snap.hasError) {
+            return Text(snap.error is ServerException && (snap.error! as ServerException).status == 0
+                ? 'Die Benutzerliste ist nur bei Verbindung zum Server verfügbar.'
+                : '${snap.error}');
+          }
           if (!snap.hasData) return const LinearProgressIndicator();
           return Column(children: [
             for (final u in snap.data!)

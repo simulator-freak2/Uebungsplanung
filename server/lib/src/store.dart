@@ -42,7 +42,7 @@ const syncTables = {
 };
 
 /// Einstellungen, die für alle Geräte gelten.
-const sharedSettings = {'org_name', 'profile_id', 'approval_required'};
+const sharedSettings = {'org_name', 'profile_id', 'approval_required', 'mk_reservations'};
 
 class User {
   User(this.id, this.username, this.displayName, this.role, this.active);

@@ -179,6 +179,30 @@ class ExerciseVehicles extends Table with SyncColumns {
   TextColumn get vehicleId => text()();
   TextColumn get patternId => text().nullable()();
   IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+
+  // ab Schema-Version 5: Reservierung in Materialkompass
+  TextColumn get reservationId => text().nullable()();
+
+  /// `angefragt`, `bestaetigt`, `abgelehnt`, `storniert`
+  TextColumn get reservationStatus => text().nullable()();
+  TextColumn get reservationNote => text().nullable()();
+}
+
+/// Zwischenspeicher des Materials aus Materialkompass (nur auf diesem Gerät,
+/// wird nicht über den Übungsplaner-Server abgeglichen).
+class MkMaterials extends Table {
+  TextColumn get id => text()();
+  TextColumn get name => text()();
+  TextColumn get category => text().nullable()();
+  TextColumn get inventoryNo => text().nullable()();
+  RealColumn get quantity => real().nullable()();
+  TextColumn get unit => text().nullable()();
+  TextColumn get vehicleId => text().nullable()();
+  TextColumn get location => text().nullable()();
+  TextColumn get status => text().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
 }
 
 /// Person auf einer Funktion (Fahrzeugfunktion oder Führungsfunktion).
@@ -304,6 +328,7 @@ class Lessons extends Table with SyncColumns {
   ObservationItems,
   ObservationTemplates,
   Lessons,
+  MkMaterials,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
@@ -317,7 +342,7 @@ class AppDatabase extends _$AppDatabase {
       ));
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -344,6 +369,14 @@ class AppDatabase extends _$AppDatabase {
             final List<TableInfo<Table, Object?>> added = [radioEntries, roleCards, materialItems, observationItems, observationTemplates, lessons];
             for (final t in added) {
               await m.createTable(t);
+            }
+          }
+          if (from < 5) {
+            await m.createTable(mkMaterials);
+          }
+          if (from >= 2 && from < 5) {
+            for (final c in <GeneratedColumn<Object>>[exerciseVehicles.reservationId, exerciseVehicles.reservationStatus, exerciseVehicles.reservationNote]) {
+              await m.addColumn(exerciseVehicles, c);
             }
           }
           if (from >= 2 && from < 4) {

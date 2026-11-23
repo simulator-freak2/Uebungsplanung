@@ -8,6 +8,7 @@ import '../data/demo_data.dart';
 import '../data/profile.dart';
 import '../data/repositories.dart';
 import '../map/map_settings.dart';
+import '../materialkompass/mk_ui.dart';
 import '../sync/sync_ui.dart';
 import '../ui/widgets.dart';
 
@@ -109,6 +110,8 @@ class _SettingsPageState extends State<SettingsPage> {
               const ServerSettingsSection(),
               const SizedBox(height: 16),
               const MapSettingsCard(),
+              const SizedBox(height: 16),
+              const MaterialkompassSettingsCard(),
               const SizedBox(height: 16),
               FutureBuilder<bool>(
                 future: canLoadDemo(repo),

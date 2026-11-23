@@ -81,18 +81,37 @@ Reiter **Lageskizze** in jeder Übung:
 Hinweis: Die Kacheln von tile.openstreetmap.org dürfen nicht massenhaft heruntergeladen werden; deshalb
 erzeugt die App selbst keine Offline-Karten.
 
-## 5. Dienstplan und Vorlagen
+## 5. Materialkompass
+
+**Einstellungen → Materialkompass**: Adresse der Schnittstelle und API-Schlüssel eintragen,
+*Speichern und prüfen*, dann *Jetzt abgleichen*.
+
+- **Fahrzeuge** werden über Bezeichnung oder Funkrufname zugeordnet; Status (z. B. „in Werkstatt“)
+  und Funkrufname werden übernommen. Fehlende Fahrzeuge bietet die App zum Anlegen an.
+- **Material** wird auf dem Gerät zwischengespeichert und steht in jeder Übung unter
+  *Material → Aus Materialkompass* zur Auswahl (auch ohne Verbindung).
+- **Reservierung**: Ein Administrator schaltet *Planer dürfen Fahrzeuge reservieren* ein. Dann zeigt die
+  Fahrzeugbesetzung je Fahrzeug *In Materialkompass reservieren*. Reservierungen sind dort
+  genehmigungspflichtig; der Status (angefragt / bestätigt / abgelehnt) wird angezeigt und lässt sich
+  aktualisieren oder stornieren.
+
+## 6. Dienstplan und Vorlagen
 
 - **Dienstplan**: Jahresübersicht nach Monaten, farbig nach Kategorie (Praxis, Theorie, Sonderdienst, Jugend). Den Aushang gibt es als PDF oder direkt zum Drucken.
 - **Vorlagen**: Aus einer Vorlage wird mit einem Klick eine neue Übung. Vorlagen lassen sich als Datei (`.uebung.json`) **exportieren und importieren**, z. B. für andere Wehren oder Ortsgruppen. Personen sind nie in der Datei. Fahrzeuge und Stichworte werden über ihren Namen zugeordnet.
 
-## 6. Datensicherung
+## 7. Datensicherung
 
 **Einstellungen → Datensicherung → Sichern** speichert eine komplette Kopie der Datenbank. Am besten regelmäßig sichern, z. B. auf einen USB-Stick.
 
 Zurückspielen: Programm beenden und die Sicherungsdatei als `uebungsplaner.sqlite` in den Datenordner (siehe oben) kopieren.
 
-## 7. Was noch fehlt (geplant)
+## 8. Mehrere Geräte und Tablets
 
-- Anbindung an Materialkompass (Material, Fahrzeuge, Reservierung mit Genehmigung)
+Siehe [`SERVER.md`](SERVER.md): Server einrichten, Benutzer und Rollen, Zugriff von zu Hause über VPN,
+Android-App für Tablets (nur ansehen).
+
+## 9. Was noch fehlt (geplant)
+
 - Import der Stichworttabelle Rheinland-Pfalz (sobald die Quelle vorliegt)
+- iPad-App (zum Verteilen ist ein Apple-Entwicklerkonto nötig; die App selbst ist vorbereitet)
