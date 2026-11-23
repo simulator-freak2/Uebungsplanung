@@ -1,0 +1,196 @@
+{
+  "id": "thw",
+  "name": "THW",
+  "qualifikationen": [
+    "Grundausbildung",
+    "Sprechfunker",
+    "Kraftfahrer CE",
+    "Truppführer",
+    "Gruppenführer",
+    "Zugführer",
+    "Motorsägenführer",
+    "Atemschutzgeräteträger",
+    "Bergungsräumgeräteführer",
+    "Ladekranführer",
+    "Sanitäter",
+    "THW-Jugend"
+  ],
+  "fuehrungsfunktionen": [
+    [
+      "Einsatzleiter",
+      "Zugführer"
+    ],
+    [
+      "Zugtruppführer",
+      "Zugführer"
+    ],
+    [
+      "Übungsleitung",
+      null
+    ],
+    [
+      "Sicherheitsbeauftragter",
+      "Gruppenführer"
+    ],
+    [
+      "Übungsbeobachter",
+      null
+    ],
+    [
+      "Mimenbetreuung",
+      "Sanitäter"
+    ]
+  ],
+  "fahrzeugvorlagen": [
+    {
+      "typ": "GKW",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Gruppenführer",
+          "Gruppenführer"
+        ],
+        [
+          "Kraftfahrer",
+          "Kraftfahrer CE"
+        ],
+        [
+          "Truppführer 1",
+          "Truppführer"
+        ],
+        [
+          "Helfer 1",
+          null
+        ],
+        [
+          "Helfer 2",
+          null
+        ],
+        [
+          "Truppführer 2",
+          "Truppführer"
+        ],
+        [
+          "Helfer 3",
+          null
+        ],
+        [
+          "Helfer 4",
+          null
+        ],
+        [
+          "Helfer 5",
+          null
+        ]
+      ],
+      "besetzungsmuster": {
+        "Gruppe (1/8)": [
+          "Gruppenführer",
+          "Kraftfahrer",
+          "Truppführer 1",
+          "Helfer 1",
+          "Helfer 2",
+          "Truppführer 2",
+          "Helfer 3",
+          "Helfer 4",
+          "Helfer 5"
+        ],
+        "Trupp (1/3)": [
+          "Gruppenführer",
+          "Kraftfahrer",
+          "Truppführer 1",
+          "Helfer 1"
+        ]
+      }
+    },
+    {
+      "typ": "MTW OV",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Fahrzeugführer",
+          "Truppführer"
+        ],
+        [
+          "Kraftfahrer",
+          "Kraftfahrer CE"
+        ],
+        [
+          "Helfer 1",
+          null
+        ],
+        [
+          "Helfer 2",
+          null
+        ],
+        [
+          "Helfer 3",
+          null
+        ],
+        [
+          "Helfer 4",
+          null
+        ]
+      ],
+      "besetzungsmuster": {
+        "Trupp (1/5)": [
+          "Fahrzeugführer",
+          "Kraftfahrer",
+          "Helfer 1",
+          "Helfer 2",
+          "Helfer 3",
+          "Helfer 4"
+        ]
+      }
+    },
+    {
+      "typ": "MzKW",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Gruppenführer",
+          "Gruppenführer"
+        ],
+        [
+          "Kraftfahrer",
+          "Kraftfahrer CE"
+        ],
+        [
+          "Truppführer",
+          "Truppführer"
+        ],
+        [
+          "Helfer 1",
+          null
+        ],
+        [
+          "Helfer 2",
+          null
+        ],
+        [
+          "Ladekranführer",
+          "Ladekranführer"
+        ]
+      ],
+      "besetzungsmuster": {
+        "Trupp (1/5)": [
+          "Gruppenführer",
+          "Kraftfahrer",
+          "Truppführer",
+          "Helfer 1",
+          "Helfer 2",
+          "Ladekranführer"
+        ]
+      }
+    }
+  ],
+  "sicherheitscheck": [
+    "Gefährdungsbeurteilung erstellt und mit allen Beteiligten besprochen",
+    "Sicherheitsbeauftragter benannt und eingewiesen",
+    "Persönliche Schutzausrüstung vollständig",
+    "Erste-Hilfe-Ausstattung und Notrufmöglichkeit vor Ort",
+    "Abbruchsignal festgelegt und bekannt gegeben („Übung Stopp“ über Funk)",
+    "Echte Einsätze: Einsatzbereitschaft während der Übung geklärt",
+    "Absicherung von Arbeitsbereichen (Last, Absturz, Verkehr)"
+  ]
+}

@@ -1,0 +1,376 @@
+{
+  "id": "feuerwehr",
+  "name": "Feuerwehr",
+  "qualifikationen": [
+    "Truppmann",
+    "Truppführer",
+    "Atemschutzgeräteträger",
+    "Maschinist",
+    "Sprechfunker",
+    "Technische Hilfeleistung",
+    "Gruppenführer",
+    "Zugführer",
+    "Verbandsführer",
+    "Sanitäter",
+    "Motorkettensäge",
+    "ABC-Einsatz",
+    "Absturzsicherung",
+    "Jugendflamme 1",
+    "Jugendflamme 2",
+    "Jugendflamme 3",
+    "Leistungsspange"
+  ],
+  "fuehrungsfunktionen": [
+    [
+      "Einsatzleiter",
+      "Zugführer"
+    ],
+    [
+      "Abschnittsleiter",
+      "Gruppenführer"
+    ],
+    [
+      "Übungsleitung",
+      null
+    ],
+    [
+      "Sicherheitsbeauftragter",
+      "Truppführer"
+    ],
+    [
+      "Übungsbeobachter",
+      null
+    ],
+    [
+      "Mimenbetreuung",
+      "Sanitäter"
+    ]
+  ],
+  "fahrzeugvorlagen": [
+    {
+      "typ": "HLF 20",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Gruppenführer",
+          "Gruppenführer"
+        ],
+        [
+          "Maschinist",
+          "Maschinist"
+        ],
+        [
+          "Melder",
+          null
+        ],
+        [
+          "Angriffstruppführer",
+          "Atemschutzgeräteträger"
+        ],
+        [
+          "Angriffstruppmann",
+          "Atemschutzgeräteträger"
+        ],
+        [
+          "Wassertruppführer",
+          "Truppführer"
+        ],
+        [
+          "Wassertruppmann",
+          null
+        ],
+        [
+          "Schlauchtruppführer",
+          "Truppführer"
+        ],
+        [
+          "Schlauchtruppmann",
+          null
+        ]
+      ],
+      "besetzungsmuster": {
+        "Gruppe (1/8)": [
+          "Gruppenführer",
+          "Maschinist",
+          "Melder",
+          "Angriffstruppführer",
+          "Angriffstruppmann",
+          "Wassertruppführer",
+          "Wassertruppmann",
+          "Schlauchtruppführer",
+          "Schlauchtruppmann"
+        ],
+        "Staffel (1/5)": [
+          "Gruppenführer",
+          "Maschinist",
+          "Angriffstruppführer",
+          "Angriffstruppmann",
+          "Wassertruppführer",
+          "Wassertruppmann"
+        ],
+        "Trupp (1/2)": [
+          "Gruppenführer",
+          "Maschinist",
+          "Angriffstruppführer"
+        ]
+      }
+    },
+    {
+      "typ": "LF 10",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Gruppenführer",
+          "Gruppenführer"
+        ],
+        [
+          "Maschinist",
+          "Maschinist"
+        ],
+        [
+          "Melder",
+          null
+        ],
+        [
+          "Angriffstruppführer",
+          "Atemschutzgeräteträger"
+        ],
+        [
+          "Angriffstruppmann",
+          "Atemschutzgeräteträger"
+        ],
+        [
+          "Wassertruppführer",
+          "Truppführer"
+        ],
+        [
+          "Wassertruppmann",
+          null
+        ],
+        [
+          "Schlauchtruppführer",
+          "Truppführer"
+        ],
+        [
+          "Schlauchtruppmann",
+          null
+        ]
+      ],
+      "besetzungsmuster": {
+        "Gruppe (1/8)": [
+          "Gruppenführer",
+          "Maschinist",
+          "Melder",
+          "Angriffstruppführer",
+          "Angriffstruppmann",
+          "Wassertruppführer",
+          "Wassertruppmann",
+          "Schlauchtruppführer",
+          "Schlauchtruppmann"
+        ],
+        "Staffel (1/5)": [
+          "Gruppenführer",
+          "Maschinist",
+          "Angriffstruppführer",
+          "Angriffstruppmann",
+          "Wassertruppführer",
+          "Wassertruppmann"
+        ]
+      }
+    },
+    {
+      "typ": "TSF-W",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Staffelführer",
+          "Gruppenführer"
+        ],
+        [
+          "Maschinist",
+          "Maschinist"
+        ],
+        [
+          "Angriffstruppführer",
+          "Atemschutzgeräteträger"
+        ],
+        [
+          "Angriffstruppmann",
+          "Atemschutzgeräteträger"
+        ],
+        [
+          "Wassertruppführer",
+          "Truppführer"
+        ],
+        [
+          "Wassertruppmann",
+          null
+        ]
+      ],
+      "besetzungsmuster": {
+        "Staffel (1/5)": [
+          "Staffelführer",
+          "Maschinist",
+          "Angriffstruppführer",
+          "Angriffstruppmann",
+          "Wassertruppführer",
+          "Wassertruppmann"
+        ]
+      }
+    },
+    {
+      "typ": "RW",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Fahrzeugführer",
+          "Gruppenführer"
+        ],
+        [
+          "Maschinist",
+          "Maschinist"
+        ],
+        [
+          "Truppführer",
+          "Technische Hilfeleistung"
+        ],
+        [
+          "Truppmann",
+          null
+        ]
+      ],
+      "besetzungsmuster": {
+        "Trupp (1/2)": [
+          "Fahrzeugführer",
+          "Maschinist",
+          "Truppführer"
+        ],
+        "Trupp verstärkt (1/3)": [
+          "Fahrzeugführer",
+          "Maschinist",
+          "Truppführer",
+          "Truppmann"
+        ]
+      }
+    },
+    {
+      "typ": "DLK 23/12",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Fahrzeugführer",
+          "Gruppenführer"
+        ],
+        [
+          "Maschinist",
+          "Maschinist"
+        ]
+      ],
+      "besetzungsmuster": {
+        "Trupp (1/1)": [
+          "Fahrzeugführer",
+          "Maschinist"
+        ]
+      }
+    },
+    {
+      "typ": "ELW 1",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Fahrzeugführer",
+          "Zugführer"
+        ],
+        [
+          "Führungsassistent",
+          "Sprechfunker"
+        ],
+        [
+          "Fahrer",
+          null
+        ]
+      ],
+      "besetzungsmuster": {
+        "Führungstrupp (1/1)": [
+          "Fahrzeugführer",
+          "Führungsassistent"
+        ],
+        "Führungstrupp (1/2)": [
+          "Fahrzeugführer",
+          "Führungsassistent",
+          "Fahrer"
+        ]
+      }
+    },
+    {
+      "typ": "MTW",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Fahrzeugführer",
+          "Truppführer"
+        ],
+        [
+          "Fahrer",
+          null
+        ],
+        [
+          "Mannschaft 1",
+          null
+        ],
+        [
+          "Mannschaft 2",
+          null
+        ],
+        [
+          "Mannschaft 3",
+          null
+        ],
+        [
+          "Mannschaft 4",
+          null
+        ],
+        [
+          "Mannschaft 5",
+          null
+        ],
+        [
+          "Mannschaft 6",
+          null
+        ],
+        [
+          "Mannschaft 7",
+          null
+        ]
+      ],
+      "besetzungsmuster": {
+        "Voll besetzt (1/8)": [
+          "Fahrzeugführer",
+          "Fahrer",
+          "Mannschaft 1",
+          "Mannschaft 2",
+          "Mannschaft 3",
+          "Mannschaft 4",
+          "Mannschaft 5",
+          "Mannschaft 6",
+          "Mannschaft 7"
+        ],
+        "Trupp (1/2)": [
+          "Fahrzeugführer",
+          "Fahrer",
+          "Mannschaft 1"
+        ]
+      }
+    }
+  ],
+  "sicherheitscheck": [
+    "Gefährdungsbeurteilung erstellt und mit allen Beteiligten besprochen",
+    "Sicherheitsbeauftragter benannt und eingewiesen",
+    "Persönliche Schutzausrüstung vollständig (inkl. Schnittschutz, Atemschutz falls nötig)",
+    "Schutz der Mimen (Decken, Splitterschutz, Gehörschutz)",
+    "Erste-Hilfe-Ausstattung und Notrufmöglichkeit vor Ort",
+    "Abbruchsignal festgelegt und bekannt gegeben („Übung Stopp“ über Funk)",
+    "Übungsgelände abgesichert, Verkehrsraum gesperrt",
+    "Echte Einsätze: Einsatzbereitschaft während der Übung geklärt"
+  ]
+}

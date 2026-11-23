@@ -1,0 +1,140 @@
+{
+  "id": "wasserwacht",
+  "name": "Wasserwacht",
+  "qualifikationen": [
+    "Rettungsschwimmer Bronze",
+    "Rettungsschwimmer Silber",
+    "Rettungsschwimmer Gold",
+    "Wasserretter",
+    "Bootsführer",
+    "Strömungsretter",
+    "Einsatztaucher",
+    "Sanitäter",
+    "Sprechfunker",
+    "Gruppenführer Wasserrettung",
+    "Zugführer Wasserrettung",
+    "Jugendrotkreuz"
+  ],
+  "fuehrungsfunktionen": [
+    [
+      "Einsatzleiter",
+      "Zugführer Wasserrettung"
+    ],
+    [
+      "Abschnittsleiter Wasser",
+      "Gruppenführer Wasserrettung"
+    ],
+    [
+      "Uferposten",
+      null
+    ],
+    [
+      "Übungsleitung",
+      null
+    ],
+    [
+      "Sicherheitsbeauftragter",
+      "Wasserretter"
+    ],
+    [
+      "Übungsbeobachter",
+      null
+    ],
+    [
+      "Mimenbetreuung",
+      "Sanitäter"
+    ]
+  ],
+  "fahrzeugvorlagen": [
+    {
+      "typ": "Motorrettungsboot (MRB)",
+      "art": "boot",
+      "funktionen": [
+        [
+          "Bootsführer",
+          "Bootsführer"
+        ],
+        [
+          "Bootsgast",
+          null
+        ],
+        [
+          "Wasserretter",
+          "Wasserretter"
+        ],
+        [
+          "Strömungsretter",
+          "Strömungsretter"
+        ]
+      ],
+      "besetzungsmuster": {
+        "Bootsbesatzung (1/2)": [
+          "Bootsführer",
+          "Bootsgast",
+          "Wasserretter"
+        ],
+        "Strömungseinsatz (1/3)": [
+          "Bootsführer",
+          "Bootsgast",
+          "Wasserretter",
+          "Strömungsretter"
+        ]
+      }
+    },
+    {
+      "typ": "GW-Wasserrettung",
+      "art": "fahrzeug",
+      "funktionen": [
+        [
+          "Gruppenführer",
+          "Gruppenführer Wasserrettung"
+        ],
+        [
+          "Fahrer",
+          null
+        ],
+        [
+          "Sanitäter",
+          "Sanitäter"
+        ],
+        [
+          "Einsatztaucher 1",
+          "Einsatztaucher"
+        ],
+        [
+          "Einsatztaucher 2",
+          "Einsatztaucher"
+        ],
+        [
+          "Signalmann",
+          "Wasserretter"
+        ]
+      ],
+      "besetzungsmuster": {
+        "Tauchgruppe (1/5)": [
+          "Gruppenführer",
+          "Fahrer",
+          "Sanitäter",
+          "Einsatztaucher 1",
+          "Einsatztaucher 2",
+          "Signalmann"
+        ],
+        "Wasserrettungstrupp (1/2)": [
+          "Gruppenführer",
+          "Fahrer",
+          "Sanitäter"
+        ]
+      }
+    }
+  ],
+  "sicherheitscheck": [
+    "Gefährdungsbeurteilung erstellt und mit allen Beteiligten besprochen",
+    "Sicherheitsbeauftragter benannt und eingewiesen",
+    "Alle am und im Wasser mit Rettungsweste bzw. Kälteschutz",
+    "Sicherungsposten am Ufer mit Wurfsack besetzt",
+    "Wassertemperatur, Strömung und Wetter geprüft",
+    "Erste-Hilfe-Ausstattung und Notrufmöglichkeit vor Ort",
+    "Abbruchsignal festgelegt und bekannt gegeben",
+    "Echte Einsätze: Einsatzbereitschaft während der Übung geklärt"
+  ]
+}

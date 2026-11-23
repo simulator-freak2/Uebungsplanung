@@ -1,0 +1,21 @@
+# Systemdienst für Linux / Raspberry Pi
+# 1. Programm nach /opt/uebungsplaner-server entpacken
+# 2. sudo useradd --system --home /var/lib/uebungsplaner uebungsplaner
+# 3. sudo mkdir -p /var/lib/uebungsplaner && sudo chown uebungsplaner /var/lib/uebungsplaner
+# 4. sudo cp uebungsplaner-server.service /etc/systemd/system/
+# 5. sudo systemctl enable --now uebungsplaner-server
+[Unit]
+Description=Übungsplaner-Server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=uebungsplaner
+ExecStart=/opt/uebungsplaner-server/bin/uebungsplaner_server --data /var/lib/uebungsplaner --port 8080
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/uebungsplaner
+
+[Install]
+WantedBy=multi-user.target

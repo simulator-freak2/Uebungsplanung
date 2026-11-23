@@ -1,0 +1,13 @@
+# Start:   docker compose up -d
+# Update:  docker compose pull && docker compose up -d
+services:
+  uebungsplaner:
+    image: ghcr.io/simulator-freak2/uebungsplaner-server:latest
+    # Alternativ selbst bauen:  build: .
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./daten:/daten
+    environment:
+      UEBUNGSPLANER_NAME: "Übungsplaner-Server"

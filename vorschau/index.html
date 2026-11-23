@@ -1,0 +1,638 @@
+<title>Übungsplaner Vorschau</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: Flutter-artige App-Shell – Navigationsleiste links (unten auf schmalen Geräten), Arbeitsfläche rechts */
+:root{
+  --bg:#f7f4f2; --surface:#ffffff; --surface2:#f0ebe8; --line:#e2d9d4;
+  --fg:#241c1a; --muted:#6c605b;
+  --red:#c8102e; --red-ink:#ffffff; --red-soft:#fbe3e6;
+  --yellow:#ffcc00; --yellow-ink:#2a2200; --yellow-soft:#fff5cc;
+  --ok:#1f7a45; --ok-soft:#e1f3e8; --warn:#a85d00; --warn-soft:#fff0dc; --water:#4a90c2;
+  --font-display:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;
+  --font-body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#171312; --surface:#221c1b; --surface2:#2c2524; --line:#3d3433;
+  --fg:#f3ecea; --muted:#b3a7a3;
+  --red:#ff5a6e; --red-ink:#2a0007; --red-soft:#4a1a21;
+  --yellow:#ffd633; --yellow-ink:#2a2200; --yellow-soft:#3f3510;
+  --ok:#5fcf8c; --ok-soft:#173523; --warn:#ffb457; --warn-soft:#45300f; --water:#5aa6dc; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171312; --surface:#221c1b; --surface2:#2c2524; --line:#3d3433;
+  --fg:#f3ecea; --muted:#b3a7a3;
+  --red:#ff5a6e; --red-ink:#2a0007; --red-soft:#4a1a21;
+  --yellow:#ffd633; --yellow-ink:#2a2200; --yellow-soft:#3f3510;
+  --ok:#5fcf8c; --ok-soft:#173523; --warn:#ffb457; --warn-soft:#45300f; --water:#5aa6dc; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:14px;line-height:1.5}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,[draggable]:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.app{display:grid;grid-template-columns:236px 1fr;min-height:100%}
+nav.rail{background:var(--surface);border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 14px}
+.logo{width:36px;height:36px;border-radius:8px;background:var(--red);display:grid;place-items:center;flex:none}
+.logo svg{width:22px;height:22px}
+.brand b{font-family:var(--font-display);font-size:19px;line-height:1.1}
+.brand small{display:block;color:var(--muted);font-size:12px}
+.navgrp{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:12px 12px 4px}
+.navbtn{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:999px;border:0;background:none;text-align:left;font-weight:500}
+.navbtn svg{width:20px;height:20px;flex:none}
+.navbtn:hover{background:var(--surface2)}
+.navbtn[aria-current="page"]{background:var(--red-soft);color:var(--red)}
+.rail .spacer{flex:1}
+.sync{font-size:12px;color:var(--muted);padding:10px 12px;border-top:1px solid var(--line);display:grid;gap:2px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px}
+main{min-width:0;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1200px;margin:0 auto;display:grid;gap:18px}
+.topbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;justify-content:space-between}
+h1{font-family:var(--font-display);font-size:30px;font-weight:700;margin:0;text-wrap:balance;line-height:1.15}
+h2{font-family:var(--font-display);font-size:20px;font-weight:600;margin:0 0 10px;text-wrap:balance}
+h3{font-size:14px;font-weight:600;margin:0 0 6px}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.orgswitch{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.orgswitch button{border:0;background:none;padding:7px 14px;font-weight:600;font-size:13px}
+.orgswitch button[aria-pressed="true"]{background:var(--red);color:var(--red-ink)}
+.btn{border:1px solid var(--line);background:var(--surface);padding:7px 13px;border-radius:999px;font-weight:600;font-size:13px;display:inline-flex;gap:7px;align-items:center;white-space:nowrap}
+.btn.primary{background:var(--red);border-color:var(--red);color:var(--red-ink)}
+.btn.yellow{background:var(--yellow);border-color:var(--yellow);color:var(--yellow-ink)}
+.btn.sm{padding:4px 10px;font-size:12px}
+.btn svg{width:16px;height:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;background:var(--surface2);white-space:nowrap}
+.chip.red{background:var(--red-soft);color:var(--red)}
+.chip.yel{background:var(--yellow-soft);color:var(--fg)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.list{display:grid}
+.row{display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;padding:11px 4px;border:0;border-top:1px solid var(--line);background:none;text-align:left;width:100%}
+.row:first-child{border-top:0}
+button.row:hover{background:var(--surface2)}
+.date{font-family:var(--font-display);text-align:center;line-height:1}
+.date b{display:block;font-size:24px}
+.date span{font-size:12px;text-transform:uppercase;color:var(--muted)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+td.c,th.c{text-align:center}
+.year{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.month{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface);min-height:110px}
+.month h3{font-family:var(--font-display);font-size:16px;margin-bottom:8px}
+.ev{display:block;width:100%;text-align:left;border:0;border-left:3px solid var(--red);background:var(--surface2);border-radius:4px;padding:4px 7px;margin-bottom:5px;font-size:12px}
+.ev.y{border-left-color:var(--yellow)} .ev.g{border-left-color:var(--muted)}
+.tabs{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--line)}
+.tab{border:0;background:none;padding:10px 11px;font-weight:600;font-size:13px;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--red);border-bottom-color:var(--red)}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:6px 14px;margin:0}
+.kv dt{color:var(--muted)} .kv dd{margin:0}
+.phase{display:grid;grid-template-columns:70px 1fr;gap:12px;padding:9px 0;border-top:1px dashed var(--line)}
+.phase:first-child{border-top:0}
+.phase .t{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.check{display:flex;gap:10px;align-items:flex-start;padding:5px 0}
+.check input{margin-top:3px;accent-color:var(--red)}
+/* Einteilung */
+.board{display:grid;grid-template-columns:250px 1fr;gap:16px;align-items:start}
+.pool{position:sticky;top:12px;display:grid;gap:8px;align-content:start;min-height:120px}
+.pool.drop-ok,.seat.drop-ok{outline:2px dashed var(--red);outline-offset:2px}
+.person{display:grid;gap:2px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--surface);cursor:grab;user-select:none;text-align:left;width:100%}
+.person b{font-weight:600;font-size:13px}
+.person .q{font-size:11px;color:var(--muted);line-height:1.3}
+.person[aria-pressed="true"]{border-color:var(--red);box-shadow:0 0 0 2px var(--red-soft)}
+.person.dragging{opacity:.4}
+.vehicle{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.vehicle header{background:var(--red);color:var(--red-ink);padding:8px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.vehicle header b{font-family:var(--font-display);font-size:17px}
+.vehicle header select{font:inherit;font-size:12px;padding:3px 6px;border-radius:6px;border:0;background:var(--surface);color:var(--fg)}
+.vehicle.lead header{background:var(--fg);color:var(--bg)}
+.vbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px 0}
+.seats{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:8px;padding:10px 12px 12px}
+.seat{border:1px dashed var(--line);border-radius:8px;padding:6px;background:var(--surface2);min-height:66px;display:grid;gap:4px;align-content:start}
+.seat .fn{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;padding:0 2px}
+.seat .fn i{font-style:normal;color:var(--red)}
+.seat.warn{border:1px solid var(--warn);background:var(--warn-soft)}
+.seat .why{font-size:11px;color:var(--warn);padding:0 2px}
+.seat .empty{font-size:12px;color:var(--muted);padding:4px 2px}
+/* Alarmplan */
+.gantt{display:grid;gap:0;min-width:640px;padding-right:24px}
+.grow{display:grid;grid-template-columns:200px 1fr;align-items:center;border-top:1px solid var(--line);min-height:44px}
+.grow .glbl{font-weight:600;font-size:13px;padding-right:10px}
+.grow .glbl small{display:block;font-weight:400;color:var(--muted)}
+.track{position:relative;height:44px}
+.seg{position:absolute;top:13px;height:18px;border-radius:4px}
+.seg.prep{background:var(--yellow)}
+.seg.drive{background:var(--red)}
+.mark{position:absolute;top:8px;width:3px;height:28px;background:var(--fg);border-radius:2px}
+.axis{position:relative;height:22px;margin-left:200px}
+.axis span{position:absolute;transform:translateX(-50%);font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.tick{position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+/* Rollenkarte */
+.card-role{border:2px solid var(--fg);border-radius:10px;padding:16px;background:var(--surface);display:grid;gap:10px;position:relative}
+.card-role .no{position:absolute;top:10px;right:14px;font-family:var(--font-display);font-size:30px;font-weight:700;color:var(--red)}
+.lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.rk3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.esc{display:grid;gap:6px}
+.esc div{display:grid;grid-template-columns:130px 1fr;gap:8px;border-left:4px solid var(--yellow);padding:4px 8px;background:var(--surface2);border-radius:0 6px 6px 0}
+.esc div:nth-child(2){border-left-color:var(--warn)}
+.esc div:nth-child(3){border-left-color:var(--red)}
+.esc b{font-size:12px}
+.esc small{display:block;color:var(--muted);font-size:11px}
+/* Alarmmeldung */
+.alarm{max-width:440px;border-radius:18px;border:1px solid var(--line);background:var(--surface);overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.alarm .ah{background:var(--red);color:var(--red-ink);padding:12px 16px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.alarm .ah b{font-family:var(--font-display);font-size:22px;line-height:1.1}
+.alarm .ub{background:var(--yellow);color:var(--yellow-ink);font-weight:700;letter-spacing:.14em;font-size:12px;text-align:center;padding:3px}
+.alarm dl{margin:0;padding:12px 16px;display:grid;grid-template-columns:130px 1fr;gap:8px 12px}
+.alarm dt{color:var(--muted);font-size:12px} .alarm dd{margin:0;font-weight:600}
+/* Karte */
+.mapwrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface2);position:relative}
+.mapwrap svg{display:block;width:100%;height:auto}
+.maptools{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap}
+.notice{background:var(--yellow-soft);border:1px solid var(--yellow);border-radius:10px;padding:10px 14px;font-size:13px}
+.field{display:grid;gap:4px}
+.field label{font-size:12px;font-weight:600;color:var(--muted)}
+.field input,.field select,.field textarea,td select,td input{font:inherit;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);width:100%}
+.toggle{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.toggle:first-of-type{border-top:0}
+.sw{width:42px;height:24px;border-radius:999px;background:var(--line);border:0;position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);transition:left .15s}
+.sw[aria-checked="true"]{background:var(--red)}
+.sw[aria-checked="true"]::after{left:21px}
+.mode{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.modecard{border:2px solid var(--line);border-radius:12px;padding:12px;background:var(--surface);text-align:left}
+.modecard[aria-pressed="true"]{border-color:var(--red)}
+.stat{display:grid;gap:2px}
+.stat b{font-family:var(--font-display);font-size:28px;line-height:1}
+.banner{background:var(--fg);color:var(--bg);border-radius:10px;padding:8px 14px;font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.split{display:grid;grid-template-columns:240px 1fr;gap:16px;align-items:start}
+.vlist{display:grid;gap:6px}
+.vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface);text-align:left;display:grid;gap:2px}
+.vitem[aria-current="true"]{border-color:var(--red);background:var(--red-soft)}
+.vitem b{font-family:var(--font-display);font-size:17px}
+.yes{color:var(--ok);font-weight:700}
+.rate{display:flex;gap:4px}
+.rate button{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:2px 8px;font-size:12px;font-weight:600;min-width:30px}
+.rate button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.lesson{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}
+.lesson:first-child{border-top:0}
+@media (max-width:900px){
+  .board,.split{grid-template-columns:1fr}
+  .pool{position:static;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .pool h3,.pool p{grid-column:1/-1}
+  .rk3{grid-template-columns:1fr 1fr}
+}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  nav.rail{position:fixed;inset:auto 0 0 0;height:auto;flex-direction:row;overflow-x:auto;overflow-y:hidden;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));border-right:0;border-top:1px solid var(--line);z-index:20}
+  .brand,.rail .spacer,.sync,.navgrp{display:none}
+  .navbtn{flex-direction:column;gap:2px;font-size:10.5px;padding:6px 8px;border-radius:12px;flex:none}
+  main{padding-bottom:96px}
+  .kv,.alarm dl{grid-template-columns:1fr}
+  .kv dt{margin-top:6px}
+  .row{grid-template-columns:52px 1fr}
+  .row .chips{grid-column:2}
+  .rk3{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+  <nav class="rail" id="rail" aria-label="Hauptnavigation"></nav>
+  <main><div class="wrap" id="view"></div></main>
+</div>
+
+<script>
+const I={
+  home:'<path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  ex:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
+  lib:'<path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l4 1-3 14-4-1z"/>',
+  ppl:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-4 3.4-6 6.5-6s5.7 2 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c2.8 0 4.7 1.7 5.5 5"/>',
+  set:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+  truck:'<path d="M2 7h11v9H2zM13 10h4l4 3v3h-8z"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+  bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  dl:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  up:'<path d="M12 20V9M7 14l5-5 5 5M5 4h14"/>',
+  back:'<path d="M15 5 8 12l7 7"/>',
+  ok:'<path d="M5 12l5 5 9-10"/>'
+};
+const ic=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${I[n]}</svg>`;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MONTHS=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+
+/* ================= Beispieldaten (fiktiv) ================= */
+const DATA={
+ fw:{
+  name:'Freiwillige Feuerwehr Musterstadt',short:'FF Musterstadt',units:['Löschzug 1','Löschzug 2','Jugendfeuerwehr'],
+  members:[
+   {n:'Hahn, Felix',p:'FW-0003',q:['Zugführer','Gruppenführer','Truppführer']},
+   {n:'Becker, Jonas',p:'FW-0012',q:['Gruppenführer','Truppführer','AGT','Maschinist']},
+   {n:'Schulz, Lena',p:'FW-0031',q:['Truppführer','AGT','Sprechfunker']},
+   {n:'Wagner, Tim',p:'FW-0044',q:['Truppmann','AGT']},
+   {n:'Hoffmann, Mia',p:'FW-0052',q:['Truppführer','Maschinist','THL']},
+   {n:'Klein, David',p:'FW-0060',q:['Truppmann','Sprechfunker']},
+   {n:'Wolf, Sara',p:'FW-0071',q:['Truppführer','AGT','THL']},
+   {n:'Neumann, Paul',p:'FW-0083',q:['Truppmann']},
+   {n:'Krüger, Emma',p:'FW-0090',q:['Truppführer','Sprechfunker']},
+   {n:'Schäfer, Max',p:'FW-0094',q:['Truppführer','Maschinist','THL','AGT']},
+   {n:'Jung, Laura',p:'FW-0101',q:['Truppmann','Sanitäter']},
+   {n:'Roth, Jan',p:'FW-0105',q:['Truppführer','AGT']},
+   {n:'Busch, Anna',p:'FW-0110',q:['Truppmann','Sprechfunker']},
+   {n:'Braun, Leon',p:'JF-0007',q:['Jugendflamme 2']}
+  ],
+  vehicles:[
+   {id:'hlf',k:'HLF 20',rn:'Florian Musterstadt 1/46-1',src:'Materialkompass',status:'einsatzbereit',
+    fns:[['Gruppenführer','Gruppenführer'],['Maschinist','Maschinist'],['Melder',''],['Angriffstruppführer','AGT'],['Angriffstruppmann','AGT'],['Wassertruppführer','Truppführer'],['Wassertruppmann',''],['Schlauchtruppführer','Truppführer'],['Schlauchtruppmann','']],
+    patterns:{'Gruppe (1/8)':['Gruppenführer','Maschinist','Melder','Angriffstruppführer','Angriffstruppmann','Wassertruppführer','Wassertruppmann','Schlauchtruppführer','Schlauchtruppmann'],'Staffel (1/5)':['Gruppenführer','Maschinist','Angriffstruppführer','Angriffstruppmann','Wassertruppführer','Wassertruppmann'],'Trupp (1/2)':['Gruppenführer','Maschinist','Angriffstruppführer']}},
+   {id:'rw',k:'RW',rn:'Florian Musterstadt 1/52-1',src:'Materialkompass',status:'einsatzbereit',
+    fns:[['Fahrzeugführer','Gruppenführer'],['Maschinist','Maschinist'],['Truppführer','THL'],['Truppmann','']],
+    patterns:{'Trupp (1/2)':['Fahrzeugführer','Maschinist','Truppführer'],'Trupp verstärkt (1/3)':['Fahrzeugführer','Maschinist','Truppführer','Truppmann']}},
+   {id:'elw',k:'ELW 1',rn:'Florian Musterstadt 1/10',src:'Materialkompass',status:'einsatzbereit',
+    fns:[['Fahrzeugführer','Zugführer'],['Führungsassistent','Sprechfunker']],patterns:{'Führungstrupp (1/1)':['Fahrzeugführer','Führungsassistent']}},
+   {id:'lf',k:'LF 10',rn:'Florian Musterstadt 2/44-1',src:'Materialkompass',status:'in Werkstatt',
+    fns:[['Gruppenführer','Gruppenführer'],['Maschinist','Maschinist'],['Angriffstruppführer','AGT'],['Angriffstruppmann','AGT'],['Wassertruppführer','Truppführer'],['Wassertruppmann','']],
+    patterns:{'Staffel (1/5)':['Gruppenführer','Maschinist','Angriffstruppführer','Angriffstruppmann','Wassertruppführer','Wassertruppmann']}}
+  ],
+  lead:[['Einsatzleiter','Zugführer'],['Übungsleitung',''],['Sicherheitsbeauftragter','Truppführer'],['Beobachter',''],['Mimenbetreuung','Sanitäter']],
+  keywords:[['B 1','Brand','Kleinbrand (Mülltonne, Hecke)','HLF','Ja'],['B 2','Brand','Mittelbrand, z. B. Wohnung','HLF, DLK, ELW 1','Ja'],['B 3 Y','Brand','Wohnungsbrand, Menschenleben in Gefahr','HLF, LF 10, DLK, ELW 1, RTW','Ja'],['TH 1','Hilfeleistung','Kleine technische Hilfe (Ölspur, Baum)','HLF','Nein'],['TH 2 – VU P eingeklemmt','Hilfeleistung','Verkehrsunfall, Person eingeklemmt','HLF, RW, ELW 1, RTW, NEF','Ja'],['ABC 1','Gefahrgut','Austritt geringer Mengen','HLF, GW-G','Ja'],['WASS 1','Wasser','Person im Wasser','HLF, DLRG-Boot','Ja']],
+  year:[[0,'08.01.','Unterweisung UVV & Jahresplanung','g'],[0,'22.01.','Atemschutz: Innenangriff','r'],[1,'05.02.','Funkübung BOS digital/analog','y'],[1,'19.02.','Pumpen & Wasserförderung','r'],[2,'04.03.','THL: Verkehrsunfall mit eingeklemmter Person','r','x'],[2,'18.03.','JF: Knoten & Stiche','y'],[3,'01.04.','Absturzsicherung','r'],[3,'15.04.','Erste Hilfe Auffrischung','g'],[4,'06.05.','Einsatzübung Gewerbegebiet','r'],[4,'20.05.','JF: Leistungsspange Vorbereitung','y'],[5,'03.06.','Vegetationsbrand','r'],[5,'17.06.','Gemeinsame Übung mit DLRG: Wasserrettung','y'],[6,'08.07.','Sommerpause / Gerätepflege','g'],[7,'26.08.','Gefahrgut ABC-Erstmaßnahmen','r'],[8,'09.09.','Hydrantenkontrolle','g'],[8,'23.09.','Großübung Kreisfeuerwehrverband','r'],[9,'07.10.','Atemschutz: Menschenrettung','r'],[10,'04.11.','Theorie: FwDV 3','g'],[11,'02.12.','Jahresabschluss & Ehrungen','g']],
+  lessons:[['Lagemeldung kam erst nach 12 Minuten','Atemschutz: Innenangriff, 22.01.','Funkübung 05.02.'],['Sicherheitstrupp nicht rechtzeitig bereitgestellt','Atemschutz: Innenangriff, 22.01.','in Planung übernommen'],['Wasserentnahme Hydrant Industriestr. schwer zugänglich','Pumpen & Wasserförderung, 19.02.','offen']],
+  ex:{
+   date:'04.03.2027',d:'04',m:'Mär',time:'19:00 – 21:30',title:'THL: Verkehrsunfall mit eingeklemmter Person',unit:'Löschzug 1',place:'Übungsgelände Bauhof, Industriestraße 12, Musterstadt',topic:'Technische Hilfeleistung',kw:'TH 2 – VU P eingeklemmt',
+   goals:['Sicheres Absichern der Einsatzstelle','Patientengerechte Rettung (Crash-Rettung oder schonende Rettung)','Zusammenarbeit Rettungssatz-Trupp und Sicherheitstrupp','Lagemeldung über Funk innerhalb von 5 Minuten (Erkenntnis aus 22.01.)'],
+   scenario:'PKW ist frontal gegen einen Baum geprallt. Fahrer eingeklemmt (Beine im Fußraum), Beifahrerin läuft verwirrt umher. Auslaufende Betriebsstoffe. Dunkelheit, leichter Regen.',
+   phases:[['19:00','Begrüßung, Sicherheitseinweisung, Ausgabe Rollenkarten'],['19:15','Übungsalarm über die Alarm-App'],['19:25','Erkundung, Absicherung, Brandschutz sicherstellen'],['19:40','Erstversorgung, Stabilisierung PKW; Nachalarmierung LF 10'],['20:00','Rettungsöffnung schaffen, Rettung'],['20:45','Rückbau, Gerätepflege'],['21:00','Nachbesprechung']],
+   assign:{hlf:{pat:'Gruppe (1/8)',s:{'Gruppenführer':'Becker, Jonas','Maschinist':'Hoffmann, Mia','Melder':'Klein, David','Angriffstruppführer':'Schulz, Lena','Angriffstruppmann':'Wagner, Tim','Wassertruppführer':'Wolf, Sara','Wassertruppmann':'Neumann, Paul'}},
+           rw:{pat:'Trupp (1/2)',s:{'Fahrzeugführer':'Krüger, Emma','Maschinist':'Schäfer, Max'}},
+           elw:{pat:'Führungstrupp (1/1)',s:{}},
+           _lead:{s:{'Einsatzleiter':'Hahn, Felix','Mimenbetreuung':'Jung, Laura'}}},
+   alarmplan:[['HLF 20','Fahrzeug','19:15','19:20','19:25','Erstalarm'],['RW','Fahrzeug','19:15','19:22','19:28','Erstalarm'],['ELW 1','Fahrzeug','19:15','19:18','19:24','Erstalarm'],['Angriffstrupp (HLF)','Trupp','19:26','','19:32','Einsatz nach Absicherung, Freigabe durch GF'],['Sicherheitstrupp (RW)','Trupp','19:30','','19:35','Bereitstellung am Fahrzeug'],['LF 10','Fahrzeug','19:40','19:46','19:55','Nachalarmierung durch Einsatzleiter: Ausleuchtung']],
+   radio:[['Florian Musterstadt 1/46-1','HLF 20','BOS digital','DMO 307','Einsatzabschnitt Rettung'],['Florian Musterstadt 1/52-1','RW','BOS digital','DMO 307','Technik'],['Florian Musterstadt 1/10','ELW 1','BOS digital','TMO ÜBUNG-1','Verbindung Leitstelle (simuliert)'],['Angriffstrupp','Handfunkgerät','BOS analog','2-m-Band, Kanal 34','Truppfunk']],
+   roles:[
+    {no:1,name:'Thomas Berger',dob:'14.05.1981',age:45,pre:'Bluthochdruck',ill:'Diabetes Typ 2',sym:'Starke Schmerzen rechtes Bein, Schwindel, Schweißausbruch',inj:'Unterschenkelfraktur rechts, Platzwunde Stirn',story:'Auf dem Heimweg von der Spätschicht kurz eingenickt und von der Fahrbahn abgekommen. Ehefrau saß auf dem Beifahrersitz.',
+     esc:[['Stufe 1','Beginn','Ansprechbar, stöhnt, fragt nach seiner Frau'],['Stufe 2','ohne Betreuung > 5 Min.','Wird panisch, versucht selbst auszusteigen'],['Stufe 3','auf Zeichen der Übungsleitung','Wird schläfrig, antwortet verlangsamt (Unterzuckerung)']]},
+    {no:2,name:'Sabine Berger',dob:'02.09.1985',age:41,pre:'keine',ill:'Asthma',sym:'Schmerzen beim Atmen, Zittern',inj:'Prellung Brustkorb (Gurtmarke)',story:'Beifahrerin. Konnte selbst aussteigen. Steht unter Schock.',
+     esc:[['Stufe 1','Beginn','Läuft verwirrt um das Fahrzeug, will zu ihrem Mann'],['Stufe 2','wenn niemand sie betreut','Atemnot, sucht ihr Asthmaspray'],['Stufe 3','bei gezielter Ansprache','Beruhigt sich, setzt sich hin']]}],
+   material:[['Hydraulischer Rettungssatz','RW','1','Materialkompass'],['Rettungsplattform','RW','1','Materialkompass'],['Unterbaumaterial / Stab-Fast','HLF 20','1','Materialkompass'],['Glasmanagement-Set','HLF 20','1','Materialkompass'],['Bindemittel','HLF 20','2 Sack','Materialkompass'],['Übungs-PKW (Schrott)','Bauhof','1','manuell'],['Kunstblut, Schminkset','Übungskiste','1','manuell']],
+   alarm:{addr:'Industriestraße 12, 12345 Musterstadt (Bauhof)',melder:'Übungsleitung – Zeuge auf der Straße',fz:'HLF 20 (1/46-1), RW (1/52-1), ELW 1 (1/10)'},
+   checks:['Gefährdungsbeurteilung erstellt und besprochen','Sicherheitsbeauftragter benannt','Persönliche Schutzausrüstung vollständig (inkl. Schnittschutz)','Glassplitter-Schutz für Mimen','Erste-Hilfe-Ausstattung und Notruf-Möglichkeit vor Ort','Abbruchsignal festgelegt: „Übung Stopp“ über Funk'],
+   observe:['Absicherung der Einsatzstelle','Erkundung und Lagemeldung','Betreuung der Patienten','Einsatz des Rettungssatzes','Funkdisziplin','Eigensicherung'],
+   debrief:{good:['Absicherung nach 4 Minuten vollständig','Gute Patientenbetreuung durch den Melder'],bad:['Rettungsöffnung zu früh begonnen, Glasmanagement fehlte','Lagemeldung erneut zu spät (8 Min.)'],todo:[['Glasmanagement als eigene Station üben','Becker, Jonas','in nächste Übung'],['Funk: Musterlagemeldung als Karte ins Fahrzeug','Krüger, Emma','offen']]}
+  }
+ },
+ dlrg:{
+  name:'DLRG Ortsgruppe Musterstadt e. V.',short:'DLRG OG Musterstadt',units:['Wasserrettungszug','Wachdienst','DLRG-Jugend'],
+  members:[
+   {n:'Lange, Ella',p:'D-1177',q:['Gruppenführer WR','DRSA Silber','Sprechfunker']},
+   {n:'Fischer, Anna',p:'D-1103',q:['DRSA Silber','Wasserretter','Bootsführer A','Strömungsretter 2']},
+   {n:'Meyer, Lukas',p:'D-1120',q:['DRSA Silber','Bootsführer A','Sprechfunker']},
+   {n:'Schmitt, Jana',p:'D-1134',q:['DRSA Gold','Wasserretter','Sanitäter']},
+   {n:'Weber, Noah',p:'D-1141',q:['DRSA Silber','Strömungsretter 1']},
+   {n:'Richter, Pia',p:'D-1158',q:['DRSA Silber','Wasserretter','Einsatztaucher']},
+   {n:'Koch, Ben',p:'D-1162',q:['DRSA Bronze']},
+   {n:'Vogt, Hannah',p:'D-1180',q:['DRSA Silber','Wasserretter','Einsatztaucher']},
+   {n:'Arnold, Tom',p:'D-1185',q:['DRSA Silber','Sprechfunker']},
+   {n:'Zimmer, Finn',p:'J-0021',q:['Juniorretter']}
+  ],
+  vehicles:[
+   {id:'mzb',k:'MZB Musterstadt 1',rn:'Pelikan Musterstadt 87/1',src:'Materialkompass',status:'einsatzbereit',
+    fns:[['Bootsführer','Bootsführer A'],['Bootsgast',''],['Wasserretter','Wasserretter'],['Strömungsretter','Strömungsretter 2']],
+    patterns:{'Bootsbesatzung (1/2)':['Bootsführer','Bootsgast','Wasserretter'],'Strömungseinsatz (1/3)':['Bootsführer','Bootsgast','Wasserretter','Strömungsretter']}},
+   {id:'gw',k:'GW-Wasserrettung',rn:'Pelikan Musterstadt 87/2',src:'Materialkompass',status:'einsatzbereit',
+    fns:[['Gruppenführer','Gruppenführer WR'],['Fahrer',''],['Sanitäter','Sanitäter'],['Einsatztaucher 1','Einsatztaucher'],['Einsatztaucher 2','Einsatztaucher'],['Signalmann','Wasserretter']],
+    patterns:{'Tauchgruppe (1/5)':['Gruppenführer','Fahrer','Sanitäter','Einsatztaucher 1','Einsatztaucher 2','Signalmann'],'Wasserrettungstrupp (1/2)':['Gruppenführer','Fahrer','Sanitäter']}}
+  ],
+  lead:[['Einsatzleiter','Gruppenführer WR'],['Abschnittsleiter Wasser','Wasserretter'],['Uferposten',''],['Übungsleitung',''],['Beobachter','']],
+  keywords:[['WASS 1','Wasserrettung','Person im Wasser, Ort bekannt','GW-WR, MZB','Ja'],['WASS 2 – Person vermisst','Wasserrettung','Person im Wasser vermisst','GW-WR, MZB, Taucher','Ja'],['WASS STR','Strömung','Person in Fließgewässer','GW-WR, MZB, Strömungsretter','Ja'],['EIS 1','Eisrettung','Person im Eis eingebrochen','GW-WR, Eisrettungsschlitten','Ja'],['HW 1','Hochwasser','Unterstützung bei Hochwasser','GW-WR, MZB, MTW','Nein'],['SAN 1','Sanitätsdienst','Hilfeleistung an der Badestelle','Wachstation','Nein']],
+  year:[[0,'12.01.','Jahresplanung & Unterweisung','g'],[1,'09.02.','Eisrettung am Stadtweiher','r'],[2,'09.03.','Funkausbildung BOS & Betriebsfunk','y'],[3,'13.04.','Bootsdienst: Manöver & Anlegen','r'],[4,'04.05.','DRSA-Wiederholung Freibad','y'],[4,'25.05.','Strömungsrettung an der Wehr','r'],[5,'17.06.','Gemeinsame Übung mit FF: Wasserrettung','y'],[5,'29.06.','Vermisstensuche Badesee','r','x'],[6,'13.07.','Wachdienst-Einweisung Saison','g'],[7,'10.08.','Hochwasserlage mit Katastrophenschutz','r'],[8,'14.09.','Taucherübung: Suchmuster','r'],[9,'12.10.','Jugend: Rettungsschwimmen spielerisch','y'],[10,'09.11.','San-Fortbildung','g'],[11,'07.12.','Jahresabschluss','g']],
+  lessons:[['Uferposten ohne Funkgerät eingesetzt','Eisrettung, 09.02.','in Planung übernommen'],['Suchmuster beim Boot nicht abgesprochen','Bootsdienst, 13.04.','in nächste Übung'],['Übergabe an Rettungsdienst ohne Übergabeschema','Strömungsrettung, 25.05.','offen']],
+  ex:{
+   date:'29.06.2027',d:'29',m:'Jun',time:'18:00 – 21:00',title:'Vermisstensuche Badesee',unit:'Wasserrettungszug',place:'Badesee Musterstadt, Nordufer (Steg 2)',topic:'Wasserrettung / Suche',kw:'WASS 2 – Person vermisst',
+   goals:['Strukturierte Oberflächensuche mit Boot und Wasserrettern','Suchabschnitt mit Uferposten einrichten (Uferposten mit Funkgerät, Erkenntnis aus 09.02.)','Übergabe an den Rettungsdienst nach Schema','Kommunikation Boot – Ufer – Einsatzleitung'],
+   scenario:'Zeugen melden ein Kind, das zuletzt vor ca. 10 Minuten im Bereich der Badeinsel gesehen wurde. Mutter am Ufer aufgelöst. Sicht im Wasser ca. 1 m, leichter Wind aus West.',
+   phases:[['18:00','Einweisung, Sicherheit, Ausgabe Rollenkarten'],['18:20','Übungsalarm über die Alarm-App'],['18:30','Boot zu Wasser, Uferposten einrichten'],['18:45','Oberflächensuche nach Suchmuster'],['19:30','Fund (Übungspuppe), Rettung, Übergabe'],['20:15','Rückbau, Bootspflege'],['20:40','Nachbesprechung']],
+   assign:{mzb:{pat:'Bootsbesatzung (1/2)',s:{'Bootsführer':'Meyer, Lukas','Bootsgast':'Koch, Ben','Wasserretter':'Fischer, Anna'}},
+           gw:{pat:'Tauchgruppe (1/5)',s:{'Gruppenführer':'Lange, Ella','Fahrer':'Arnold, Tom','Sanitäter':'Schmitt, Jana','Einsatztaucher 1':'Richter, Pia','Signalmann':'Weber, Noah'}},
+           _lead:{s:{'Uferposten':'Zimmer, Finn'}}},
+   alarmplan:[['GW-Wasserrettung','Fahrzeug','18:20','18:26','18:32','Erstalarm'],['MZB 1','Boot','18:20','18:35','18:45','Slippen am Steg 2, dann Suchabschnitt A'],['Uferposten Nord','Trupp','18:35','','18:42','Abruf durch Einsatzleiter'],['Strömungsretter-Trupp','Trupp','18:50','','18:55','Bereitstellung als Sicherung'],['Rettungsdienst (simuliert)','Fahrzeug','19:30','19:31','19:40','Nachforderung nach Fund']],
+   radio:[['Pelikan Musterstadt 87/1','MZB 1','BOS digital','DMO 315','Suche auf dem Wasser'],['Pelikan Musterstadt 87/2','GW-WR','BOS digital','DMO 315','Einsatzleitung'],['Uferposten Nord','Handfunkgerät','DLRG-Betriebsfunk','Kanal 3','Beobachtung'],['Einsatzleitung','Fahrzeugfunk','BOS analog','4-m-Band, Kanal 447','Verbindung Leitstelle (simuliert)']],
+   roles:[
+    {no:1,name:'Katrin Vogel',dob:'11.11.1989',age:37,pre:'keine',ill:'keine',sym:'Hyperventilation, Kribbeln in den Händen',inj:'keine',story:'Ihr Sohn Max (8) wollte zur Badeinsel schwimmen. Sie hat ihn beim Telefonieren aus den Augen verloren.',
+     esc:[['Stufe 1','Beginn','Aufgelöst, zeigt auf wechselnde Stellen im See'],['Stufe 2','ohne Betreuung > 3 Min.','Will selbst ins Wasser, muss zurückgehalten werden'],['Stufe 3','auf Zeichen der Übungsleitung','Hyperventiliert, braucht Betreuung durch Sanitäter']]},
+    {no:2,name:'Herbert Lohmann',dob:'03.03.1958',age:69,pre:'Herzschwäche',ill:'keine',sym:'zunächst keine',inj:'keine',story:'Saß am Ufer und hat das Kind zuletzt an der Badeinsel gesehen. Rotes Badeshirt.',
+     esc:[['Stufe 1','Beginn','Ruhig, gibt Auskunft nur auf Nachfrage'],['Stufe 2','bei Hektik','Wird unsicher, widerspricht sich bei der Uhrzeit'],['Stufe 3','auf Zeichen der Übungsleitung','Klagt über Engegefühl in der Brust']]}],
+   material:[['Motorrettungsboot MZB 1','Bootshaus','1','Materialkompass'],['Rettungsbrett','GW-WR','2','Materialkompass'],['Wurfsack','GW-WR','4','Materialkompass'],['Schwimmwesten 150 N','GW-WR','8','Materialkompass'],['Übungspuppe (Kind)','Lager','1','manuell'],['Bojen zur Abschnittsmarkierung','Lager','6','manuell']],
+   alarm:{addr:'Badesee Musterstadt, Nordufer Steg 2, 12345 Musterstadt',melder:'Übungsleitung – Badegast',fz:'GW-WR (87/2), MZB 1 (87/1)'},
+   checks:['Gefährdungsbeurteilung erstellt und besprochen','Sicherheitsbeauftragter benannt','Alle im Wasser mit Schwimmweste bzw. Kälteschutz','Sicherungsposten am Ufer mit Wurfsack','Wassertemperatur und Wetter geprüft','Abbruchsignal festgelegt: dreimal Pfiff + „Übung Stopp“'],
+   observe:['Uferposten eingerichtet und besetzt','Suchmuster abgesprochen und eingehalten','Kommunikation Boot – Ufer','Eigensicherung im Wasser','Übergabe an den Rettungsdienst'],
+   debrief:{good:['Boot nach 15 Minuten im Suchabschnitt','Uferposten hatte diesmal Funk'],bad:['Suchmuster wurde nach Fund nicht abgemeldet','Mutter zu lange ohne Betreuung'],todo:[['Betreuung von Angehörigen als eigene Funktion einplanen','Lange, Ella','in nächste Übung'],['Übergabeschema als Karte ins Boot','Schmitt, Jana','offen']]}
+  }
+ }
+};
+
+/* ================= Zustand ================= */
+let S={org:'fw',view:'start',tab:'plan',veh:null,pick:null,remote:true,mk:true,res:true,freigabe:true,maps:'beides',mode:'netz',rate:{}};
+try{const o=localStorage.getItem('up-org');if(o==='fw'||o==='dlrg')S.org=o;}catch(e){}
+const D=()=>DATA[S.org];
+const EX=()=>D().ex;
+const qOf=n=>(D().members.find(m=>m.n===n)||{q:[]}).q;
+
+const NAV=[['Planung'],['start','Übersicht','home'],['plan','Dienstplan','cal'],['uebungen','Übungen','ex'],['vorlagen','Vorlagen','lib'],['Stammdaten'],['fahrzeuge','Fahrzeuge & Funktionen','truck'],['stichworte','Alarmstichworte','bell'],['personal','Personal','ppl'],['System'],['einst','Einstellungen','set']];
+
+function rail(){
+  document.getElementById('rail').innerHTML=`
+   <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#ffcc00" stroke-width="2.2" stroke-linecap="round"><path d="M5 4h10l4 4v12H5z"/><path d="M8 12l3 3 5-6"/></svg></div><div><b>Übungsplaner</b><small>${esc(D().short)}</small></div></div>
+   ${NAV.map(n=>n.length===1?`<div class="navgrp">${n[0]}</div>`:`<button class="navbtn" data-nav="${n[0]}" ${S.view===n[0]||(n[0]==='uebungen'&&S.view==='detail')?'aria-current="page"':''}>${ic(n[2])}<span>${n[1]}</span></button>`).join('')}
+   <div class="spacer"></div>
+   <div class="sync"><span><span class="dot"></span>${S.mode==='netz'?'Mit Server abgeglichen':'Nur lokal'}</span><span>${S.mode==='netz'?'Server im Gerätehaus · vor 2 Min.':'Daten auf diesem Gerät'}</span></div>`;
+}
+function head(title,sub,actions=''){
+  return `<div class="topbar"><div style="min-width:0"><div class="eyebrow">${esc(D().name)}</div><h1>${title}</h1>${sub?`<div class="muted">${sub}</div>`:''}</div>
+  <div class="actions">${actions}<div class="orgswitch" role="group" aria-label="Organisation (nur Vorschau)"><button data-org="fw" aria-pressed="${S.org==='fw'}">Feuerwehr</button><button data-org="dlrg" aria-pressed="${S.org==='dlrg'}">DLRG</button></div></div></div>`;
+}
+const exRow=(m,d,t,i,x)=>`<button class="row" data-open="${x?'1':''}"><div class="date"><b>${d.slice(0,2)}</b><span>${MONTHS[m].slice(0,3)}</span></div><div><b>${esc(t)}</b><div class="muted">${D().units[i%D().units.length]}</div></div><div class="chips">${x?(S.freigabe?'<span class="chip yel">Freigabe ausstehend</span>':'<span class="chip red">Ausgearbeitet</span>'):'<span class="chip">Entwurf</span>'}</div></button>`;
+
+/* ================= Ansichten ================= */
+function vStart(){
+  const d=D(),k=d.year.findIndex(y=>y[4]);
+  return head('Übersicht','Vorschau mit fiktiven Beispieldaten')+`
+  <div class="banner"><span>VORSCHAU – es wird nichts gespeichert. Oben rechts zwischen Feuerwehr- und DLRG-Profil umschalten.</span><span>Später: Flutter-App für Windows, macOS, Linux, iPad, Android</span></div>
+  <div class="grid3">
+   <div class="panel stat"><span class="eyebrow">Dienstplan 2027</span><b class="num">${d.year.length}</b><span class="muted">Termine</span></div>
+   <div class="panel stat"><span class="eyebrow">Fahrzeuge</span><b class="num">${d.vehicles.length}</b><span class="muted">${d.vehicles.filter(v=>v.status!=='einsatzbereit').length} nicht einsatzbereit (Materialkompass)</span></div>
+   <div class="panel stat"><span class="eyebrow">Offene Erkenntnisse</span><b class="num">${d.lessons.filter(l=>l[2]==='offen').length}</b><span class="muted">aus Nachbesprechungen</span></div>
+  </div>
+  <div class="grid2">
+   <div class="panel"><h2>Nächste Übungen</h2><div class="list">${d.year.slice(k,k+4).map((y,i)=>exRow(y[0],y[1],y[2],i,y[4])).join('')}</div></div>
+   <div class="panel"><h2>Erkenntnisse aus Nachbesprechungen</h2><p class="muted small" style="margin:-4px 0 6px">Grundlage für die weitere Übungsplanung</p>
+    ${d.lessons.map(([t,src,st])=>`<div class="lesson"><span class="chip ${st==='offen'?'warn':st==='in Planung übernommen'?'ok':'yel'}">${st}</span><div><b>${esc(t)}</b><div class="muted small">aus: ${esc(src)}</div></div>${st==='offen'?'<button class="btn sm">In Übung übernehmen</button>':'<span></span>'}</div>`).join('')}
+   </div>
+  </div>`;
+}
+function vPlan(){
+  const d=D();
+  return head('Jahresdienstplan 2027','Klick auf den markierten Termin öffnet die ausgearbeitete Beispielübung',`<button class="btn">${ic('dl')}PDF-Aushang</button><button class="btn primary">${ic('plus')}Termin</button>`)+`
+  <div class="chips"><span class="chip red">Praxis</span><span class="chip yel">Sonderdienst / gemeinsam / Jugend</span><span class="chip">Theorie / Organisation</span></div>
+  <div class="year">${MONTHS.map((mn,i)=>`<div class="month"><h3>${mn}</h3>${d.year.filter(y=>y[0]===i).map(([,dd,t,c,x])=>`<button class="ev ${c==='y'?'y':c==='g'?'g':''}" data-open="${x?'1':''}"><b class="num">${dd}</b> ${esc(t)}${x?' ›':''}</button>`).join('')||'<span class="muted small">–</span>'}</div>`).join('')}</div>`;
+}
+function vList(){
+  const d=D();
+  return head('Übungen','Alle geplanten und durchgeführten Übungen',`<button class="btn">${ic('lib')}Aus Vorlage</button><button class="btn primary">${ic('plus')}Neue Übung</button>`)+
+  `<div class="panel"><div class="list">${d.year.map((y,i)=>exRow(y[0],y[1],y[2],i,y[4])).join('')}</div></div>`;
+}
+
+const TABS=[['plan','Übungsplan'],['karte','Lageskizze'],['einteilung','Fahrzeugbesetzung'],['alarmplan','Alarmierungsplan'],['alarm','Alarmmeldung'],['funk','Funkplan'],['rollen','Rollenkarten'],['material','Material'],['beob','Beobachtungsbogen'],['nach','Nachbesprechung']];
+
+function tabPlan(e){
+  return `<div class="grid2">
+   <div class="panel"><h2>Eckdaten</h2><dl class="kv">
+    <dt>Datum</dt><dd class="num">${e.date}, ${e.time}</dd><dt>Ort</dt><dd>${esc(e.place)}</dd><dt>Einheit</dt><dd>${e.unit}</dd><dt>Thema</dt><dd>${e.topic}</dd>
+    <dt>Alarmstichwort</dt><dd><span class="chip red">${esc(e.kw)}</span> <span class="muted small">aus Stichwortdatenbank</span></dd>
+    <dt>Übungsleitung</dt><dd>${esc(Object.values(EX().assign._lead.s)[0]||'–')} <span class="muted small">(aus Führungsfunktionen)</span></dd></dl></div>
+   <div class="panel"><h2>Lernziele</h2><ul style="margin:0;padding-left:18px">${e.goals.map(g=>`<li>${esc(g)}</li>`).join('')}</ul><h2 style="margin-top:14px">Lage</h2><p style="margin:0">${esc(e.scenario)}</p></div>
+  </div>
+  <div class="grid2">
+   <div class="panel"><h2>Ablauf</h2>${e.phases.map(([t,x])=>`<div class="phase"><span class="t num">${t}</span><span>${esc(x)}</span></div>`).join('')}</div>
+   <div class="panel"><h2>Sicherheit & Gefährdungsbeurteilung <span class="chip red">Pflicht</span></h2>
+    ${e.checks.map((c,i)=>`<label class="check"><input type="checkbox" id="chk-${S.org}-${i}" ${i<5?'checked':''}><span>${esc(c)}</span></label>`).join('')}
+    <p class="muted small" style="margin:8px 0 0">${S.freigabe?'Die Übung kann erst nach vollständiger Checkliste zur Freigabe gegeben werden.':'Freigabe ist in den Einstellungen abgeschaltet. Die Checkliste bleibt Pflicht.'}</p></div>
+  </div>`;
+}
+
+function personChip(n,from){
+  const q=qOf(n);
+  return `<button class="person" draggable="true" data-person="${esc(n)}" data-from="${esc(from)}" aria-pressed="${S.pick===n}"><b>${esc(n)}</b><span class="q">${esc(q.join(' · ')||'keine Qualifikation')}</span></button>`;
+}
+function seatHtml(vid,fn,need){
+  const a=EX().assign[vid]||{s:{}}; const p=a.s[fn]; const bad=need&&p&&!qOf(p).includes(need);
+  return `<div class="seat ${bad?'warn':''}" data-drop="${vid}|${esc(fn)}"><div class="fn">${esc(fn)}${need?` <i title="benötigte Qualifikation">· ${esc(need)}</i>`:''}</div>${p?personChip(p,vid+'|'+fn):'<div class="empty">hierher ziehen</div>'}${bad?`<div class="why">fehlt: ${esc(need)}</div>`:''}</div>`;
+}
+function tabEinteilung(){
+  const d=D(),e=EX();
+  const used=new Set();Object.values(e.assign).forEach(a=>Object.values(a.s).forEach(n=>used.add(n)));
+  const free=d.members.filter(m=>!used.has(m.n));
+  const vs=d.vehicles.filter(v=>e.assign[v.id]);
+  return `<p class="muted" style="margin:0">Personen per Drag &amp; Drop zwischen Liste und Funktionen verschieben. Auf dem Tablet: Person antippen, dann Funktion antippen. Fehlt die nötige Qualifikation, wird die Funktion gelb markiert.</p>
+  <div class="board">
+   <div class="panel pool" data-drop="pool"><h3>Verfügbar (${free.length})</h3>${free.map(m=>personChip(m.n,'pool')).join('')||'<p class="muted small" style="margin:0">Alle eingeteilt.</p>'}</div>
+   <div style="display:grid;gap:14px;min-width:0">
+    <div class="vehicle lead"><header><b>Führungs- und Sonderfunktionen</b><span class="small">fahrzeugunabhängig</span></header>
+     <div class="seats">${d.lead.map(([f,q])=>seatHtml('_lead',f,q)).join('')}</div></div>
+    ${vs.map(v=>{const a=e.assign[v.id];const pat=v.patterns[a.pat]||Object.values(v.patterns)[0];const fq=Object.fromEntries(v.fns);
+     return `<div class="vehicle"><header><b>${v.k}</b><span class="small">${v.rn}</span>
+      <select data-pat="${v.id}" aria-label="Besetzungsmuster ${v.k}">${Object.keys(v.patterns).map(p=>`<option ${p===a.pat?'selected':''}>${p}</option>`).join('')}</select></header>
+      <div class="vbar"><span class="chip ${v.status==='einsatzbereit'?'ok':'warn'}">${v.status}</span>${S.res&&S.mk?'<span class="chip ok">✓ In Materialkompass reserviert, '+e.time+'</span>':S.mk?'<button class="btn sm">In Materialkompass reservieren</button>':''}<span class="muted small">${Object.keys(a.s).filter(f=>pat.includes(f)).length} von ${pat.length} besetzt</span></div>
+      <div class="seats">${pat.map(f=>seatHtml(v.id,f,fq[f])).join('')}</div></div>`}).join('')}
+    <button class="btn" style="justify-self:start">${ic('plus')}Fahrzeug hinzufügen</button>
+   </div>
+  </div>`;
+}
+const toMin=t=>{const[h,m]=t.split(':').map(Number);return h*60+m};
+function tabAlarmplan(e){
+  const rows=e.alarmplan;const all=rows.flatMap(r=>[r[2],r[3],r[4]].filter(Boolean).map(toMin));
+  const lo=Math.floor((Math.min(...all)-5)/10)*10,hi=Math.ceil((Math.max(...all)+5)/10)*10,pc=t=>((toMin(t)-lo)/(hi-lo)*100).toFixed(2)+'%';
+  const ticks=[];for(let t=lo;t<=hi;t+=10)ticks.push(t);
+  const fmt=t=>String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');
+  return `<div class="panel"><h2>Wer wird wann alarmiert, rückt aus und geht in den Einsatz?</h2>
+   <div class="legend" style="margin-bottom:10px"><span><i style="background:var(--yellow)"></i>Alarmierung bis Ausrücken / Vorbereitung</span><span><i style="background:var(--red)"></i>Anfahrt</span><span><i style="background:var(--fg);width:3px"></i>Am Einsatzort / Einsatz ab</span></div>
+   <div class="tw"><div class="gantt">
+    <div class="axis">${ticks.map(t=>`<span style="left:${((t-lo)/(hi-lo)*100).toFixed(2)}%">${fmt(t)}</span>`).join('')}</div>
+    ${rows.map(([n,typ,al,au,an,hint])=>`<div class="grow"><div class="glbl">${esc(n)}<small>${typ} · ${esc(hint)}</small></div><div class="track">
+      ${ticks.map(t=>`<div class="tick" style="left:${((t-lo)/(hi-lo)*100).toFixed(2)}%"></div>`).join('')}
+      ${au?`<div class="seg prep" style="left:${pc(al)};width:calc(${pc(au)} - ${pc(al)})"></div><div class="seg drive" style="left:${pc(au)};width:calc(${pc(an)} - ${pc(au)})"></div>`:`<div class="seg prep" style="left:${pc(al)};width:calc(${pc(an)} - ${pc(al)})"></div>`}
+      <div class="mark" style="left:${pc(an)}"></div></div></div>`).join('')}
+   </div></div></div>
+   <div class="panel"><div class="tw"><table><thead><tr><th>Einheit</th><th>Art</th><th>Alarmierung / Abruf</th><th>Ausrücken</th><th>Am Einsatzort / Einsatz ab</th><th>Auslöser / Hinweis</th></tr></thead><tbody>
+   ${rows.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${r[1]}</td><td class="num">${r[2]}</td><td class="num">${r[3]||'–'}</td><td class="num">${r[4]}</td><td>${esc(r[5])}</td></tr>`).join('')}</tbody></table></div>
+   <div class="actions" style="margin-top:10px"><button class="btn sm">${ic('plus')}Zeile</button><button class="btn sm">Zeiten aus Ablauf übernehmen</button></div></div>`;
+}
+function tabAlarm(e){
+  const kw=D().keywords.find(k=>k[0]===e.kw)||[];
+  return `<div class="grid2"><div><div class="alarm"><div class="ub">ÜBUNG · ÜBUNG · ÜBUNG</div><div class="ah"><b>${esc(e.kw)}</b><span class="small">${e.phases[1][0]} Uhr</span></div>
+   <dl><dt>Stichwort</dt><dd>${esc(e.kw)}</dd><dt>Adresse</dt><dd>${esc(e.alarm.addr)}</dd><dt>Sonderrechte / prioritär</dt><dd>${kw[4]||'Ja'}</dd><dt>Melder</dt><dd>${esc(e.alarm.melder)}</dd><dt>Alarmierte Fahrzeuge</dt><dd>${esc(e.alarm.fz)}</dd></dl></div></div>
+   <div class="panel"><h2>Alarmmeldung</h2><p style="margin-top:0">Aufbau wie die Meldung aus eurer Alarm-App (Divera 24/7). Stichwort und Sonderrechte kommen aus der <b>Stichwortdatenbank</b>, die Fahrzeuge aus dem <b>Alarmierungsplan</b>.</p>
+    <dl class="kv"><dt>Stichwort laut AAO</dt><dd>${esc(kw[3]||'–')}</dd><dt>Ausgabe</dt><dd>Ausdruck A4 / A5, Anzeige auf dem Tablet</dd></dl>
+    <div class="actions" style="margin-top:12px"><button class="btn">${ic('dl')}Als PDF</button></div></div></div>`;
+}
+function tabFunk(e){
+  const nets={'BOS digital':'red','BOS analog':'yel','DLRG-Betriebsfunk':''};
+  return `<div class="panel"><div class="chips" style="margin-bottom:10px">${(S.org==='fw'?['BOS digital','BOS analog']:['BOS digital','BOS analog','DLRG-Betriebsfunk']).map(n=>`<span class="chip ${nets[n]}">${n}</span>`).join('')}</div>
+  <div class="tw"><table><thead><tr><th>Rufname</th><th>Einheit / Gerät</th><th>Funknetz</th><th>Gruppe / Kanal</th><th>Aufgabe</th></tr></thead><tbody>
+  ${e.radio.map(r=>`<tr><td style="font-weight:600">${esc(r[0])}</td><td>${esc(r[1])}</td><td><span class="chip ${nets[r[2]]}">${r[2]}</span></td><td class="num">${esc(r[3])}</td><td>${esc(r[4])}</td></tr>`).join('')}</tbody></table></div>
+  <p class="muted small" style="margin:10px 0 0">Rufnamen, Gesprächsgruppen und Kanäle sind fiktiv. Später werden sie als Stammdaten gepflegt.</p></div>`;
+}
+function tabRollen(e){
+  return `<div class="grid2">${e.roles.map(r=>`<div class="card-role"><span class="no">${r.no}</span>
+   <div><div class="lbl">Name</div><b style="font-size:16px">${esc(r.name)}</b></div>
+   <div class="rk3"><div><div class="lbl">Geburtsdatum</div><span class="num">${r.dob}</span></div><div><div class="lbl">Alter</div><span class="num">${r.age} Jahre</span></div><div><div class="lbl">Vorerkrankungen</div>${esc(r.pre)}</div></div>
+   <div class="rk3"><div><div class="lbl">Erkrankungen</div>${esc(r.ill)}</div><div><div class="lbl">Symptome</div>${esc(r.sym)}</div><div><div class="lbl">Verletzungen</div>${esc(r.inj)}</div></div>
+   <div><div class="lbl">Story – was ist passiert?</div>${esc(r.story)}</div>
+   <div><div class="lbl" style="margin-bottom:4px">Eskalationsstufen</div><div class="esc">${r.esc.map(([s,w,t])=>`<div><b>${s}<small>${esc(w)}</small></b><span>${esc(t)}</span></div>`).join('')}</div></div>
+  </div>`).join('')}</div>`;
+}
+function tabMaterial(e){
+  return `<div class="panel"><div class="tw"><table><thead><tr><th>Material</th><th>Standort / verlastet auf</th><th>Menge</th><th>Quelle</th></tr></thead><tbody>
+  ${e.material.map(([a,b,c,d])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td><td class="num">${c}</td><td>${d==='Materialkompass'?'<span class="chip red">Materialkompass</span>':'<span class="chip">manuell</span>'}</td></tr>`).join('')}</tbody></table></div>
+  <div class="actions" style="margin-top:12px"><button class="btn">${ic('plus')}Aus Materialkompass</button><button class="btn">${ic('plus')}Manuell</button></div></div>`;
+}
+function tabBeob(e){
+  const r=S.rate[S.org]||(S.rate[S.org]={});
+  return `<div class="panel"><div class="actions" style="justify-content:space-between;margin-bottom:8px"><div><h2 style="margin:0">Beobachtungsbogen</h2><span class="muted small">Beobachter/in: aus Führungsfunktionen · Bewertung: ++ sehr gut, + gut, o ausreichend, – Verbesserung nötig</span></div><button class="btn sm">${ic('dl')}Leerer Bogen als PDF</button></div>
+  <div class="tw"><table><thead><tr><th>Beobachtungspunkt</th><th>Bewertung</th><th style="min-width:220px">Notiz</th></tr></thead><tbody>
+  ${e.observe.map((o,i)=>`<tr><td>${esc(o)}</td><td><div class="rate">${['++','+','o','–'].map(v=>`<button data-rate="${i}|${v}" aria-pressed="${r[i]===v}">${v}</button>`).join('')}</div></td><td><input id="obs-${S.org}-${i}" placeholder="Beobachtung, Uhrzeit …"></td></tr>`).join('')}</tbody></table></div></div>`;
+}
+function tabNach(e){
+  const b=e.debrief;
+  return `<div class="notice">Erkenntnisse mit „in nächste Übung“ oder „offen“ erscheinen in der Übersicht und können in neue Übungen übernommen werden.</div>
+  <div class="grid2"><div class="panel"><h2>Was lief gut?</h2><ul style="margin:0;padding-left:18px">${b.good.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+  <div class="panel"><h2>Was muss besser werden?</h2><ul style="margin:0;padding-left:18px">${b.bad.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>
+  <div class="panel"><h2>Maßnahmen für die weitere Übungsplanung</h2><div class="tw"><table><thead><tr><th>Maßnahme</th><th>Zuständig</th><th>Status</th></tr></thead><tbody>
+  ${b.todo.map(([m,w,s])=>`<tr><td>${esc(m)}</td><td>${esc(w)}</td><td><span class="chip ${s==='offen'?'warn':'yel'}">${s}</span></td></tr>`).join('')}</tbody></table></div>
+  <p class="muted small" style="margin:10px 0 0">Teilnehmende der Nachbesprechung, Datum und Ergebnisse des Beobachtungsbogens werden mit gespeichert.</p></div>`;
+}
+function tabKarte(){
+  return `<div class="notice">Kartenquelle: <b>${S.maps==='offline'?'Offline-Karte Landkreis':S.maps==='online'?'OpenStreetMap online':'OpenStreetMap online, ohne Internet automatisch Offline-Karte Landkreis'}</b></div>
+   <div class="mapwrap"><div class="maptools"><button class="btn sm">Taktisches Zeichen</button><button class="btn sm">Gefahrenstelle</button><button class="btn sm">Absperrung</button><button class="btn sm">Text</button></div>${S.org==='fw'?mapFW():mapDLRG()}</div>
+   <p class="muted small" style="margin:0">Zeichen hier vereinfacht. Geplant ist eine Bibliothek taktischer Zeichen nach DV 102 und für die Wasserrettung, die man auf die Karte zieht.</p>`;
+}
+function mapFW(){return `<svg viewBox="0 0 800 400" role="img" aria-label="Lageskizze Verkehrsunfall"><rect width="800" height="400" fill="var(--surface2)"/>
+  <path d="M0 240 H800" stroke="var(--line)" stroke-width="70"/><path d="M0 240 H800" stroke="var(--surface)" stroke-width="2" stroke-dasharray="20 18"/>
+  <circle cx="470" cy="170" r="34" fill="var(--ok)" opacity=".35"/><circle cx="470" cy="170" r="10" fill="var(--ok)"/>
+  <rect x="420" y="190" width="70" height="34" rx="6" fill="var(--muted)" transform="rotate(-25 455 207)"/><text x="392" y="180" font-size="13" fill="var(--fg)" font-family="Inter,sans-serif">PKW (2 Pers.)</text>
+  ${[['HLF',230],['RW',110],['ELW',620]].map(([t,x])=>`<g><rect x="${x}" y="222" width="80" height="36" fill="var(--surface)" stroke="var(--red)" stroke-width="3"/><path d="M${x} 222 l12 -12 h56 l12 12" fill="none" stroke="var(--red)" stroke-width="3"/><text x="${x+40}" y="246" text-anchor="middle" font-size="13" font-weight="700" fill="var(--red)" font-family="Inter,sans-serif">${t}</text></g>`).join('')}
+  <path d="M50 190 L50 290 M760 190 L760 290" stroke="var(--red)" stroke-width="5" stroke-dasharray="10 6"/>
+  <circle cx="540" cy="300" r="16" fill="var(--yellow)"/><text x="540" y="305" text-anchor="middle" font-size="13" font-weight="700" fill="var(--yellow-ink)" font-family="Inter,sans-serif">!</text><text x="562" y="305" font-size="12" fill="var(--fg)" font-family="Inter,sans-serif">Betriebsstoffe</text>
+  <text x="20" y="385" font-size="12" fill="var(--muted)" font-family="Inter,sans-serif">Industriestraße · Nord ↑ · Maßstab ca. 1:500</text></svg>`}
+function mapDLRG(){return `<svg viewBox="0 0 800 400" role="img" aria-label="Lageskizze Badesee"><rect width="800" height="400" fill="var(--surface2)"/>
+  <path d="M90 90 C220 20 520 30 690 110 C780 160 760 310 620 350 C440 395 200 380 110 310 C40 250 30 140 90 90Z" fill="var(--water)" opacity=".35"/>
+  <rect x="480" y="160" width="60" height="30" fill="var(--muted)"/><text x="510" y="150" text-anchor="middle" font-size="12" fill="var(--fg)" font-family="Inter,sans-serif">Badeinsel</text>
+  <path d="M380 130 h220 v120 h-220z" fill="none" stroke="var(--red)" stroke-width="3" stroke-dasharray="8 6"/><text x="390" y="270" font-size="12" fill="var(--red)" font-weight="600" font-family="Inter,sans-serif">Suchabschnitt A</text>
+  <path d="M300 62 L300 34" stroke="var(--fg)" stroke-width="6"/><text x="312" y="48" font-size="12" fill="var(--fg)" font-family="Inter,sans-serif">Steg 2</text>
+  <g><path d="M330 82 h80 l-10 28 h-60z" fill="var(--surface)" stroke="var(--red)" stroke-width="3"/><text x="370" y="101" text-anchor="middle" font-size="12" font-weight="700" fill="var(--red)" font-family="Inter,sans-serif">MZB 1</text></g>
+  <g><rect x="180" y="16" width="86" height="30" fill="var(--surface)" stroke="var(--red)" stroke-width="3"/><text x="223" y="36" text-anchor="middle" font-size="12" font-weight="700" fill="var(--red)" font-family="Inter,sans-serif">GW-WR</text></g>
+  <circle cx="660" cy="80" r="12" fill="var(--yellow)"/><text x="680" y="85" font-size="12" fill="var(--fg)" font-family="Inter,sans-serif">Uferposten Nord</text>
+  <text x="20" y="388" font-size="12" fill="var(--muted)" font-family="Inter,sans-serif">Badesee Musterstadt · Nord ↑ · Sichttiefe ca. 1 m</text></svg>`}
+
+function vDetail(){
+  const e=EX();
+  const T={plan:tabPlan,karte:tabKarte,einteilung:tabEinteilung,alarmplan:tabAlarmplan,alarm:tabAlarm,funk:tabFunk,rollen:tabRollen,material:tabMaterial,beob:tabBeob,nach:tabNach};
+  const st=S.freigabe?'<span class="chip yel">Freigabe ausstehend</span>':'<span class="chip red">Ausgearbeitet</span>';
+  return head(esc(e.title),`<span class="num">${e.date}</span> · ${e.unit} · ${st}`,
+   `<button class="btn" data-nav="uebungen">${ic('back')}Zurück</button><button class="btn">${ic('lib')}Als Vorlage</button>${S.freigabe?`<button class="btn">${ic('ok')}Zur Freigabe</button>`:''}<button class="btn yellow">${ic('dl')}Übungsmappe PDF</button>`)+
+   `<div class="tabs" role="tablist">${TABS.map(([k,l])=>`<button class="tab" role="tab" data-tab="${k}" aria-selected="${S.tab===k}">${l}</button>`).join('')}</div>${T[S.tab](e)}`;
+}
+
+function vFahrzeuge(){
+  const d=D(); if(!d.vehicles.find(v=>v.id===S.veh)) S.veh=d.vehicles[0].id;
+  const v=d.vehicles.find(x=>x.id===S.veh); const pats=Object.keys(v.patterns);
+  return head('Fahrzeuge & Funktionen','Fahrzeuge zentral definieren: Funktionen, nötige Qualifikationen und Besetzungsmuster',`<button class="btn">${ic('up')}Aus Materialkompass abgleichen</button><button class="btn primary">${ic('plus')}Fahrzeug</button>`)+`
+  <div class="split">
+   <div class="vlist">${d.vehicles.map(x=>`<button class="vitem" data-veh="${x.id}" aria-current="${x.id===S.veh}"><b>${x.k}</b><span class="muted small">${x.rn}</span><span><span class="chip ${x.status==='einsatzbereit'?'ok':'warn'}">${x.status}</span></span></button>`).join('')}</div>
+   <div style="display:grid;gap:16px;min-width:0">
+    <div class="panel"><div class="actions" style="justify-content:space-between"><div><h2 style="margin:0">${v.k}</h2><span class="muted small">Funkrufname ${v.rn} · Stammdaten aus ${v.src}</span></div><button class="btn sm">Bearbeiten</button></div></div>
+    <div class="panel"><div class="actions" style="justify-content:space-between;margin-bottom:8px"><h2 style="margin:0">Funktionen & Besetzungsmuster</h2><div class="actions"><button class="btn sm">${ic('plus')}Funktion</button><button class="btn sm">${ic('plus')}Besetzungsmuster</button></div></div>
+     <div class="tw"><table><thead><tr><th>Funktion</th><th>Benötigte Qualifikation</th>${pats.map(p=>`<th class="c">${p}</th>`).join('')}</tr></thead><tbody>
+     ${v.fns.map(([f,q])=>`<tr><td><b>${f}</b></td><td>${q?`<span class="chip">${q}</span>`:'<span class="muted">–</span>'}</td>${pats.map(p=>`<td class="c">${v.patterns[p].includes(f)?'<span class="yes">✓</span>':'<span class="muted">·</span>'}</td>`).join('')}</tr>`).join('')}
+     <tr><td class="muted">Sitzplätze</td><td></td>${pats.map(p=>`<td class="c num"><b>${v.patterns[p].length}</b></td>`).join('')}</tr></tbody></table></div></div>
+    <div class="panel"><div class="actions" style="justify-content:space-between;margin-bottom:8px"><div><h2 style="margin:0">Führungs- und Sonderfunktionen</h2><span class="muted small">gelten für alle Übungen, unabhängig vom Fahrzeug</span></div><button class="btn sm">${ic('plus')}Funktion</button></div>
+     <div class="tw"><table><thead><tr><th>Funktion</th><th>Benötigte Qualifikation</th></tr></thead><tbody>${d.lead.map(([f,q])=>`<tr><td><b>${f}</b></td><td>${q?`<span class="chip">${q}</span>`:'<span class="muted">–</span>'}</td></tr>`).join('')}</tbody></table></div></div>
+   </div></div>`;
+}
+function vStichworte(){
+  const d=D();
+  return head('Alarmstichworte','Zentrale Stichwortdatenbank mit Alarm- und Ausrückeordnung (AAO)',`<button class="btn">${ic('up')}Import (CSV/Excel)</button><button class="btn">${ic('dl')}Export</button><button class="btn primary">${ic('plus')}Stichwort</button>`)+`
+  <div class="panel"><div class="tw"><table><thead><tr><th>Stichwort</th><th>Kategorie</th><th>Beschreibung</th><th>Einsatzmittel laut AAO</th><th>Sonderrechte</th></tr></thead><tbody>
+  ${d.keywords.map(k=>`<tr><td><span class="chip red">${esc(k[0])}</span></td><td>${k[1]}</td><td>${esc(k[2])}</td><td>${esc(k[3])}</td><td>${k[4]}</td></tr>`).join('')}</tbody></table></div>
+  <p class="muted small" style="margin:10px 0 0">Beispiel-Stichworte. Die echten Kataloge unterscheiden sich je Bundesland und Leitstelle und werden von den Admins zentral eingespielt.</p></div>`;
+}
+function vVorlagen(){
+  const L=S.org==='fw'?[['Atemschutz: Menschenrettung aus verrauchtem Raum','Atemschutz',12],['THL: VU mit eingeklemmter Person','THL',7],['Wasserförderung über lange Wegstrecke','Löschwasser',4],['JF: Stationslauf Knoten & Geräte','Jugend',9]]:[['Vermisstensuche Badesee','Suche',5],['Strömungsrettung: Seilsysteme','Strömung',6],['Eisrettung mit Rettungsbrett','Eis',3],['Jugend: Rettungsschwimmen spielerisch','Jugend',8]];
+  return head('Vorlagen','Übungen einmal ausarbeiten und immer wieder verwenden',`<button class="btn">${ic('up')}Vorlage importieren</button>`)+`
+  <div class="grid2">${L.map(([t,k,n])=>`<div class="panel"><div class="eyebrow">${k}</div><h2 style="margin-top:4px">${t}</h2><p class="muted" style="margin:0 0 12px">${n}-mal verwendet · mit Ablauf, Besetzung, Alarmierungsplan, Rollenkarten, Beobachtungsbogen</p><button class="btn primary">${ic('plus')}Übung daraus erstellen</button></div>`).join('')}</div>`;
+}
+function vPersonal(){
+  const d=D();
+  return head('Personal & Qualifikationen','Gespeichert werden nur Name, Personalnummer und Qualifikationen',`<button class="btn">${ic('up')}Excel-Import</button><button class="btn primary">${ic('plus')}Person</button>`)+`
+  <div class="panel"><div class="tw"><table><thead><tr><th>Name</th><th>Personalnr.</th><th>Qualifikationen</th></tr></thead><tbody>
+  ${d.members.map(m=>`<tr><td style="font-weight:600">${esc(m.n)}</td><td class="num">${m.p}</td><td><div class="chips">${m.q.map(q=>`<span class="chip">${esc(q)}</span>`).join('')}</div></td></tr>`).join('')}</tbody></table></div></div>`;
+}
+const sw=(id,label,sub)=>`<div class="toggle"><div><b>${label}</b><div class="muted small">${sub}</div></div><button class="sw" role="switch" aria-checked="${S[id]}" data-sw="${id}" aria-label="${label}"></button></div>`;
+function vEinst(){
+  return head('Einstellungen','Nur für Administratoren')+`
+  <div class="panel"><h2>Betriebsart</h2><div class="mode">
+   <button class="modecard" data-mode="lokal" aria-pressed="${S.mode==='lokal'}"><b>Nur lokal</b><div class="muted small">Daten liegen auf diesem Gerät. Kein Server nötig.</div></button>
+   <button class="modecard" data-mode="netz" aria-pressed="${S.mode==='netz'}"><b>Mit Server abgleichen</b><div class="muted small">Arbeiten auch ohne Verbindung, Abgleich sobald der Server erreichbar ist. Letzte Änderung gilt.</div></button></div>
+   ${S.mode==='netz'?`<div class="grid2" style="margin-top:14px"><div class="field"><label for="srv">Serveradresse</label><input id="srv" value="https://192.168.178.20:8443"></div><div class="field"><label for="usr">Benutzer</label><input id="usr" value="admin"></div></div>`:''}</div>
+  <div class="grid2">
+   <div class="panel"><h2>Abläufe</h2>
+    ${sw('freigabe','Freigabe von Übungen erforderlich','Übungen müssen von einem Admin freigegeben werden')}
+    ${sw('remote','Zugriff von zu Hause über VPN','Server nimmt Verbindungen aus dem VPN-Netz an. Kein Port nach außen nötig.')}
+    <div class="toggle"><div><b>Karten</b><div class="muted small">Offline-Karte: Landkreis Musterkreis (heruntergeladen)</div></div>
+     <select id="maps" style="font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg)">${['online','offline','beides'].map(o=>`<option ${S.maps===o?'selected':''}>${o}</option>`).join('')}</select></div>
+   </div>
+   <div class="panel"><h2>Materialkompass</h2>
+    ${sw('mk','Anbindung an Materialkompass','Material und Fahrzeuge übernehmen')}
+    ${S.mk?sw('res','Fahrzeuge direkt reservieren','Planer dürfen Fahrzeuge für Übungen in Materialkompass reservieren'):''}
+    ${S.mk?`<div class="field" style="margin-top:8px"><label for="mkurl">Adresse</label><input id="mkurl" value="https://materialkompass.org/api/v1"></div><div class="field" style="margin-top:8px"><label for="mkkey">API-Schlüssel</label><input id="mkkey" type="password" value="xxxxxxxxxxxxxxxx"></div>`:''}
+   </div>
+  </div>
+  <div class="grid2">
+   <div class="panel"><h2>Benutzer & Rollen</h2><div class="tw"><table><thead><tr><th>Benutzer</th><th>Rolle</th></tr></thead><tbody>
+    <tr><td>admin</td><td><span class="chip red">Administrator</span></td></tr><tr><td>j.becker</td><td><span class="chip yel">Planer / Ausbilder</span></td></tr><tr><td>l.schulz</td><td><span class="chip yel">Planer / Ausbilder</span></td></tr></tbody></table></div></div>
+   <div class="panel"><h2>Geräte</h2><div class="tw"><table><thead><tr><th>Gerät</th><th>Zugriff</th><th>Letzter Abgleich</th></tr></thead><tbody>
+    <tr><td>PC Gerätehaus (Windows)</td><td>Bearbeiten</td><td class="num">vor 2 Min.</td></tr><tr><td>Laptop Wehrführung (macOS)</td><td>Bearbeiten</td><td class="num">gestern</td></tr><tr><td>iPad Fahrzeughalle</td><td><span class="chip">Nur ansehen</span></td><td class="num">vor 1 Std.</td></tr><tr><td>Android-Tablet ELW</td><td><span class="chip">Nur ansehen</span></td><td class="num">vor 3 Tagen</td></tr></tbody></table></div></div>
+  </div>`;
+}
+
+/* ================= Rendering & Interaktion ================= */
+function render(){
+  rail();
+  const V={start:vStart,plan:vPlan,uebungen:vList,detail:vDetail,vorlagen:vVorlagen,fahrzeuge:vFahrzeuge,stichworte:vStichworte,personal:vPersonal,einst:vEinst};
+  document.getElementById('view').innerHTML=V[S.view]();
+}
+function move(name,to){
+  const e=EX();
+  let fromKey=null;
+  for(const [vid,a] of Object.entries(e.assign)) for(const [fn,p] of Object.entries(a.s)) if(p===name){fromKey=[vid,fn];delete a.s[fn];}
+  if(to==='pool') return;
+  const [vid,fn]=to.split('|'); const a=e.assign[vid]; const prev=a.s[fn];
+  a.s[fn]=name;
+  if(prev&&prev!==name&&fromKey) e.assign[fromKey[0]].s[fromKey[1]]=prev;
+}
+document.addEventListener('click',ev=>{
+  const t=ev.target.closest('[data-nav],[data-org],[data-open],[data-tab],[data-sw],[data-mode],[data-veh],[data-rate],[data-person],[data-drop]');if(!t)return;
+  const ds=t.dataset; let scroll=false;
+  if(ds.person){S.pick=S.pick===ds.person?null:ds.person;}
+  else if(ds.drop){if(!S.pick)return;move(S.pick,ds.drop);S.pick=null;}
+  else if(ds.nav){S.view=ds.nav;scroll=true;}
+  else if(ds.org){S.org=ds.org;S.pick=null;try{localStorage.setItem('up-org',S.org)}catch(e){}}
+  else if('open' in ds){if(!ds.open)return;S.view='detail';S.tab='plan';scroll=true;}
+  else if(ds.tab){S.tab=ds.tab;}
+  else if(ds.sw){S[ds.sw]=!S[ds.sw];}
+  else if(ds.mode){S.mode=ds.mode;}
+  else if(ds.veh){S.veh=ds.veh;}
+  else if(ds.rate){const[i,v]=ds.rate.split('|');const r=S.rate[S.org]||(S.rate[S.org]={});r[i]=r[i]===v?null:v;}
+  render(); if(scroll) window.scrollTo(0,0);
+});
+document.addEventListener('change',ev=>{
+  if(ev.target.id==='maps'){S.maps=ev.target.value;}
+  if(ev.target.dataset.pat){EX().assign[ev.target.dataset.pat].pat=ev.target.value;render();}
+});
+document.addEventListener('dragstart',ev=>{const p=ev.target.closest('[data-person]');if(!p)return;ev.dataTransfer.setData('text/plain',p.dataset.person);ev.dataTransfer.effectAllowed='move';p.classList.add('dragging');});
+document.addEventListener('dragend',ev=>{document.querySelectorAll('.dragging,.drop-ok').forEach(x=>x.classList.remove('dragging','drop-ok'));});
+document.addEventListener('dragover',ev=>{const z=ev.target.closest('[data-drop]');if(!z)return;ev.preventDefault();document.querySelectorAll('.drop-ok').forEach(x=>x!==z&&x.classList.remove('drop-ok'));z.classList.add('drop-ok');});
+document.addEventListener('drop',ev=>{const z=ev.target.closest('[data-drop]');if(!z)return;ev.preventDefault();const n=ev.dataTransfer.getData('text/plain');if(n){move(n,z.dataset.drop);S.pick=null;render();}});
+render();
+</script>
