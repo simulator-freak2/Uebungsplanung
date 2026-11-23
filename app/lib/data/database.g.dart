@@ -7564,6 +7564,59 @@ class $AlarmPlanEntriesTable extends AlarmPlanEntries
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
+  static const VerificationMeta _destinationMeta = const VerificationMeta(
+    'destination',
+  );
+  @override
+  late final GeneratedColumn<String> destination = GeneratedColumn<String>(
+    'destination',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _taskMeta = const VerificationMeta('task');
+  @override
+  late final GeneratedColumn<String> task = GeneratedColumn<String>(
+    'task',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _towedByIdMeta = const VerificationMeta(
+    'towedById',
+  );
+  @override
+  late final GeneratedColumn<String> towedById = GeneratedColumn<String>(
+    'towed_by_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _slipLocationMeta = const VerificationMeta(
+    'slipLocation',
+  );
+  @override
+  late final GeneratedColumn<String> slipLocation = GeneratedColumn<String>(
+    'slip_location',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _slipOffsetMeta = const VerificationMeta(
+    'slipOffset',
+  );
+  @override
+  late final GeneratedColumn<int> slipOffset = GeneratedColumn<int>(
+    'slip_offset',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -7578,6 +7631,11 @@ class $AlarmPlanEntriesTable extends AlarmPlanEntries
     arriveOffset,
     note,
     sortOrder,
+    destination,
+    task,
+    towedById,
+    slipLocation,
+    slipOffset,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -7675,6 +7733,42 @@ class $AlarmPlanEntriesTable extends AlarmPlanEntries
         sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
       );
     }
+    if (data.containsKey('destination')) {
+      context.handle(
+        _destinationMeta,
+        destination.isAcceptableOrUnknown(
+          data['destination']!,
+          _destinationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('task')) {
+      context.handle(
+        _taskMeta,
+        task.isAcceptableOrUnknown(data['task']!, _taskMeta),
+      );
+    }
+    if (data.containsKey('towed_by_id')) {
+      context.handle(
+        _towedByIdMeta,
+        towedById.isAcceptableOrUnknown(data['towed_by_id']!, _towedByIdMeta),
+      );
+    }
+    if (data.containsKey('slip_location')) {
+      context.handle(
+        _slipLocationMeta,
+        slipLocation.isAcceptableOrUnknown(
+          data['slip_location']!,
+          _slipLocationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('slip_offset')) {
+      context.handle(
+        _slipOffsetMeta,
+        slipOffset.isAcceptableOrUnknown(data['slip_offset']!, _slipOffsetMeta),
+      );
+    }
     return context;
   }
 
@@ -7732,6 +7826,26 @@ class $AlarmPlanEntriesTable extends AlarmPlanEntries
         DriftSqlType.int,
         data['${effectivePrefix}sort_order'],
       )!,
+      destination: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}destination'],
+      ),
+      task: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}task'],
+      ),
+      towedById: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}towed_by_id'],
+      ),
+      slipLocation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}slip_location'],
+      ),
+      slipOffset: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}slip_offset'],
+      ),
     );
   }
 
@@ -7756,6 +7870,24 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
   final int? arriveOffset;
   final String? note;
   final int sortOrder;
+
+  /// Ziel bzw. Einsatzort dieser Einheit (leer = Übungsort).
+  final String? destination;
+
+  /// Aufgabe der Einheit am Ziel.
+  final String? task;
+
+  /// Nur bei Booten: Eintrag des Zugfahrzeugs, das das Boot auf dem Anhänger
+  /// zur Slipstelle bringt. Bis zum Slippen fährt das Boot mit diesem
+  /// Fahrzeug (gleiche Alarmierung, gleiches Ausrücken). [departOffset] ist
+  /// dann der Zeitpunkt, an dem das Boot im Wasser ist und ablegt.
+  final String? towedById;
+
+  /// Slipstelle, an der das Boot zu Wasser gelassen wird.
+  final String? slipLocation;
+
+  /// Ankunft des Zugfahrzeugs an der Slipstelle (Beginn des Slippens).
+  final int? slipOffset;
   const AlarmPlanEntry({
     required this.id,
     required this.updatedAt,
@@ -7769,6 +7901,11 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
     this.arriveOffset,
     this.note,
     required this.sortOrder,
+    this.destination,
+    this.task,
+    this.towedById,
+    this.slipLocation,
+    this.slipOffset,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -7793,6 +7930,21 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
       map['note'] = Variable<String>(note);
     }
     map['sort_order'] = Variable<int>(sortOrder);
+    if (!nullToAbsent || destination != null) {
+      map['destination'] = Variable<String>(destination);
+    }
+    if (!nullToAbsent || task != null) {
+      map['task'] = Variable<String>(task);
+    }
+    if (!nullToAbsent || towedById != null) {
+      map['towed_by_id'] = Variable<String>(towedById);
+    }
+    if (!nullToAbsent || slipLocation != null) {
+      map['slip_location'] = Variable<String>(slipLocation);
+    }
+    if (!nullToAbsent || slipOffset != null) {
+      map['slip_offset'] = Variable<int>(slipOffset);
+    }
     return map;
   }
 
@@ -7816,6 +7968,19 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
           : Value(arriveOffset),
       note: note == null && nullToAbsent ? const Value.absent() : Value(note),
       sortOrder: Value(sortOrder),
+      destination: destination == null && nullToAbsent
+          ? const Value.absent()
+          : Value(destination),
+      task: task == null && nullToAbsent ? const Value.absent() : Value(task),
+      towedById: towedById == null && nullToAbsent
+          ? const Value.absent()
+          : Value(towedById),
+      slipLocation: slipLocation == null && nullToAbsent
+          ? const Value.absent()
+          : Value(slipLocation),
+      slipOffset: slipOffset == null && nullToAbsent
+          ? const Value.absent()
+          : Value(slipOffset),
     );
   }
 
@@ -7837,6 +8002,11 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
       arriveOffset: serializer.fromJson<int?>(json['arriveOffset']),
       note: serializer.fromJson<String?>(json['note']),
       sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      destination: serializer.fromJson<String?>(json['destination']),
+      task: serializer.fromJson<String?>(json['task']),
+      towedById: serializer.fromJson<String?>(json['towedById']),
+      slipLocation: serializer.fromJson<String?>(json['slipLocation']),
+      slipOffset: serializer.fromJson<int?>(json['slipOffset']),
     );
   }
   @override
@@ -7855,6 +8025,11 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
       'arriveOffset': serializer.toJson<int?>(arriveOffset),
       'note': serializer.toJson<String?>(note),
       'sortOrder': serializer.toJson<int>(sortOrder),
+      'destination': serializer.toJson<String?>(destination),
+      'task': serializer.toJson<String?>(task),
+      'towedById': serializer.toJson<String?>(towedById),
+      'slipLocation': serializer.toJson<String?>(slipLocation),
+      'slipOffset': serializer.toJson<int?>(slipOffset),
     };
   }
 
@@ -7871,6 +8046,11 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
     Value<int?> arriveOffset = const Value.absent(),
     Value<String?> note = const Value.absent(),
     int? sortOrder,
+    Value<String?> destination = const Value.absent(),
+    Value<String?> task = const Value.absent(),
+    Value<String?> towedById = const Value.absent(),
+    Value<String?> slipLocation = const Value.absent(),
+    Value<int?> slipOffset = const Value.absent(),
   }) => AlarmPlanEntry(
     id: id ?? this.id,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -7884,6 +8064,11 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
     arriveOffset: arriveOffset.present ? arriveOffset.value : this.arriveOffset,
     note: note.present ? note.value : this.note,
     sortOrder: sortOrder ?? this.sortOrder,
+    destination: destination.present ? destination.value : this.destination,
+    task: task.present ? task.value : this.task,
+    towedById: towedById.present ? towedById.value : this.towedById,
+    slipLocation: slipLocation.present ? slipLocation.value : this.slipLocation,
+    slipOffset: slipOffset.present ? slipOffset.value : this.slipOffset,
   );
   AlarmPlanEntry copyWithCompanion(AlarmPlanEntriesCompanion data) {
     return AlarmPlanEntry(
@@ -7907,6 +8092,17 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
           : this.arriveOffset,
       note: data.note.present ? data.note.value : this.note,
       sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      destination: data.destination.present
+          ? data.destination.value
+          : this.destination,
+      task: data.task.present ? data.task.value : this.task,
+      towedById: data.towedById.present ? data.towedById.value : this.towedById,
+      slipLocation: data.slipLocation.present
+          ? data.slipLocation.value
+          : this.slipLocation,
+      slipOffset: data.slipOffset.present
+          ? data.slipOffset.value
+          : this.slipOffset,
     );
   }
 
@@ -7924,7 +8120,12 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
           ..write('departOffset: $departOffset, ')
           ..write('arriveOffset: $arriveOffset, ')
           ..write('note: $note, ')
-          ..write('sortOrder: $sortOrder')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('destination: $destination, ')
+          ..write('task: $task, ')
+          ..write('towedById: $towedById, ')
+          ..write('slipLocation: $slipLocation, ')
+          ..write('slipOffset: $slipOffset')
           ..write(')'))
         .toString();
   }
@@ -7943,6 +8144,11 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
     arriveOffset,
     note,
     sortOrder,
+    destination,
+    task,
+    towedById,
+    slipLocation,
+    slipOffset,
   );
   @override
   bool operator ==(Object other) =>
@@ -7959,7 +8165,12 @@ class AlarmPlanEntry extends DataClass implements Insertable<AlarmPlanEntry> {
           other.departOffset == this.departOffset &&
           other.arriveOffset == this.arriveOffset &&
           other.note == this.note &&
-          other.sortOrder == this.sortOrder);
+          other.sortOrder == this.sortOrder &&
+          other.destination == this.destination &&
+          other.task == this.task &&
+          other.towedById == this.towedById &&
+          other.slipLocation == this.slipLocation &&
+          other.slipOffset == this.slipOffset);
 }
 
 class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
@@ -7975,6 +8186,11 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
   final Value<int?> arriveOffset;
   final Value<String?> note;
   final Value<int> sortOrder;
+  final Value<String?> destination;
+  final Value<String?> task;
+  final Value<String?> towedById;
+  final Value<String?> slipLocation;
+  final Value<int?> slipOffset;
   final Value<int> rowid;
   const AlarmPlanEntriesCompanion({
     this.id = const Value.absent(),
@@ -7989,6 +8205,11 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
     this.arriveOffset = const Value.absent(),
     this.note = const Value.absent(),
     this.sortOrder = const Value.absent(),
+    this.destination = const Value.absent(),
+    this.task = const Value.absent(),
+    this.towedById = const Value.absent(),
+    this.slipLocation = const Value.absent(),
+    this.slipOffset = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   AlarmPlanEntriesCompanion.insert({
@@ -8004,6 +8225,11 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
     this.arriveOffset = const Value.absent(),
     this.note = const Value.absent(),
     this.sortOrder = const Value.absent(),
+    this.destination = const Value.absent(),
+    this.task = const Value.absent(),
+    this.towedById = const Value.absent(),
+    this.slipLocation = const Value.absent(),
+    this.slipOffset = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : exerciseId = Value(exerciseId),
        label = Value(label),
@@ -8021,6 +8247,11 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
     Expression<int>? arriveOffset,
     Expression<String>? note,
     Expression<int>? sortOrder,
+    Expression<String>? destination,
+    Expression<String>? task,
+    Expression<String>? towedById,
+    Expression<String>? slipLocation,
+    Expression<int>? slipOffset,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -8036,6 +8267,11 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
       if (arriveOffset != null) 'arrive_offset': arriveOffset,
       if (note != null) 'note': note,
       if (sortOrder != null) 'sort_order': sortOrder,
+      if (destination != null) 'destination': destination,
+      if (task != null) 'task': task,
+      if (towedById != null) 'towed_by_id': towedById,
+      if (slipLocation != null) 'slip_location': slipLocation,
+      if (slipOffset != null) 'slip_offset': slipOffset,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -8053,6 +8289,11 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
     Value<int?>? arriveOffset,
     Value<String?>? note,
     Value<int>? sortOrder,
+    Value<String?>? destination,
+    Value<String?>? task,
+    Value<String?>? towedById,
+    Value<String?>? slipLocation,
+    Value<int?>? slipOffset,
     Value<int>? rowid,
   }) {
     return AlarmPlanEntriesCompanion(
@@ -8068,6 +8309,11 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
       arriveOffset: arriveOffset ?? this.arriveOffset,
       note: note ?? this.note,
       sortOrder: sortOrder ?? this.sortOrder,
+      destination: destination ?? this.destination,
+      task: task ?? this.task,
+      towedById: towedById ?? this.towedById,
+      slipLocation: slipLocation ?? this.slipLocation,
+      slipOffset: slipOffset ?? this.slipOffset,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -8111,6 +8357,21 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
     if (sortOrder.present) {
       map['sort_order'] = Variable<int>(sortOrder.value);
     }
+    if (destination.present) {
+      map['destination'] = Variable<String>(destination.value);
+    }
+    if (task.present) {
+      map['task'] = Variable<String>(task.value);
+    }
+    if (towedById.present) {
+      map['towed_by_id'] = Variable<String>(towedById.value);
+    }
+    if (slipLocation.present) {
+      map['slip_location'] = Variable<String>(slipLocation.value);
+    }
+    if (slipOffset.present) {
+      map['slip_offset'] = Variable<int>(slipOffset.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -8132,6 +8393,11 @@ class AlarmPlanEntriesCompanion extends UpdateCompanion<AlarmPlanEntry> {
           ..write('arriveOffset: $arriveOffset, ')
           ..write('note: $note, ')
           ..write('sortOrder: $sortOrder, ')
+          ..write('destination: $destination, ')
+          ..write('task: $task, ')
+          ..write('towedById: $towedById, ')
+          ..write('slipLocation: $slipLocation, ')
+          ..write('slipOffset: $slipOffset, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -16101,6 +16367,11 @@ typedef $$AlarmPlanEntriesTableCreateCompanionBuilder =
       Value<int?> arriveOffset,
       Value<String?> note,
       Value<int> sortOrder,
+      Value<String?> destination,
+      Value<String?> task,
+      Value<String?> towedById,
+      Value<String?> slipLocation,
+      Value<int?> slipOffset,
       Value<int> rowid,
     });
 typedef $$AlarmPlanEntriesTableUpdateCompanionBuilder =
@@ -16117,6 +16388,11 @@ typedef $$AlarmPlanEntriesTableUpdateCompanionBuilder =
       Value<int?> arriveOffset,
       Value<String?> note,
       Value<int> sortOrder,
+      Value<String?> destination,
+      Value<String?> task,
+      Value<String?> towedById,
+      Value<String?> slipLocation,
+      Value<int?> slipOffset,
       Value<int> rowid,
     });
 
@@ -16186,6 +16462,31 @@ class $$AlarmPlanEntriesTableFilterComposer
 
   ColumnFilters<int> get sortOrder => $composableBuilder(
     column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get destination => $composableBuilder(
+    column: $table.destination,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get task => $composableBuilder(
+    column: $table.task,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get towedById => $composableBuilder(
+    column: $table.towedById,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get slipLocation => $composableBuilder(
+    column: $table.slipLocation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get slipOffset => $composableBuilder(
+    column: $table.slipOffset,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -16258,6 +16559,31 @@ class $$AlarmPlanEntriesTableOrderingComposer
     column: $table.sortOrder,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get destination => $composableBuilder(
+    column: $table.destination,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get task => $composableBuilder(
+    column: $table.task,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get towedById => $composableBuilder(
+    column: $table.towedById,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get slipLocation => $composableBuilder(
+    column: $table.slipLocation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get slipOffset => $composableBuilder(
+    column: $table.slipOffset,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AlarmPlanEntriesTableAnnotationComposer
@@ -16312,6 +16638,27 @@ class $$AlarmPlanEntriesTableAnnotationComposer
 
   GeneratedColumn<int> get sortOrder =>
       $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  GeneratedColumn<String> get destination => $composableBuilder(
+    column: $table.destination,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get task =>
+      $composableBuilder(column: $table.task, builder: (column) => column);
+
+  GeneratedColumn<String> get towedById =>
+      $composableBuilder(column: $table.towedById, builder: (column) => column);
+
+  GeneratedColumn<String> get slipLocation => $composableBuilder(
+    column: $table.slipLocation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get slipOffset => $composableBuilder(
+    column: $table.slipOffset,
+    builder: (column) => column,
+  );
 }
 
 class $$AlarmPlanEntriesTableTableManager
@@ -16363,6 +16710,11 @@ class $$AlarmPlanEntriesTableTableManager
                 Value<int?> arriveOffset = const Value.absent(),
                 Value<String?> note = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
+                Value<String?> destination = const Value.absent(),
+                Value<String?> task = const Value.absent(),
+                Value<String?> towedById = const Value.absent(),
+                Value<String?> slipLocation = const Value.absent(),
+                Value<int?> slipOffset = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => AlarmPlanEntriesCompanion(
                 id: id,
@@ -16377,6 +16729,11 @@ class $$AlarmPlanEntriesTableTableManager
                 arriveOffset: arriveOffset,
                 note: note,
                 sortOrder: sortOrder,
+                destination: destination,
+                task: task,
+                towedById: towedById,
+                slipLocation: slipLocation,
+                slipOffset: slipOffset,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -16393,6 +16750,11 @@ class $$AlarmPlanEntriesTableTableManager
                 Value<int?> arriveOffset = const Value.absent(),
                 Value<String?> note = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
+                Value<String?> destination = const Value.absent(),
+                Value<String?> task = const Value.absent(),
+                Value<String?> towedById = const Value.absent(),
+                Value<String?> slipLocation = const Value.absent(),
+                Value<int?> slipOffset = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => AlarmPlanEntriesCompanion.insert(
                 id: id,
@@ -16407,6 +16769,11 @@ class $$AlarmPlanEntriesTableTableManager
                 arriveOffset: arriveOffset,
                 note: note,
                 sortOrder: sortOrder,
+                destination: destination,
+                task: task,
+                towedById: towedById,
+                slipLocation: slipLocation,
+                slipOffset: slipOffset,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

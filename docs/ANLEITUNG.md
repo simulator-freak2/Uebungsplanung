@@ -39,13 +39,30 @@ Ein Update ersetzt nur das Programm, die Daten bleiben erhalten.
 |---|---|
 | Übungsplan | Eckdaten, Lernziele, Lage, Ablauf, Sicherheits-Checkliste |
 | Besetzung | Fahrzeuge einplanen, Besetzungsmuster wählen, Personen per **Drag & Drop** auf Funktionen ziehen (oder Person antippen → Funktion antippen). Gelb = Qualifikation fehlt. Eine Person darf mehrere Funktionen haben. |
-| Alarmierungsplan | Wer wird wann alarmiert/abgerufen, rückt aus, ist vor Ort. Zeiten als Uhrzeit (`19:15`) oder ab Beginn (`+15`). |
+| Alarmierungsplan | Wer wird wann alarmiert/abgerufen, rückt aus, ist am Ziel, mit eigenem **Ziel** und eigener **Aufgabe**. Zeiten als Uhrzeit (`19:15`) oder ab Beginn (`+15`). **Slippen**: siehe unten. |
 | Alarmmeldung | Ausdruck im Aufbau der Divera-Meldung. **Je Alarmierungszeitpunkt eine eigene Meldung** (Erstalarm, Nachalarmierung …). Die Auslösung in Divera macht der TL. |
 | Funkplan | Rufnamen, Funknetz (BOS digital/analog, DLRG-Betriebsfunk), Gruppe/Kanal, Aufgabe |
 | Rollenkarten | Mimen mit Name, Geburtsdatum/Alter, Vorerkrankungen, Erkrankungen, Symptomen, Verletzungen, Story und **Eskalationsstufen** |
 | Material | Materialliste |
 | Beobachtung | Beobachtungspunkte (frei oder aus dem Katalog) mit Bewertung und Notiz; Eskalationsstufen der Mimen |
 | Nachbesprechung | Was lief gut / besser machen, Maßnahmen mit Zuständigen. Offene Maßnahmen erscheinen in der **Übersicht** und lassen sich mit „In Übung übernehmen“ als Lernziel in eine kommende Übung übernehmen. |
+
+#### Slippen: Boot auf dem Anhänger
+
+Wenn ein Fahrzeug ein Boot auf dem Anhänger zu einer Slipstelle bringt:
+
+1. Das Zugfahrzeug als normalen Eintrag (Art *Fahrzeug*) anlegen.
+2. In seiner Zeile auf das **Boot-Symbol** tippen (oder beim Boot unter *Anfahrt* „Auf Anhänger, Slippen“ wählen).
+3. Zugfahrzeug, **Slipstelle**, Zeitpunkt **an der Slipstelle**, **im Wasser / ablegen** und **Am Ziel** eintragen.
+
+Bis zur Slipstelle fährt das Boot mit dem Zugfahrzeug: Es wird mit ihm alarmiert und rückt mit ihm aus. Ändert ihr
+die Alarmierung des Zugfahrzeugs, wandert das Boot mit, und es steht auf derselben Alarmmeldung („auf Anhänger von …“).
+Ab der Slipstelle sind beide getrennt: Das Boot hat sein eigenes Ziel, seine eigene Aufgabe und Ankunftszeit, das
+Fahrzeug fährt zu *seinem* Ziel weiter (dort ist „Am Ziel“ die Ankunft nach dem Slippen). Wird das Zugfahrzeug gelöscht,
+bleibt das Boot als eigenständiger Eintrag mit seinen Zeiten erhalten.
+
+![Slippen im Alarmierungsplan](screenshots/v2-slippen.png)
+![Boot auf Anhänger eintragen](screenshots/v2-slippen-dialog.png)
 
 Oben rechts:
 

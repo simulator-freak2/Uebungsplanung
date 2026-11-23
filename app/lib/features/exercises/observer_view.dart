@@ -67,7 +67,10 @@ class _ObserverViewState extends State<ObserverView> {
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Text(
                           '${t.clock(d.start + a.alarmOffset)}  ${a.label}'
+                          '${d.towOf(a) == null ? '' : ' · auf Anhänger von ${d.towOf(a)!.label}, Slippen ${a.slipLocation ?? ''}${a.slipOffset == null ? '' : ' ${t.clock(d.start + a.slipOffset!)}'}'}'
                           '${a.arriveOffset == null ? '' : ' · ${a.kind == 'trupp' ? 'Einsatz ab' : 'vor Ort'} ${t.clock(d.start + a.arriveOffset!)}'}'
+                          '${a.destination == null ? '' : ' · ${a.destination}'}'
+                          '${a.task == null ? '' : ' (${a.task})'}'
                           '${a.note == null ? '' : ' · ${a.note}'}',
                           style: big,
                         ),

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
+import '../data/database.dart';
 import '../data/documents_repository.dart';
 import '../data/exercise_repository.dart';
 import '../data/repositories.dart';
@@ -223,13 +224,28 @@ Future<Uint8List> buildExerciseMap(ExerciseMapData data, Set<MapSection> section
           if (d.alarmPlan.isEmpty)
             pw.Text('Kein Alarmierungsplan.')
           else
-            table(
-              ['Einheit', 'Art', 'Alarmierung / Abruf', 'Ausrücken', 'Am Einsatzort / Einsatz ab', 'Auslöser / Hinweis'],
-              [
-                for (final a in d.alarmPlan)
-                  [a.label, a.kind == 'trupp' ? 'Trupp' : (a.kind == 'boot' ? 'Boot' : 'Fahrzeug'), time(a.alarmOffset), time(a.departOffset), time(a.arriveOffset), a.note ?? ''],
-              ],
-            ),
+            () {
+              final slipping = d.alarmPlan.any((a) => d.towOf(a) != null);
+              String kind(AlarmPlanEntry a) {
+                final k = a.kind == 'trupp' ? 'Trupp' : (a.kind == 'boot' ? 'Boot' : 'Fahrzeug');
+                final tow = d.towOf(a);
+                return tow == null ? k : '$k auf Anhänger von ${tow.label}';
+              }
+
+              String slip(AlarmPlanEntry a) {
+                if (d.towOf(a) != null) return '${a.slipLocation ?? 'Slipstelle'}: an ${time(a.slipOffset)}, im Wasser ${time(a.departOffset)}';
+                return [for (final b in d.towedBy(a)) '${b.label} → ${b.slipLocation ?? 'Slipstelle'} ${time(b.slipOffset)}'].join('\n');
+              }
+
+              String target(AlarmPlanEntry a) => [?a.destination, ?a.task].join(' – ');
+              return table(
+                ['Einheit', 'Art', 'Alarmierung / Abruf', 'Ausrücken', if (slipping) 'Slippen', 'Am Ziel / Einsatz ab', 'Ziel / Aufgabe', 'Auslöser / Hinweis'],
+                [
+                  for (final a in d.alarmPlan)
+                    [a.label, kind(a), time(a.alarmOffset), time(d.departOf(a)), if (slipping) slip(a), time(a.arriveOffset), target(a), a.note ?? ''],
+                ],
+              );
+            }(),
         ]);
   }
 

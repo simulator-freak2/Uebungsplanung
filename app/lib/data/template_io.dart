@@ -53,6 +53,13 @@ Future<String> exportTemplate(Repositories repo, String exerciseId) async {
           'ausruecken': a.departOffset,
           'ankunft': a.arriveOffset,
           'hinweis': a.note,
+          'ziel': a.destination,
+          'aufgabe': a.task,
+          if (d.towOf(a) != null) ...{
+            'zugfahrzeug': d.alarmPlan.indexOf(d.towOf(a)!),
+            'slipstelle': a.slipLocation,
+            'slippen': a.slipOffset,
+          },
         },
     ],
     'funkplan': [
@@ -148,10 +155,11 @@ Future<TemplateImportResult> importTemplate(Repositories repo, String text) asyn
       if (v['muster'] != null && pattern == null) skipped.add('Besetzungsmuster „${v['muster']}“ bei ${vd.vehicle!.name}');
       await ex.addVehicle(id, vd.vehicle!.id, patternId: pattern?.id ?? vd.patterns.firstOrNull?.id);
     }
-    for (final a in list('alarmierungsplan')) {
-      await ex.saveAlarmEntry(
-        id,
-        AlarmEntryInput(
+    // Zuerst ohne Zugfahrzeug anlegen, dann die Boote zuordnen.
+    final alarmIds = <String>[];
+    final plan = list('alarmierungsplan');
+    AlarmEntryInput alarmInput(Map<String, dynamic> a, {String? entryId, String? towedById}) => AlarmEntryInput(
+          id: entryId,
           label: '${a['einheit'] ?? ''}',
           kind: s(a['art']) ?? 'fahrzeug',
           vehicleId: findVehicle(a['fahrzeug'])?.vehicle?.id,
@@ -159,8 +167,19 @@ Future<TemplateImportResult> importTemplate(Repositories repo, String text) asyn
           departOffset: (a['ausruecken'] as num?)?.toInt(),
           arriveOffset: (a['ankunft'] as num?)?.toInt(),
           note: s(a['hinweis']),
-        ),
-      );
+          destination: s(a['ziel']),
+          task: s(a['aufgabe']),
+          towedById: towedById,
+          slipLocation: s(a['slipstelle']),
+          slipOffset: (a['slippen'] as num?)?.toInt(),
+        );
+    for (final a in plan) {
+      alarmIds.add(await ex.saveAlarmEntry(id, alarmInput(a)));
+    }
+    for (var i = 0; i < plan.length; i++) {
+      final tow = (plan[i]['zugfahrzeug'] as num?)?.toInt();
+      if (tow == null || tow < 0 || tow >= plan.length || tow == i) continue;
+      await ex.saveAlarmEntry(id, alarmInput(plan[i], entryId: alarmIds[i], towedById: alarmIds[tow]));
     }
     final docs = repo.documents;
     for (final r in list('funkplan')) {

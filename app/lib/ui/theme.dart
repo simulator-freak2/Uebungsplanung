@@ -6,6 +6,10 @@ abstract final class AppColors {
   static const yellow = Color(0xFFFFCC00);
   static const ok = Color(0xFF1F7A45);
   static const warn = Color(0xFFA85D00);
+
+  /// Alarmierungsplan: Slippen und Fahrt auf dem Wasser.
+  static const slip = Color(0xFF4FB3E8);
+  static const water = Color(0xFF1B5FA8);
 }
 
 ThemeData buildTheme(Brightness brightness) {

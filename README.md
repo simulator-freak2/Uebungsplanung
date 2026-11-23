@@ -16,9 +16,11 @@ einem eigenen Server abgleichen.
 
 Neu gegenüber 1.0: **Server** mit Benutzerrollen und Abgleich mehrerer Geräte ([`docs/SERVER.md`](docs/SERVER.md)),
 **Tablet-App** (Android, nur ansehen), **Lageskizze** mit Karte (online/offline) und taktischen Zeichen,
-**Materialkompass**-Anbindung mit Fahrzeugreservierung.
+**Materialkompass**-Anbindung mit Fahrzeugreservierung, **Slippen** im Alarmierungsplan (Boot fährt auf dem Anhänger
+mit einem Fahrzeug zur Slipstelle, danach getrennte Ziele, Aufgaben und Ankunftszeiten).
 
 ![Lageskizze](docs/screenshots/v2-lageskizze.png)
+![Slippen](docs/screenshots/v2-slippen.png)
 
 ### Funktionen aus Version 1.0
 

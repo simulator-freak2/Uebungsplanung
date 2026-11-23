@@ -47,7 +47,7 @@ Jede Übung besteht aus den folgenden Teilen. Alle sind einzeln und als gemeinsa
 | **Freigabe** | vom Admin ein- oder ausschaltbar; wenn eingeschaltet, gibt die Rolle TL/Wehrführer die Übung frei |
 | **Lageskizze** | OpenStreetMap online; ohne Internet Offline-Karte des **Landkreises**; taktische Zeichen (DV 102, Wasserrettung) |
 | **Fahrzeugbesetzung** | Besetzungsmuster je Fahrzeug wählen, Personen per **Drag & Drop** verschieben (Tablet: antippen), Prüfung der Qualifikation, Führungs- und Sonderfunktionen (Einsatzleiter, Übungsleitung, Sicherheitsbeauftragter, Beobachter, Mimenbetreuung …) |
-| **Alarmierungsplan** | je Fahrzeug bzw. Trupp: Zeitpunkt von Alarmierung/Abruf, Ausrücken und Ankunft/Einsatzbeginn, Auslöser; als Tabelle und Zeitleiste |
+| **Alarmierungsplan** | je Fahrzeug bzw. Trupp: Zeitpunkt von Alarmierung/Abruf, Ausrücken und Ankunft/Einsatzbeginn, Ziel, Aufgabe, Auslöser; als Tabelle und Zeitleiste. **Slippen**: Boot fährt auf dem Anhänger eines Fahrzeugs zur Slipstelle (gemeinsame Alarmierung), danach sind Boot und Fahrzeug getrennt |
 | **Alarmmeldung** | nur Ausdruck; je Alarmierungszeitpunkt eine eigene Meldung; Aufbau wie die Divera-24/7-Meldung: Stichwort, Adresse, Sonderrechte/prioritär, Melder, alarmierte Fahrzeuge; deutlich als ÜBUNG gekennzeichnet |
 | **Funkplan** | Rufname, Gerät, Funknetz (BOS digital TMO/DMO, BOS analog, DLRG-Betriebsfunk), Gruppe/Kanal, Aufgabe |
 | **Rollenkarten (Mimen)** | Name, Geburtsdatum, Alter, Vorerkrankungen, Erkrankungen, Symptome, Verletzungen, Story, Eskalationsstufen |
@@ -123,7 +123,7 @@ Organisation(Profil)
  ├─ Funkressource(Netz, Gruppe/Kanal)
  └─ Übung ─┬─ Phase, Lernziel, Sicherheitscheck, Freigabe
            ├─ Besetzung(Fahrzeug, Muster, Funktion, Person)
-           ├─ Alarmplan-Eintrag(Einheit, Alarm, Ausrücken, Ankunft, Auslöser)
+           ├─ Alarmplan-Eintrag(Einheit, Alarm, Ausrücken, Ankunft, Ziel, Aufgabe, Auslöser; Boot: Zugfahrzeug, Slipstelle, Slippen)
            ├─ Alarmmeldung(Stichwort, Adresse, Sonderrechte, Melder, Fahrzeuge)
            ├─ Funkplan-Eintrag, Rollenkarte(+ Eskalationsstufen), Materialposition
            ├─ Beobachtung(Punkt, Bewertung, Notiz)

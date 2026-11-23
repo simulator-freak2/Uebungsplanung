@@ -226,6 +226,25 @@ class AlarmPlanEntries extends Table with SyncColumns {
   IntColumn get arriveOffset => integer().nullable()();
   TextColumn get note => text().nullable()();
   IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+
+  // ab Schema-Version 6: eigene Ziele und Slippen
+  /// Ziel bzw. Einsatzort dieser Einheit (leer = Übungsort).
+  TextColumn get destination => text().nullable()();
+
+  /// Aufgabe der Einheit am Ziel.
+  TextColumn get task => text().nullable()();
+
+  /// Nur bei Booten: Eintrag des Zugfahrzeugs, das das Boot auf dem Anhänger
+  /// zur Slipstelle bringt. Bis zum Slippen fährt das Boot mit diesem
+  /// Fahrzeug (gleiche Alarmierung, gleiches Ausrücken). [departOffset] ist
+  /// dann der Zeitpunkt, an dem das Boot im Wasser ist und ablegt.
+  TextColumn get towedById => text().nullable()();
+
+  /// Slipstelle, an der das Boot zu Wasser gelassen wird.
+  TextColumn get slipLocation => text().nullable()();
+
+  /// Ankunft des Zugfahrzeugs an der Slipstelle (Beginn des Slippens).
+  IntColumn get slipOffset => integer().nullable()();
 }
 
 // ---------------------------------------------------------------------------
@@ -342,7 +361,7 @@ class AppDatabase extends _$AppDatabase {
       ));
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -377,6 +396,17 @@ class AppDatabase extends _$AppDatabase {
           if (from >= 2 && from < 5) {
             for (final c in <GeneratedColumn<Object>>[exerciseVehicles.reservationId, exerciseVehicles.reservationStatus, exerciseVehicles.reservationNote]) {
               await m.addColumn(exerciseVehicles, c);
+            }
+          }
+          if (from >= 2 && from < 6) {
+            for (final c in <GeneratedColumn<Object>>[
+              alarmPlanEntries.destination,
+              alarmPlanEntries.task,
+              alarmPlanEntries.towedById,
+              alarmPlanEntries.slipLocation,
+              alarmPlanEntries.slipOffset,
+            ]) {
+              await m.addColumn(alarmPlanEntries, c);
             }
           }
           if (from >= 2 && from < 4) {

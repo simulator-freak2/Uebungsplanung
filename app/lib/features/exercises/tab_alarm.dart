@@ -10,10 +10,15 @@ import '../../ui/theme.dart';
 import '../../ui/widgets.dart';
 import '../../util/time.dart' as t;
 
-String _vehicleText(Iterable<AlarmPlanEntry> entries, Map<String, Vehicle> byId) => entries.map((e) {
-      final v = e.vehicleId == null ? null : byId[e.vehicleId];
-      return v?.callSign == null ? e.label : '${e.label} (${v!.callSign})';
-    }).join(', ');
+String _vehicleText(Iterable<AlarmPlanEntry> entries, Map<String, Vehicle> byId) {
+  final labels = {for (final e in entries) e.id: e.label};
+  return entries.map((e) {
+    final v = e.vehicleId == null ? null : byId[e.vehicleId];
+    final name = v?.callSign == null ? e.label : '${e.label} (${v!.callSign})';
+    final tow = labels[e.towedById];
+    return tow == null ? name : '$name auf Anhänger von $tow';
+  }).join(', ');
+}
 
 /// Fahrzeuge der ersten Alarmierung, z. B. „HLF 20 (Florian … 1/46-1), RW“.
 String defaultAlarmVehicles(ExerciseDetail d, List<Vehicle> vehicles) {

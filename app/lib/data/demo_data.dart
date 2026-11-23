@@ -191,8 +191,23 @@ Future<void> loadDemoData(Repositories repo, OrgProfile profile) async {
     await ex.saveAlarmEntry(id, AlarmEntryInput(label: 'Angriffstrupp (HLF)', kind: 'trupp', alarmOffset: 26, arriveOffset: 32, note: 'Einsatz nach Absicherung'));
     await ex.saveAlarmEntry(id, AlarmEntryInput(label: 'LF 10', vehicleId: vehicles['LF 10'], alarmOffset: 40, departOffset: 46, arriveOffset: 55, note: 'Nachalarmierung durch Einsatzleiter: Ausleuchtung'));
   } else {
-    await ex.saveAlarmEntry(id, AlarmEntryInput(label: 'GW-Wasserrettung', vehicleId: vehicles['GW-Wasserrettung'], alarmOffset: 20, departOffset: 26, arriveOffset: 32, note: 'Erstalarm'));
-    await ex.saveAlarmEntry(id, AlarmEntryInput(label: 'MRB Musterstadt 1', kind: 'boot', vehicleId: vehicles['Motorrettungsboot (MRB)'], alarmOffset: 20, departOffset: 35, arriveOffset: 45));
+    final gw = await ex.saveAlarmEntry(id, AlarmEntryInput(label: 'GW-Wasserrettung', vehicleId: vehicles['GW-Wasserrettung'], alarmOffset: 20, departOffset: 26, arriveOffset: 40, note: 'Erstalarm', destination: 'Nordufer Steg 2', task: 'Uferabsicherung, Anlaufstelle für Gerettete'));
+    await ex.saveAlarmEntry(
+      id,
+      AlarmEntryInput(
+        label: 'MRB Musterstadt 1',
+        kind: 'boot',
+        vehicleId: vehicles['Motorrettungsboot (MRB)'],
+        alarmOffset: 20,
+        towedById: gw,
+        slipLocation: 'Slipanlage Südufer',
+        slipOffset: 32,
+        departOffset: 37,
+        arriveOffset: 45,
+        destination: 'Suchgebiet Seemitte',
+        task: 'Wassersuche',
+      ),
+    );
     await ex.saveAlarmEntry(id, AlarmEntryInput(label: 'Uferposten Nord', kind: 'trupp', alarmOffset: 35, arriveOffset: 42, note: 'Abruf durch Einsatzleiter'));
   }
   await ex.setAlarm(id, address: fw ? 'Industriestraße 12, Musterstadt (Bauhof)' : 'Badesee Musterstadt, Nordufer Steg 2', reporter: fw ? 'Zeuge auf der Straße' : 'Badegast');

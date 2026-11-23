@@ -86,6 +86,18 @@ class ExerciseDetail {
   /// Sonderrechte: Eintrag der Übung, sonst Vorgabe des Stichworts, sonst ja.
   bool get specialRights => exercise.alarmSpecialRights ?? keyword?.specialRights ?? true;
 
+  /// Zugfahrzeug eines Boots, das geslippt wird (sonst `null`).
+  AlarmPlanEntry? towOf(AlarmPlanEntry e) => e.towedById == null ? null : alarmPlan.where((x) => x.id == e.towedById).firstOrNull;
+
+  /// Boote, die dieses Fahrzeug auf dem Anhänger zur Slipstelle bringt.
+  List<AlarmPlanEntry> towedBy(AlarmPlanEntry e) => [for (final b in alarmPlan) if (b.towedById == e.id) b];
+
+  /// Ausrücken einer Einheit; ein geslipptes Boot rückt mit dem Zugfahrzeug aus.
+  int? departOf(AlarmPlanEntry e) {
+    final tow = towOf(e);
+    return tow == null ? e.departOffset : tow.departOffset;
+  }
+
   /// Erster Alarmierungszeitpunkt (relativ), falls ein Alarmierungsplan existiert.
   int? get firstAlarm => alarmPlan.isEmpty ? null : alarmPlan.map((e) => e.alarmOffset).reduce((a, b) => a < b ? a : b);
 }
@@ -98,6 +110,30 @@ class AlarmGroup {
 
   bool get isFirst => index == 0;
   String get title => isFirst ? 'Erstalarm' : '${index + 1}. Alarmierung';
+}
+
+/// Sortiert geslippte Boote direkt hinter ihr Zugfahrzeug.
+List<AlarmPlanEntry> orderAlarmPlan(List<AlarmPlanEntry> plan) {
+  final ids = {for (final e in plan) e.id};
+  bool towed(AlarmPlanEntry e) => e.towedById != null && ids.contains(e.towedById);
+  final out = <AlarmPlanEntry>[];
+  void add(AlarmPlanEntry e, Set<String> seen) {
+    if (!seen.add(e.id)) return;
+    out.add(e);
+    for (final b in plan) {
+      if (b.towedById == e.id) add(b, seen);
+    }
+  }
+
+  final seen = <String>{};
+  for (final e in plan) {
+    if (!towed(e)) add(e, seen);
+  }
+  // Ringverweise (sollte nicht vorkommen) trotzdem anzeigen.
+  for (final e in plan) {
+    if (!seen.contains(e.id)) out.add(e);
+  }
+  return out;
 }
 
 List<String> decodeGoals(String json) {
@@ -138,15 +174,41 @@ class ExerciseInput {
 }
 
 class AlarmEntryInput {
-  AlarmEntryInput({this.id, required this.label, this.kind = 'fahrzeug', this.vehicleId, required this.alarmOffset, this.departOffset, this.arriveOffset, this.note});
+  AlarmEntryInput({
+    this.id,
+    required this.label,
+    this.kind = 'fahrzeug',
+    this.vehicleId,
+    required this.alarmOffset,
+    this.departOffset,
+    this.arriveOffset,
+    this.note,
+    this.destination,
+    this.task,
+    this.towedById,
+    this.slipLocation,
+    this.slipOffset,
+  });
   final String? id;
   final String label;
   final String kind;
   final String? vehicleId;
+
+  /// Bei einem Boot auf dem Anhänger wird die Alarmierung des Zugfahrzeugs
+  /// übernommen; der Wert hier ist dann ohne Bedeutung.
   final int alarmOffset;
+
+  /// Ausrücken – bei einem geslippten Boot: im Wasser / Ablegen.
   final int? departOffset;
   final int? arriveOffset;
   final String? note;
+  final String? destination;
+  final String? task;
+
+  /// Eintrag des Zugfahrzeugs (nur Boote, die geslippt werden).
+  final String? towedById;
+  final String? slipLocation;
+  final int? slipOffset;
 }
 
 String? _clean(String? s) => (s == null || s.trim().isEmpty) ? null : s.trim();
@@ -237,7 +299,7 @@ class ExerciseRepository {
       checks: checks,
       vehicles: vehicles,
       assignments: assignments,
-      alarmPlan: plan,
+      alarmPlan: orderAlarmPlan(plan),
       keyword: kw?.deleted == true ? null : kw,
     );
   }
@@ -353,8 +415,9 @@ class ExerciseRepository {
           await db.into(db.exerciseVehicles)
               .insert(ExerciseVehiclesCompanion.insert(exerciseId: id, vehicleId: v.vehicleId, patternId: Value(v.patternId), sortOrder: Value(v.sortOrder)));
         }
+        final newIds = <String, String>{};
         for (final a in d.alarmPlan) {
-          await db.into(db.alarmPlanEntries).insert(AlarmPlanEntriesCompanion.insert(
+          final row = await db.into(db.alarmPlanEntries).insertReturning(AlarmPlanEntriesCompanion.insert(
                 exerciseId: id,
                 label: a.label,
                 kind: Value(a.kind),
@@ -364,7 +427,18 @@ class ExerciseRepository {
                 arriveOffset: Value(a.arriveOffset),
                 note: Value(a.note),
                 sortOrder: Value(a.sortOrder),
+                destination: Value(a.destination),
+                task: Value(a.task),
+                slipLocation: Value(a.slipLocation),
+                slipOffset: Value(a.slipOffset),
               ));
+          newIds[a.id] = row.id;
+        }
+        for (final a in d.alarmPlan) {
+          final tow = newIds[a.towedById];
+          if (tow != null) {
+            await (db.update(db.alarmPlanEntries)..where((t) => t.id.equals(newIds[a.id]!))).write(AlarmPlanEntriesCompanion(towedById: Value(tow)));
+          }
         }
         for (final r in d.radio) {
           await db.into(db.radioEntries).insert(RadioEntriesCompanion.insert(
@@ -515,34 +589,70 @@ class ExerciseRepository {
 
   // ---------------------------------------------------------- Alarmierungsplan
 
-  Future<void> saveAlarmEntry(String exerciseId, AlarmEntryInput e) async {
-    if (e.id == null) {
-      final n = (await (db.select(db.alarmPlanEntries)..where((t) => t.exerciseId.equals(exerciseId))).get()).length;
-      await db.into(db.alarmPlanEntries).insert(AlarmPlanEntriesCompanion.insert(
-            exerciseId: exerciseId,
-            label: e.label.trim(),
-            kind: Value(e.kind),
-            vehicleId: Value(e.vehicleId),
-            alarmOffset: e.alarmOffset,
-            departOffset: Value(e.departOffset),
-            arriveOffset: Value(e.arriveOffset),
-            note: Value(_clean(e.note)),
-            sortOrder: Value(n),
-          ));
-    } else {
-      await (db.update(db.alarmPlanEntries)..where((t) => t.id.equals(e.id!))).write(AlarmPlanEntriesCompanion(
-            label: Value(e.label.trim()),
-            kind: Value(e.kind),
-            vehicleId: Value(e.vehicleId),
-            alarmOffset: Value(e.alarmOffset),
-            departOffset: Value(e.departOffset),
-            arriveOffset: Value(e.arriveOffset),
-            note: Value(_clean(e.note)),
-            updatedAt: _now(),
-          ));
-    }
-  }
+  /// Speichert einen Eintrag und gibt seine ID zurück. Ein Boot auf dem
+  /// Anhänger übernimmt die Alarmierung seines Zugfahrzeugs; ändert sich die
+  /// Alarmierung des Zugfahrzeugs, ziehen seine Boote mit.
+  Future<String> saveAlarmEntry(String exerciseId, AlarmEntryInput e) => db.transaction(() async {
+        final towId = e.kind == 'boot' && e.towedById != e.id ? e.towedById : null;
+        final tow = towId == null
+            ? null
+            : await (db.select(db.alarmPlanEntries)..where((t) => t.id.equals(towId) & t.deleted.equals(false))).getSingleOrNull();
+        final towed = tow != null;
+        final alarm = tow?.alarmOffset ?? e.alarmOffset;
+        String id;
+        if (e.id == null) {
+          final n = (await (db.select(db.alarmPlanEntries)..where((t) => t.exerciseId.equals(exerciseId))).get()).length;
+          final row = await db.into(db.alarmPlanEntries).insertReturning(AlarmPlanEntriesCompanion.insert(
+                exerciseId: exerciseId,
+                label: e.label.trim(),
+                kind: Value(e.kind),
+                vehicleId: Value(e.vehicleId),
+                alarmOffset: alarm,
+                departOffset: Value(e.departOffset),
+                arriveOffset: Value(e.arriveOffset),
+                note: Value(_clean(e.note)),
+                sortOrder: Value(n),
+                destination: Value(_clean(e.destination)),
+                task: Value(_clean(e.task)),
+                towedById: Value(tow?.id),
+                slipLocation: Value(towed ? _clean(e.slipLocation) : null),
+                slipOffset: Value(towed ? e.slipOffset : null),
+              ));
+          id = row.id;
+        } else {
+          id = e.id!;
+          await (db.update(db.alarmPlanEntries)..where((t) => t.id.equals(id))).write(AlarmPlanEntriesCompanion(
+                label: Value(e.label.trim()),
+                kind: Value(e.kind),
+                vehicleId: Value(e.vehicleId),
+                alarmOffset: Value(alarm),
+                departOffset: Value(e.departOffset),
+                arriveOffset: Value(e.arriveOffset),
+                note: Value(_clean(e.note)),
+                destination: Value(_clean(e.destination)),
+                task: Value(_clean(e.task)),
+                towedById: Value(tow?.id),
+                slipLocation: Value(towed ? _clean(e.slipLocation) : null),
+                slipOffset: Value(towed ? e.slipOffset : null),
+                updatedAt: _now(),
+              ));
+          // Boote auf dem Anhänger dieses Fahrzeugs: Alarmierung angleichen,
+          // bzw. lösen, wenn der Eintrag selbst kein Fahrzeug mehr ist.
+          final boats = db.update(db.alarmPlanEntries)
+            ..where((t) => t.towedById.equals(id) & t.deleted.equals(false) & t.alarmOffset.equals(alarm).not());
+          await boats.write(AlarmPlanEntriesCompanion(alarmOffset: Value(alarm), updatedAt: _now()));
+          if (e.kind != 'fahrzeug') await _releaseBoats(id);
+        }
+        return id;
+      });
 
-  Future<void> deleteAlarmEntry(String id) => (db.update(db.alarmPlanEntries)..where((t) => t.id.equals(id)))
-      .write(AlarmPlanEntriesCompanion(deleted: const Value(true), updatedAt: _now()));
+  /// Boote eines Zugfahrzeugs werden eigenständig (Zeiten bleiben erhalten).
+  Future<void> _releaseBoats(String towId) => (db.update(db.alarmPlanEntries)..where((t) => t.towedById.equals(towId) & t.deleted.equals(false)))
+      .write(AlarmPlanEntriesCompanion(towedById: const Value(null), slipLocation: const Value(null), slipOffset: const Value(null), updatedAt: _now()));
+
+  Future<void> deleteAlarmEntry(String id) => db.transaction(() async {
+        await _releaseBoats(id);
+        await (db.update(db.alarmPlanEntries)..where((t) => t.id.equals(id)))
+            .write(AlarmPlanEntriesCompanion(deleted: const Value(true), updatedAt: _now()));
+      });
 }
