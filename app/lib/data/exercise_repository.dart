@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
 
 import 'database.dart';
+import 'lead_functions.dart';
 
 /// Status einer Übung.
 /// Kategorien im Dienstplan.
@@ -40,6 +42,7 @@ class ExerciseDetail {
     this.material = const [],
     this.observations = const [],
     this.lessons = const [],
+    this.leads = const [],
   });
 
   final Exercise exercise;
@@ -54,6 +57,16 @@ class ExerciseDetail {
   final List<MaterialItem> material;
   final List<ObservationItem> observations;
   final List<Lesson> lessons;
+
+  /// Führungs- und Sonderfunktionen sowie Funktionen der
+  /// Übungsdurchführung dieser Übung (nach Reihenfolge).
+  final List<ExerciseLeadFunction> leads;
+
+  /// Führungsstruktur (Organigramm).
+  List<ExerciseLeadFunction> get commandLeads => [for (final l in leads) if (l.kind != LeadKind.run) l];
+
+  /// Übungsdurchführung: Übungsleitung, Beobachter, Mimenbetreuung …
+  List<ExerciseLeadFunction> get runLeads => [for (final l in leads) if (l.kind == LeadKind.run) l];
 
   List<String> get debriefGood => decodeGoals(exercise.debriefGood);
   List<String> get debriefBad => decodeGoals(exercise.debriefBad);
@@ -184,6 +197,7 @@ class ExerciseRepository {
         db.materialItems,
         db.observationItems,
         db.lessons,
+        db.exerciseLeadFunctions,
       })
       .watch()
       .asyncMap((_) => detail(id));
@@ -226,7 +240,12 @@ class ExerciseRepository {
           ..orderBy([(t) => OrderingTerm(expression: t.sortOrder)]))
         .get();
     final lessons = await (db.select(db.lessons)..where((t) => t.exerciseId.equals(id) & t.deleted.equals(false))).get();
+    final leads = await (db.select(db.exerciseLeadFunctions)
+          ..where((t) => t.exerciseId.equals(id) & t.deleted.equals(false))
+          ..orderBy([(t) => OrderingTerm(expression: t.sortOrder), (t) => OrderingTerm(expression: t.name)]))
+        .get();
     return ExerciseDetail(
+      leads: leads,
       radio: radio,
       roles: roles,
       material: material,
@@ -265,6 +284,8 @@ class ExerciseRepository {
                 sortOrder: Value(i),
               ));
         }
+        await ensureDefaultLead(row.id);
+        await ensureRunDefaults(db, row.id);
         return row.id;
       });
 
@@ -366,8 +387,9 @@ class ExerciseRepository {
                 sortOrder: Value(a.sortOrder),
               ));
         }
+        final radioIds = <String, String>{};
         for (final r in d.radio) {
-          await db.into(db.radioEntries).insert(RadioEntriesCompanion.insert(
+          radioIds[r.id] = (await db.into(db.radioEntries).insertReturning(RadioEntriesCompanion.insert(
                 exerciseId: id,
                 callSign: r.callSign,
                 device: Value(r.device),
@@ -375,8 +397,30 @@ class ExerciseRepository {
                 channel: Value(r.channel),
                 task: Value(r.task),
                 sortOrder: Value(r.sortOrder),
+              )))
+              .id;
+        }
+        // Führungsstruktur ohne Personen übernehmen.
+        final leadIds = <String, String>{
+          for (final l in d.leads)
+            l.id: l.id == defaultLeadId(sourceId)
+                ? defaultLeadId(id)
+                : [for (final r in runDefaults) if (l.id == runDefaultId(sourceId, r.$1)) runDefaultId(id, r.$1)].firstOrNull ?? const Uuid().v4(),
+        };
+        for (final l in d.leads) {
+          await db.into(db.exerciseLeadFunctions).insert(ExerciseLeadFunctionsCompanion.insert(
+                id: Value(leadIds[l.id]!),
+                exerciseId: id,
+                name: l.name,
+                kind: Value(l.kind),
+                requiredQualificationId: Value(l.requiredQualificationId),
+                parentId: Value(leadIds[l.parentId]),
+                vehicleId: Value(l.vehicleId),
+                radioEntryId: Value(radioIds[l.radioEntryId]),
+                sortOrder: Value(l.sortOrder),
               ));
         }
+        if (d.leads.isEmpty) await ensureDefaultLead(id);
         for (final r in d.roles) {
           await db.into(db.roleCards).insert(RoleCardsCompanion.insert(
                 exerciseId: id,
@@ -473,6 +517,9 @@ class ExerciseRepository {
         await (db.update(db.exerciseAssignments)
               ..where((t) => t.exerciseId.equals(exerciseId) & t.functionId.isIn(functionIds) & t.deleted.equals(false)))
             .write(ExerciseAssignmentsCompanion(deleted: const Value(true), updatedAt: _now()));
+        await (db.update(db.exerciseLeadFunctions)
+              ..where((t) => t.exerciseId.equals(exerciseId) & t.vehicleId.equals(ev.vehicleId) & t.deleted.equals(false)))
+            .write(ExerciseLeadFunctionsCompanion(vehicleId: const Value(null), updatedAt: _now()));
       });
 
   /// Setzt [personId] auf die Funktion [functionId]. Eine Funktion hat höchstens
@@ -512,6 +559,142 @@ class ExerciseRepository {
   Future<void> _insertAssignment(String exerciseId, String functionId, String personId) => db
       .into(db.exerciseAssignments)
       .insert(ExerciseAssignmentsCompanion.insert(exerciseId: exerciseId, functionId: functionId, personId: personId));
+
+  // ------------------------------------------------- Führungsfunktionen
+
+  /// Legt den Einsatzleiter / Einheitsführer an, falls die Übung ihn noch nie
+  /// hatte. Wurde er gelöscht, bleibt er gelöscht.
+  Future<void> ensureDefaultLead(String exerciseId) async {
+    final catalog = await (db.select(db.crewFunctions)..where((t) => t.vehicleId.isNull() & t.deleted.equals(false))).get();
+    final top = catalog.where((f) => isTopLeadName(f.name)).firstOrNull;
+    await db.into(db.exerciseLeadFunctions).insert(
+          ExerciseLeadFunctionsCompanion.insert(
+            id: Value(defaultLeadId(exerciseId)),
+            exerciseId: exerciseId,
+            name: defaultLeadName,
+            requiredQualificationId: Value(top?.requiredQualificationId),
+            sortOrder: const Value(0),
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+  }
+
+  Future<List<ExerciseLeadFunction>> _leads(String exerciseId) => (db.select(db.exerciseLeadFunctions)
+        ..where((t) => t.exerciseId.equals(exerciseId) & t.deleted.equals(false))
+        ..orderBy([(t) => OrderingTerm(expression: t.sortOrder)]))
+      .get();
+
+  /// Legt eine Führungsfunktion an oder ändert sie. Der Funkrufname wird im
+  /// Funkplan geführt: Gibt es dort schon einen Eintrag mit diesem Rufnamen,
+  /// wird er verknüpft, sonst angelegt. Ändern im Funkplan ändert damit auch
+  /// das Organigramm.
+  Future<String> saveLead(String exerciseId, LeadInput input) => db.transaction(() async {
+        final leads = await _leads(exerciseId);
+        final old = input.id == null ? null : leads.where((l) => l.id == input.id).firstOrNull;
+        final kind = old?.kind ?? input.kind;
+        // Nur die Führungsstruktur kennt Unterstellungen.
+        var parent = kind == LeadKind.run ? null : input.parentId;
+        if (parent != null && leads.where((l) => l.id == parent).firstOrNull?.kind == LeadKind.run) parent = null;
+        // Keine Ringe: sich selbst oder eigene Unterstellte als Vorgesetzte verbieten.
+        if (old != null && (parent == old.id || descendantsOf(old.id, leads).contains(parent))) parent = old.parentId;
+        String id;
+        if (old == null) {
+          final order = leads.isEmpty ? 0 : leads.map((l) => l.sortOrder).reduce((a, b) => a > b ? a : b) + 1;
+          id = (await db.into(db.exerciseLeadFunctions).insertReturning(ExerciseLeadFunctionsCompanion.insert(
+                    exerciseId: exerciseId,
+                    name: input.name.trim(),
+                    kind: Value(kind),
+                    requiredQualificationId: Value(input.qualificationId),
+                    parentId: Value(parent),
+                    vehicleId: Value(input.vehicleId),
+                    sortOrder: Value(order),
+                  )))
+              .id;
+        } else {
+          id = old.id;
+          await (db.update(db.exerciseLeadFunctions)..where((t) => t.id.equals(id))).write(ExerciseLeadFunctionsCompanion(
+                name: Value(input.name.trim()),
+                requiredQualificationId: Value(input.qualificationId),
+                parentId: Value(parent),
+                vehicleId: Value(input.vehicleId),
+                updatedAt: _now(),
+              ));
+        }
+        if (input.callSign != null) await _linkRadio(exerciseId, id, input.name.trim(), input.callSign!, input.vehicleId, old?.radioEntryId);
+        return id;
+      });
+
+  Future<void> _linkRadio(String exerciseId, String leadId, String leadName, String callSign, String? vehicleId, String? linkedId) async {
+    final call = callSign.trim();
+    String? radioId;
+    if (call.isNotEmpty) {
+      final radio = await (db.select(db.radioEntries)
+            ..where((t) => t.exerciseId.equals(exerciseId) & t.deleted.equals(false))
+            ..orderBy([(t) => OrderingTerm(expression: t.sortOrder)]))
+          .get();
+      final linked = radio.where((r) => r.id == linkedId).firstOrNull;
+      final same = radio.where((r) => r.callSign.trim().toLowerCase() == call.toLowerCase()).firstOrNull;
+      if (same != null) {
+        radioId = same.id;
+      } else if (linked != null) {
+        // Rufname geändert: verknüpften Funkplan-Eintrag mitändern.
+        radioId = linked.id;
+        await (db.update(db.radioEntries)..where((t) => t.id.equals(linked.id)))
+            .write(RadioEntriesCompanion(callSign: Value(call), updatedAt: _now()));
+      } else {
+        final vehicle = vehicleId == null ? null : await (db.select(db.vehicles)..where((t) => t.id.equals(vehicleId))).getSingleOrNull();
+        radioId = (await db.into(db.radioEntries).insertReturning(RadioEntriesCompanion.insert(
+                  exerciseId: exerciseId,
+                  callSign: call,
+                  device: Value(vehicle?.name),
+                  task: Value(leadName),
+                  sortOrder: Value(radio.length),
+                )))
+            .id;
+      }
+    }
+    await (db.update(db.exerciseLeadFunctions)..where((t) => t.id.equals(leadId)))
+        .write(ExerciseLeadFunctionsCompanion(radioEntryId: Value(radioId), updatedAt: _now()));
+  }
+
+  /// Löscht eine Führungsfunktion samt Besetzung. Unterstellte rücken eine
+  /// Ebene nach oben. Der Funkplan-Eintrag bleibt.
+  Future<void> deleteLead(String exerciseId, String id) => db.transaction(() async {
+        final leads = await _leads(exerciseId);
+        final l = leads.where((x) => x.id == id).firstOrNull;
+        if (l == null) return;
+        await (db.update(db.exerciseLeadFunctions)..where((t) => t.exerciseId.equals(exerciseId) & t.parentId.equals(id) & t.deleted.equals(false)))
+            .write(ExerciseLeadFunctionsCompanion(parentId: Value(l.parentId), updatedAt: _now()));
+        await (db.update(db.exerciseLeadFunctions)..where((t) => t.id.equals(id)))
+            .write(ExerciseLeadFunctionsCompanion(deleted: const Value(true), updatedAt: _now()));
+        await unassign(exerciseId, id);
+      });
+
+  /// Unterstellt [id] der Führungsfunktion [parentId] (`null` = oberste Ebene).
+  /// Ringe werden verhindert.
+  Future<void> setLeadParent(String exerciseId, String id, String? parentId) async {
+    final leads = await _leads(exerciseId);
+    if (parentId == id || (parentId != null && descendantsOf(id, leads).contains(parentId))) return;
+    if ([id, parentId].any((x) => leads.where((l) => l.id == x).firstOrNull?.kind == LeadKind.run)) return;
+    await (db.update(db.exerciseLeadFunctions)..where((t) => t.id.equals(id)))
+        .write(ExerciseLeadFunctionsCompanion(parentId: Value(parentId), updatedAt: _now()));
+  }
+
+  /// Verschiebt eine Führungsfunktion in der Reihenfolge um [delta] Plätze.
+  Future<void> moveLead(String exerciseId, String id, int delta) => db.transaction(() async {
+        final leads = await _leads(exerciseId);
+        final i = leads.indexWhere((l) => l.id == id);
+        final j = i + delta;
+        if (i < 0 || j < 0 || j >= leads.length) return;
+        final l = leads.removeAt(i);
+        leads.insert(j, l);
+        for (var k = 0; k < leads.length; k++) {
+          if (leads[k].sortOrder != k) {
+            await (db.update(db.exerciseLeadFunctions)..where((t) => t.id.equals(leads[k].id)))
+                .write(ExerciseLeadFunctionsCompanion(sortOrder: Value(k), updatedAt: _now()));
+          }
+        }
+      });
 
   // ---------------------------------------------------------- Alarmierungsplan
 

@@ -116,7 +116,7 @@ class _VehicleList extends StatelessWidget {
         item(
           sel: leadSelected,
           title: const Text('Führungs- und Sonderfunktionen', style: TextStyle(fontWeight: FontWeight.w600)),
-          subtitle: const Text('Einsatzleiter, Übungsleitung, Beobachter …'),
+          subtitle: const Text('Vorlagen: Einsatzleiter, Übungsleitung, Beobachter …'),
           onTap: () => onSelect(null),
         ),
         const SizedBox(height: 8),
@@ -341,7 +341,8 @@ class _VehicleDetailViewState extends State<VehicleDetailView> {
     return SectionCard(
       title: lead ? 'Führungs- und Sonderfunktionen' : 'Funktionen',
       subtitle: lead
-          ? 'Gelten für alle Übungen, unabhängig vom Fahrzeug. Eine Person darf mehrere Funktionen haben.'
+          ? 'Vorlagen für die Führungsfunktionen der Übungen (Name und benötigte Qualifikation). '
+              'In jeder Übung werden die Funktionen unter „Besetzung“ frei angelegt.'
           : 'Reihenfolge per Ziehen am Griff ändern',
       actions: [
         FilledButton.tonalIcon(

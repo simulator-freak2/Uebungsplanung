@@ -45,9 +45,9 @@ Future<Map<String?, String>> _symbolNames(ExerciseDetail d) async {
 }
 
 /// Dialog: Teile der Übungsmappe wählen, dann drucken oder als PDF speichern.
-Future<void> showExerciseMapDialog(BuildContext context, ExerciseDetail d) async {
+Future<void> showExerciseMapDialog(BuildContext context, ExerciseDetail d, {Set<MapSection>? sections}) async {
   final repo = AppScope.of(context);
-  final selected = {...MapSection.values}..remove(MapSection.debrief);
+  final selected = sections != null ? {...sections} : ({...MapSection.values}..remove(MapSection.debrief));
   await showDialog<void>(
     context: context,
     builder: (ctx) => StatefulBuilder(
@@ -68,6 +68,7 @@ Future<void> showExerciseMapDialog(BuildContext context, ExerciseDetail d) async
                     MapSection.alarms => Text('${d.alarmGroups.isEmpty ? 1 : d.alarmGroups.length} Seite(n), je Alarmierungszeitpunkt eine'),
                     MapSection.roles => Text('${d.roles.length} Karte(n), je eine Seite zum Austeilen'),
                     MapSection.observation => const Text('mit leeren Feldern zum Ausfüllen'),
+                    MapSection.orgChart => const Text('Führungsstruktur mit Funkrufname, Funktion und Fahrzeug (Querformat)'),
                     _ => null,
                   },
                   onChanged: (v) => setS(() => v == true ? selected.add(s) : selected.remove(s)),
@@ -148,7 +149,7 @@ Future<String?> copyAsNewExercise(BuildContext context, String sourceId, {requir
               ),
             ),
             const SizedBox(height: 12),
-            const Text('Übernommen werden Ablauf, Lernziele, Lage, Sicherheits-Checkliste (nicht abgehakt), Fahrzeuge mit Besetzungsmuster, '
+            const Text('Übernommen werden Ablauf, Lernziele, Lage, Sicherheits-Checkliste (nicht abgehakt), Fahrzeuge mit Besetzungsmuster, Führungsstruktur, '
                 'Alarmierungsplan, Funkplan, Rollenkarten, Material und Beobachtungspunkte – ohne Personen und Bewertungen.'),
           ]),
         ),

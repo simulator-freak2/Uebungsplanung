@@ -33,6 +33,7 @@ const syncTables = {
   'exercise_vehicles',
   'exercise_assignments',
   'alarm_plan_entries',
+  'exercise_lead_functions',
   'radio_entries',
   'role_cards',
   'material_items',

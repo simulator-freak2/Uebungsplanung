@@ -127,7 +127,13 @@ class RadioTab extends StatelessWidget {
                         DataRow(
                           onSelectChanged: (_) => edit(r),
                           cells: [
-                            DataCell(Text(r.callSign, style: const TextStyle(fontWeight: FontWeight.w600))),
+                            DataCell(Row(mainAxisSize: MainAxisSize.min, children: [
+                              Text(r.callSign, style: const TextStyle(fontWeight: FontWeight.w600)),
+                              for (final l in d.leads.where((l) => l.radioEntryId == r.id)) ...[
+                                const SizedBox(width: 6),
+                                Tooltip(message: 'Funkrufname der Führungsfunktion (Organigramm)', child: Tag(l.name, color: c.tertiaryContainer)),
+                              ],
+                            ])),
                             DataCell(Text(r.device ?? '')),
                             DataCell(
                               Tag(

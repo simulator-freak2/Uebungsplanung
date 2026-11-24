@@ -3,6 +3,8 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
+import 'lead_functions.dart';
+
 part 'database.g.dart';
 
 const _uuid = Uuid();
@@ -213,6 +215,34 @@ class ExerciseAssignments extends Table with SyncColumns {
   TextColumn get personId => text()();
 }
 
+/// Führungs- bzw. Sonderfunktion einer Übung (ab Schema-Version 6).
+///
+/// Jede Übung hat ihre eigenen Führungsfunktionen; Namen dürfen mehrfach
+/// vorkommen (z. B. zwei Gruppenführer). Über [parentId] entsteht die
+/// Führungsstruktur für das Organigramm. Die Person kommt aus der Besetzung
+/// ([ExerciseAssignments] mit dieser ID als `functionId`), der Funkrufname
+/// aus dem verknüpften Funkplan-Eintrag ([radioEntryId]).
+class ExerciseLeadFunctions extends Table with SyncColumns {
+  TextColumn get exerciseId => text()();
+  TextColumn get name => text()();
+  TextColumn get requiredQualificationId => text().nullable()();
+
+  /// Übergeordnete Führungsfunktion; `null` = oberste Ebene (Einsatzleiter).
+  TextColumn get parentId => text().nullable()();
+
+  /// Geführtes Fahrzeug (Stammdaten-ID); `null` = aus der Besetzung ableiten.
+  TextColumn get vehicleId => text().nullable()();
+
+  /// Verknüpfter Eintrag im Funkplan (Funkrufname).
+  TextColumn get radioEntryId => text().nullable()();
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+
+  // ab Schema-Version 7
+  /// Rubrik: `fuehrung` (Organigramm) oder `durchfuehrung` (Übungsleitung,
+  /// Beobachter, Mimenbetreuung …).
+  TextColumn get kind => text().withDefault(const Constant('fuehrung'))();
+}
+
 /// Zeile im Alarmierungsplan. Zeiten in Minuten relativ zum Übungsbeginn.
 class AlarmPlanEntries extends Table with SyncColumns {
   TextColumn get exerciseId => text()();
@@ -317,6 +347,7 @@ class Lessons extends Table with SyncColumns {
   CrewPatternFunctions,
   Keywords,
   Exercises,
+  ExerciseLeadFunctions,
   ExercisePhases,
   ExerciseSafetyChecks,
   ExerciseVehicles,
@@ -342,7 +373,7 @@ class AppDatabase extends _$AppDatabase {
       ));
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -383,6 +414,14 @@ class AppDatabase extends _$AppDatabase {
             for (final c in <GeneratedColumn<Object>>[exercises.mapLat, exercises.mapLon, exercises.mapZoom, exercises.sketch, exercises.sketchPng]) {
               await m.addColumn(exercises, c);
             }
+          }
+          // Zuletzt, weil hier schon mit dem vollständigen Schema gelesen wird.
+          if (from < 6) {
+            await m.createTable(exerciseLeadFunctions);
+            if (from >= 2) await migrateLeadFunctions(this);
+          } else if (from < 7) {
+            await m.addColumn(exerciseLeadFunctions, exerciseLeadFunctions.kind);
+            await migrateRunFunctions(this);
           }
         },
       );
