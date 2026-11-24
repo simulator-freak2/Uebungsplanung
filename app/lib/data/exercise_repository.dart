@@ -58,8 +58,15 @@ class ExerciseDetail {
   final List<ObservationItem> observations;
   final List<Lesson> lessons;
 
-  /// Führungs- und Sonderfunktionen dieser Übung (nach Reihenfolge).
+  /// Führungs- und Sonderfunktionen sowie Funktionen der
+  /// Übungsdurchführung dieser Übung (nach Reihenfolge).
   final List<ExerciseLeadFunction> leads;
+
+  /// Führungsstruktur (Organigramm).
+  List<ExerciseLeadFunction> get commandLeads => [for (final l in leads) if (l.kind != LeadKind.run) l];
+
+  /// Übungsdurchführung: Übungsleitung, Beobachter, Mimenbetreuung …
+  List<ExerciseLeadFunction> get runLeads => [for (final l in leads) if (l.kind == LeadKind.run) l];
 
   List<String> get debriefGood => decodeGoals(exercise.debriefGood);
   List<String> get debriefBad => decodeGoals(exercise.debriefBad);
@@ -278,6 +285,7 @@ class ExerciseRepository {
               ));
         }
         await ensureDefaultLead(row.id);
+        await ensureRunDefaults(db, row.id);
         return row.id;
       });
 
@@ -394,13 +402,17 @@ class ExerciseRepository {
         }
         // Führungsstruktur ohne Personen übernehmen.
         final leadIds = <String, String>{
-          for (final l in d.leads) l.id: l.id == defaultLeadId(sourceId) ? defaultLeadId(id) : const Uuid().v4(),
+          for (final l in d.leads)
+            l.id: l.id == defaultLeadId(sourceId)
+                ? defaultLeadId(id)
+                : [for (final r in runDefaults) if (l.id == runDefaultId(sourceId, r.$1)) runDefaultId(id, r.$1)].firstOrNull ?? const Uuid().v4(),
         };
         for (final l in d.leads) {
           await db.into(db.exerciseLeadFunctions).insert(ExerciseLeadFunctionsCompanion.insert(
                 id: Value(leadIds[l.id]!),
                 exerciseId: id,
                 name: l.name,
+                kind: Value(l.kind),
                 requiredQualificationId: Value(l.requiredQualificationId),
                 parentId: Value(leadIds[l.parentId]),
                 vehicleId: Value(l.vehicleId),
@@ -579,7 +591,10 @@ class ExerciseRepository {
   Future<String> saveLead(String exerciseId, LeadInput input) => db.transaction(() async {
         final leads = await _leads(exerciseId);
         final old = input.id == null ? null : leads.where((l) => l.id == input.id).firstOrNull;
-        var parent = input.parentId;
+        final kind = old?.kind ?? input.kind;
+        // Nur die Führungsstruktur kennt Unterstellungen.
+        var parent = kind == LeadKind.run ? null : input.parentId;
+        if (parent != null && leads.where((l) => l.id == parent).firstOrNull?.kind == LeadKind.run) parent = null;
         // Keine Ringe: sich selbst oder eigene Unterstellte als Vorgesetzte verbieten.
         if (old != null && (parent == old.id || descendantsOf(old.id, leads).contains(parent))) parent = old.parentId;
         String id;
@@ -588,6 +603,7 @@ class ExerciseRepository {
           id = (await db.into(db.exerciseLeadFunctions).insertReturning(ExerciseLeadFunctionsCompanion.insert(
                     exerciseId: exerciseId,
                     name: input.name.trim(),
+                    kind: Value(kind),
                     requiredQualificationId: Value(input.qualificationId),
                     parentId: Value(parent),
                     vehicleId: Value(input.vehicleId),
@@ -659,6 +675,7 @@ class ExerciseRepository {
   Future<void> setLeadParent(String exerciseId, String id, String? parentId) async {
     final leads = await _leads(exerciseId);
     if (parentId == id || (parentId != null && descendantsOf(id, leads).contains(parentId))) return;
+    if ([id, parentId].any((x) => leads.where((l) => l.id == x).firstOrNull?.kind == LeadKind.run)) return;
     await (db.update(db.exerciseLeadFunctions)..where((t) => t.id.equals(id)))
         .write(ExerciseLeadFunctionsCompanion(parentId: Value(parentId), updatedAt: _now()));
   }

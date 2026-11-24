@@ -139,7 +139,8 @@ void main() {
     final id = await r.exercises.create(ExerciseInput(title: 'Test', date: DateTime(2027), startMinutes: 1140));
     final d = (await r.exercises.detail(id))!;
     expect(d.exercise.title, 'Test');
-    expect(d.leads.single.name, defaultLeadName);
+    expect(d.commandLeads.single.name, defaultLeadName);
+    expect(d.runLeads.length, runDefaults.length);
     await db.close();
   });
 }

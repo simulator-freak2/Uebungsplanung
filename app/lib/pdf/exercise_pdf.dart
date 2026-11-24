@@ -201,19 +201,20 @@ Future<Uint8List> buildExerciseMap(ExerciseMapData data, Set<MapSection> section
             }(),
         ];
     page('Fahrzeugbesetzung', () => [
-          if (d.leads.isNotEmpty) ...[
-            h2('Führungs- und Sonderfunktionen'),
-            table(['Funktion', 'Person', 'benötigt', 'Hinweis'], [
-              for (final (l, depth) in leadsInTreeOrder(d.leads))
-                () {
-                  final pid = byFn[l.id]?.first;
-                  final p = pid == null ? null : data.persons[pid];
-                  final need = l.requiredQualificationId;
-                  final missing = p != null && need != null && !p.qualificationIds.contains(need);
-                  return ['${'    ' * depth}${depth > 0 ? '› ' : ''}${l.name}', p?.displayName ?? '', need == null ? '' : (data.qualificationNames[need] ?? ''), missing ? 'Qualifikation fehlt' : ''];
-                }(),
-            ]),
-          ],
+          for (final (title, list) in [('Führungs- und Sonderfunktionen', d.commandLeads), ('Übungsdurchführung', d.runLeads)])
+            if (list.isNotEmpty) ...[
+              h2(title),
+              table(['Funktion', 'Person', 'benötigt', 'Hinweis'], [
+                for (final (l, depth) in leadsInTreeOrder(list))
+                  () {
+                    final pid = byFn[l.id]?.first;
+                    final p = pid == null ? null : data.persons[pid];
+                    final need = l.requiredQualificationId;
+                    final missing = p != null && need != null && !p.qualificationIds.contains(need);
+                    return ['${'    ' * depth}${depth > 0 ? '› ' : ''}${l.name}', p?.displayName ?? '', need == null ? '' : (data.qualificationNames[need] ?? ''), missing ? 'Qualifikation fehlt' : ''];
+                  }(),
+              ]),
+            ],
           for (final ev in d.vehicles)
             if (data.vehicles[ev.vehicleId] != null) ...() {
               final vd = data.vehicles[ev.vehicleId]!;

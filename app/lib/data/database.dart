@@ -236,6 +236,11 @@ class ExerciseLeadFunctions extends Table with SyncColumns {
   /// Verknüpfter Eintrag im Funkplan (Funkrufname).
   TextColumn get radioEntryId => text().nullable()();
   IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+
+  // ab Schema-Version 7
+  /// Rubrik: `fuehrung` (Organigramm) oder `durchfuehrung` (Übungsleitung,
+  /// Beobachter, Mimenbetreuung …).
+  TextColumn get kind => text().withDefault(const Constant('fuehrung'))();
 }
 
 /// Zeile im Alarmierungsplan. Zeiten in Minuten relativ zum Übungsbeginn.
@@ -368,7 +373,7 @@ class AppDatabase extends _$AppDatabase {
       ));
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -414,6 +419,9 @@ class AppDatabase extends _$AppDatabase {
           if (from < 6) {
             await m.createTable(exerciseLeadFunctions);
             if (from >= 2) await migrateLeadFunctions(this);
+          } else if (from < 7) {
+            await m.addColumn(exerciseLeadFunctions, exerciseLeadFunctions.kind);
+            await migrateRunFunctions(this);
           }
         },
       );

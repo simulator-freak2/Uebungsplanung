@@ -53,7 +53,7 @@ class _OrgTabState extends State<OrgTab> {
                   actions: [
                     OutlinedButton.icon(
                       key: const Key('org-print'),
-                      onPressed: d.leads.isEmpty ? null : () => showExerciseMapDialog(context, d, sections: {MapSection.orgChart}),
+                      onPressed: d.commandLeads.isEmpty ? null : () => showExerciseMapDialog(context, d, sections: {MapSection.orgChart}),
                       icon: const Icon(Icons.print_outlined),
                       label: const Text('Drucken / PDF'),
                     ),
@@ -68,13 +68,17 @@ class _OrgTabState extends State<OrgTab> {
                   child: roots.isEmpty
                       ? Align(
                           alignment: Alignment.centerLeft,
-                          child: Wrap(spacing: 12, crossAxisAlignment: WrapCrossAlignment.center, children: [
-                            const Text('Noch keine Führungsfunktionen.'),
-                            OutlinedButton(
-                              onPressed: () => repo.exercises.saveLead(d.exercise.id, LeadInput(name: defaultLeadName)),
-                              child: const Text('Einsatzleiter / Einheitsführer anlegen'),
-                            ),
-                          ]),
+                          child: Wrap(
+                            spacing: 12,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              const Text('Noch keine Führungsfunktionen.'),
+                              OutlinedButton(
+                                onPressed: () => repo.exercises.saveLead(d.exercise.id, LeadInput(name: defaultLeadName)),
+                                child: const Text('Einsatzleiter / Einheitsführer anlegen'),
+                              ),
+                            ],
+                          ),
                         )
                       : SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -185,7 +189,10 @@ class OrgBox extends StatelessWidget {
         key: ValueKey('org-${node.function.id}'),
         color: Theme.of(context).cardTheme.color,
         clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(color: node.qualificationMissing ? AppColors.warn : c.outlineVariant, width: node.qualificationMissing ? 1.5 : 1)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: node.qualificationMissing ? AppColors.warn : c.outlineVariant, width: node.qualificationMissing ? 1.5 : 1),
+        ),
         child: InkWell(
           onTap: onTap,
           child: Column(
@@ -194,53 +201,71 @@ class OrgBox extends StatelessWidget {
               Container(
                 color: head,
                 padding: const EdgeInsets.fromLTRB(10, 6, 4, 6),
-                child: Row(children: [
-                  Expanded(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(
-                        node.callSign ?? 'kein Funkrufname',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: onHead.withValues(alpha: node.callSign == null ? 0.7 : 1), fontWeight: FontWeight.w700, fontSize: 12.5, fontStyle: node.callSign == null ? FontStyle.italic : null),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            node.callSign ?? 'kein Funkrufname',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: onHead.withValues(alpha: node.callSign == null ? 0.7 : 1),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 12.5,
+                              fontStyle: node.callSign == null ? FontStyle.italic : null,
+                            ),
+                          ),
+                        ],
                       ),
-                    ]),
-                  ),
-                  if (onAdd != null)
-                    IconButton(
-                      tooltip: 'Unterstellte Funktion hinzufügen',
-                      visualDensity: VisualDensity.compact,
-                      iconSize: 18,
-                      color: onHead,
-                      icon: const Icon(Icons.add),
-                      onPressed: onAdd,
                     ),
-                ]),
+                    if (onAdd != null)
+                      IconButton(
+                        tooltip: 'Unterstellte Funktion hinzufügen',
+                        visualDensity: VisualDensity.compact,
+                        iconSize: 18,
+                        color: onHead,
+                        icon: const Icon(Icons.add),
+                        onPressed: onAdd,
+                      ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(node.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
-                  const SizedBox(height: 2),
-                  Text(node.personName ?? 'nicht besetzt', style: node.personName == null ? muted.copyWith(fontStyle: FontStyle.italic) : const TextStyle(fontSize: 13)),
-                  const SizedBox(height: 6),
-                  Row(children: [
-                    Icon(Icons.local_shipping_outlined, size: 15, color: c.onSurfaceVariant),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        node.vehicleName == null ? 'ohne Fahrzeug' : '${node.vehicleName}${node.vehicleFromCrew ? ' (Besetzung)' : ''}',
-                        style: muted,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(node.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
+                    const SizedBox(height: 2),
+                    Text(
+                      node.personName ?? 'nicht besetzt',
+                      style: node.personName == null ? muted.copyWith(fontStyle: FontStyle.italic) : const TextStyle(fontSize: 13),
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        Icon(Icons.local_shipping_outlined, size: 15, color: c.onSurfaceVariant),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            node.vehicleName == null ? 'ohne Fahrzeug' : '${node.vehicleName}${node.vehicleFromCrew ? ' (Besetzung)' : ''}',
+                            style: muted,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (node.qualificationMissing)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text('fehlt: ${node.qualificationName ?? 'Qualifikation'}', style: const TextStyle(fontSize: 11, color: AppColors.warn)),
                       ),
-                    ),
-                  ]),
-                  if (node.qualificationMissing)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text('fehlt: ${node.qualificationName ?? 'Qualifikation'}', style: const TextStyle(fontSize: 11, color: AppColors.warn)),
-                    ),
-                ]),
+                  ],
+                ),
               ),
             ],
           ),
@@ -277,11 +302,13 @@ Future<void> showLeadDialog(
   required Map<String?, VehicleDetail> vehicles,
   required List<Qualification> quals,
   ExerciseLeadFunction? lead,
+  String kind = LeadKind.command,
   String? parentId,
   String? presetName,
   String? presetQualificationId,
 }) async {
   final repo = AppScope.of(context);
+  final run = (lead?.kind ?? kind) == LeadKind.run;
   final persons = {for (final p in await repo.persons.all()) p.person.id: p.displayName};
   if (!context.mounted) return;
   final name = TextEditingController(text: lead?.name ?? presetName ?? '');
@@ -293,7 +320,10 @@ Future<void> showLeadDialog(
   var vehicle = lead?.vehicleId;
   final excluded = lead == null ? <String>{} : {lead.id, ...descendantsOf(lead.id, d.leads)};
   final labels = leadLabels(d, persons);
-  final parents = [for (final (l, depth) in leadsInTreeOrder(d.leads)) if (!excluded.contains(l.id)) (l, depth)];
+  final parents = [
+    for (final (l, depth) in leadsInTreeOrder(d.commandLeads))
+      if (!excluded.contains(l.id)) (l, depth),
+  ];
   if (!parents.any((p) => p.$1.id == parent)) parent = null;
   final inExercise = [for (final ev in d.vehicles) ?vehicles[ev.vehicleId]?.vehicle];
   if (vehicle != null && !inExercise.any((v) => v.id == vehicle)) vehicle = null;
@@ -303,91 +333,125 @@ Future<void> showLeadDialog(
     context: context,
     builder: (ctx) => StatefulBuilder(
       builder: (ctx, setS) => AlertDialog(
-        title: Text(lead == null ? 'Führungsfunktion hinzufügen' : 'Führungsfunktion bearbeiten'),
+        title: Text(
+          run
+              ? (lead == null ? 'Funktion der Übungsdurchführung' : 'Funktion bearbeiten (Übungsdurchführung)')
+              : (lead == null ? 'Führungsfunktion hinzufügen' : 'Führungsfunktion bearbeiten'),
+        ),
         content: SizedBox(
           width: 520,
           child: SingleChildScrollView(
-            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Autocomplete<String>(
-                initialValue: name.value,
-                optionsBuilder: (v) => {
-                  for (final f in catalog)
-                    if (f.name.toLowerCase().contains(v.text.toLowerCase())) f.name,
-                  for (final n in const ['Zugführer', 'Gruppenführer', 'Staffelführer', 'Abschnittsleiter', 'Führungsassistent', 'Sicherheitsbeauftragter'])
-                    if (n.toLowerCase().contains(v.text.toLowerCase())) n,
-                },
-                onSelected: (v) {
-                  name.text = v;
-                  final f = catalog.where((x) => x.name == v).firstOrNull;
-                  if (f?.requiredQualificationId != null && quals.any((q) => q.id == f!.requiredQualificationId)) setS(() => qual = f!.requiredQualificationId);
-                },
-                fieldViewBuilder: (context, ctrl, focus, submit) {
-                  ctrl.addListener(() => name.text = ctrl.text);
-                  return TextField(
-                    key: const Key('lead-name'),
-                    controller: ctrl,
-                    focusNode: focus,
-                    autofocus: lead == null,
-                    decoration: const InputDecoration(labelText: 'Funktion *', hintText: 'z. B. Zugführer, Gruppenführer, Abschnittsleiter'),
-                  );
-                },
-              ),
-              const SizedBox(height: 12),
-              DropdownButtonFormField<String?>(
-                key: const Key('lead-parent'),
-                initialValue: parent,
-                isExpanded: true,
-                decoration: const InputDecoration(labelText: 'Unterstellt'),
-                items: [
-                  const DropdownMenuItem(value: null, child: Text('– oberste Ebene –')),
-                  for (final (l, depth) in parents) DropdownMenuItem(value: l.id, child: Text('${'   ' * depth}${labels[l.id]}', overflow: TextOverflow.ellipsis)),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Autocomplete<String>(
+                  initialValue: name.value,
+                  optionsBuilder: (v) => {
+                    for (final f in catalog)
+                      if (isRunName(f.name) == run && f.name.toLowerCase().contains(v.text.toLowerCase())) f.name,
+                    for (final n
+                        in run
+                            ? const [
+                                'Übungsleitung',
+                                'Übungsbeobachter',
+                                'Mimenbetreuung',
+                                'Sicherheitsbeauftragter',
+                                'Schiedsrichter',
+                                'Darsteller-Betreuung',
+                                'Fotograf / Dokumentation',
+                              ]
+                            : const ['Zugführer', 'Gruppenführer', 'Staffelführer', 'Abschnittsleiter', 'Führungsassistent'])
+                      if (n.toLowerCase().contains(v.text.toLowerCase())) n,
+                  },
+                  onSelected: (v) {
+                    name.text = v;
+                    final f = catalog.where((x) => x.name == v).firstOrNull;
+                    if (f?.requiredQualificationId != null && quals.any((q) => q.id == f!.requiredQualificationId)) {
+                      setS(() => qual = f!.requiredQualificationId);
+                    }
+                  },
+                  fieldViewBuilder: (context, ctrl, focus, submit) {
+                    ctrl.addListener(() => name.text = ctrl.text);
+                    return TextField(
+                      key: const Key('lead-name'),
+                      controller: ctrl,
+                      focusNode: focus,
+                      autofocus: lead == null,
+                      decoration: InputDecoration(
+                        labelText: 'Funktion *',
+                        hintText: run ? 'z. B. Übungsbeobachter, Mimenbetreuung' : 'z. B. Zugführer, Gruppenführer, Abschnittsleiter',
+                        helperText: 'Gleiche Namen sind erlaubt, z. B. mehrere Beobachter.',
+                      ),
+                    );
+                  },
+                ),
+                if (!run) ...[
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<String?>(
+                    key: const Key('lead-parent'),
+                    initialValue: parent,
+                    isExpanded: true,
+                    decoration: const InputDecoration(labelText: 'Unterstellt'),
+                    items: [
+                      const DropdownMenuItem(value: null, child: Text('– oberste Ebene –')),
+                      for (final (l, depth) in parents)
+                        DropdownMenuItem(
+                          value: l.id,
+                          child: Text('${'   ' * depth}${labels[l.id]}', overflow: TextOverflow.ellipsis),
+                        ),
+                    ],
+                    onChanged: (v) => setS(() => parent = v),
+                  ),
                 ],
-                onChanged: (v) => setS(() => parent = v),
-              ),
-              const SizedBox(height: 12),
-              DropdownButtonFormField<String?>(
-                key: const Key('lead-vehicle'),
-                initialValue: vehicle,
-                isExpanded: true,
-                decoration: const InputDecoration(labelText: 'Fahrzeug'),
-                items: [
-                  const DropdownMenuItem(value: null, child: Text('aus der Besetzung übernehmen')),
-                  for (final v in inExercise) DropdownMenuItem(value: v.id, child: Text('${v.name}${v.callSign == null ? '' : ' · ${v.callSign}'}')),
-                ],
-                onChanged: (v) => setS(() => vehicle = v),
-              ),
-              const SizedBox(height: 12),
-              Autocomplete<String>(
-                initialValue: call.value,
-                optionsBuilder: (v) => [for (final r in d.radio) if (r.callSign.toLowerCase().contains(v.text.toLowerCase())) r.callSign],
-                onSelected: (v) => call.text = v,
-                fieldViewBuilder: (context, ctrl, focus, submit) {
-                  ctrl.addListener(() => call.text = ctrl.text);
-                  return TextField(
-                    key: const Key('lead-call'),
-                    controller: ctrl,
-                    focusNode: focus,
-                    decoration: const InputDecoration(
-                      labelText: 'Funkrufname',
-                      hintText: 'leer = vom Fahrzeug übernehmen',
-                      helperText: 'Wird im Funkplan geführt: vorhandener Eintrag wird verknüpft, sonst neu angelegt.',
-                      helperMaxLines: 2,
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 12),
-              DropdownButtonFormField<String?>(
-                initialValue: qual,
-                isExpanded: true,
-                decoration: const InputDecoration(labelText: 'benötigte Qualifikation'),
-                items: [
-                  const DropdownMenuItem(value: null, child: Text('keine')),
-                  for (final q in quals) DropdownMenuItem(value: q.id, child: Text(q.name)),
-                ],
-                onChanged: (v) => setS(() => qual = v),
-              ),
-            ]),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String?>(
+                  key: const Key('lead-vehicle'),
+                  initialValue: vehicle,
+                  isExpanded: true,
+                  decoration: const InputDecoration(labelText: 'Fahrzeug'),
+                  items: [
+                    const DropdownMenuItem(value: null, child: Text('aus der Besetzung übernehmen')),
+                    for (final v in inExercise) DropdownMenuItem(value: v.id, child: Text('${v.name}${v.callSign == null ? '' : ' · ${v.callSign}'}')),
+                  ],
+                  onChanged: (v) => setS(() => vehicle = v),
+                ),
+                const SizedBox(height: 12),
+                Autocomplete<String>(
+                  initialValue: call.value,
+                  optionsBuilder: (v) => [
+                    for (final r in d.radio)
+                      if (r.callSign.toLowerCase().contains(v.text.toLowerCase())) r.callSign,
+                  ],
+                  onSelected: (v) => call.text = v,
+                  fieldViewBuilder: (context, ctrl, focus, submit) {
+                    ctrl.addListener(() => call.text = ctrl.text);
+                    return TextField(
+                      key: const Key('lead-call'),
+                      controller: ctrl,
+                      focusNode: focus,
+                      decoration: const InputDecoration(
+                        labelText: 'Funkrufname',
+                        hintText: 'leer = vom Fahrzeug übernehmen',
+                        helperText: 'Wird im Funkplan geführt: vorhandener Eintrag wird verknüpft, sonst neu angelegt.',
+                        helperMaxLines: 2,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String?>(
+                  initialValue: qual,
+                  isExpanded: true,
+                  decoration: const InputDecoration(labelText: 'benötigte Qualifikation'),
+                  items: [
+                    const DropdownMenuItem(value: null, child: Text('keine')),
+                    for (final q in quals) DropdownMenuItem(value: q.id, child: Text(q.name)),
+                  ],
+                  onChanged: (v) => setS(() => qual = v),
+                ),
+              ],
+            ),
           ),
         ),
         actions: [
@@ -409,13 +473,25 @@ Future<void> showLeadDialog(
     ),
   );
   if (result == 'delete' && lead != null && context.mounted) {
-    if (await confirmDelete(context, lead.name, details: 'Die Besetzung dieser Funktion wird gelöscht. Unterstellte rücken eine Ebene nach oben.')) {
+    if (await confirmDelete(
+      context,
+      lead.name,
+      details: run ? 'Die Besetzung dieser Funktion wird gelöscht.' : 'Die Besetzung dieser Funktion wird gelöscht. Unterstellte rücken eine Ebene nach oben.',
+    )) {
       await repo.exercises.deleteLead(d.exercise.id, lead.id);
     }
   } else if (result == 'save') {
     await repo.exercises.saveLead(
       d.exercise.id,
-      LeadInput(id: lead?.id, name: name.text, qualificationId: qual, parentId: parent, vehicleId: vehicle, callSign: call.text),
+      LeadInput(
+        id: lead?.id,
+        name: name.text,
+        kind: run ? LeadKind.run : LeadKind.command,
+        qualificationId: qual,
+        parentId: parent,
+        vehicleId: vehicle,
+        callSign: call.text,
+      ),
     );
   }
 }

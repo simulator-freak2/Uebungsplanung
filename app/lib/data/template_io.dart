@@ -66,6 +66,7 @@ Future<String> exportTemplate(Repositories repo, String exerciseId) async {
       for (final l in d.leads)
         {
           'funktion': l.name,
+          'art': l.kind,
           'qualifikation': quals[l.requiredQualificationId],
           'unterstellt': leadIndex[l.parentId],
           'fahrzeug': vehicleName(l.vehicleId),
@@ -193,6 +194,7 @@ Future<TemplateImportResult> importTemplate(Repositories repo, String text) asyn
         id,
         LeadInput(
           name: s(l['funktion']) ?? defaultLeadName,
+          kind: l['art'] == LeadKind.run || (l['art'] == null && isRunName('${l['funktion'] ?? ''}')) ? LeadKind.run : LeadKind.command,
           qualificationId: qual == null ? null : await repo.qualifications.ensure(qual),
           vehicleId: vehicle?.vehicle?.id,
           callSign: s(l['rufname']),
@@ -204,6 +206,8 @@ Future<TemplateImportResult> importTemplate(Repositories repo, String text) asyn
       final parent = leadIds[(leads[i]['unterstellt'] as num?)?.toInt()];
       if (parent != null) await ex.setLeadParent(id, leadIds[i]!, parent);
     }
+    // Ältere Dateien kennen die Übungsdurchführung noch nicht.
+    if (!leads.any((l) => l['art'] != null)) await ensureRunDefaults(db, id);
     for (final r in list('rollenkarten')) {
       await db.into(db.roleCards).insert(RoleCardsCompanion.insert(
             exerciseId: id,

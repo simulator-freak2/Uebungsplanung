@@ -188,12 +188,17 @@ Future<void> loadDemoData(Repositories repo, OrgProfile profile) async {
   if (fw) {
     await lead('Gruppenführer', 'Becker', qual: 'Gruppenführer');
     await lead('Fahrzeugführer', 'Krüger', vehicle: 'RW');
-    await lead('Mimenbetreuung', 'Jung', qual: 'Sanitäter');
   } else {
     await lead('Abschnittsleiter Wasser', 'Meyer', vehicle: 'Motorrettungsboot (MRB)', qual: 'Bootsführer A');
     await lead('Uferposten', null);
-    await lead('Mimenbetreuung', 'Schmitt', qual: 'Sanitäter');
   }
+
+  // Übungsdurchführung: Vorgaben besetzen, zweiter Beobachter.
+  await ex.assign(id, functionId: runDefaultId(id, 'mime'), personId: personIds[fw ? 'Jung' : 'Schmitt']!);
+  await ex.assign(id, functionId: runDefaultId(id, 'ul'), personId: personIds[fw ? 'Wolf' : 'Richter']!);
+  await ex.assign(id, functionId: runDefaultId(id, 'beo'), personId: personIds[fw ? 'Hoffmann' : 'Weber']!);
+  final beo2 = await ex.saveLead(id, LeadInput(name: 'Übungsbeobachter', kind: LeadKind.run));
+  await ex.assign(id, functionId: beo2, personId: personIds[fw ? 'Klein' : 'Koch']!);
 
   // Alarmierungsplan
   if (fw) {

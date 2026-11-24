@@ -189,7 +189,8 @@ class _CrewTabState extends State<CrewTab> {
               ),
             ),
           ),
-        _LeadCard(state: this, vehicles: vehicles, ctx: ctx),
+        _LeadCard(state: this, vehicles: vehicles, ctx: ctx, kind: LeadKind.command),
+        _LeadCard(state: this, vehicles: vehicles, ctx: ctx, kind: LeadKind.run),
         for (final ev in d.vehicles)
           if (vehicles[ev.vehicleId] != null) _VehicleCard(state: this, detail: vehicles[ev.vehicleId]!, ctx: ctx, exerciseVehicle: ev),
         const SizedBox(height: 4),
@@ -348,8 +349,12 @@ class _VehicleCard extends StatelessWidget {
 /// Führungs- und Sonderfunktionen dieser Übung. Sie werden frei angelegt
 /// (Namen dürfen mehrfach vorkommen) und bilden das Organigramm.
 class _LeadCard extends StatelessWidget {
-  const _LeadCard({required this.state, required this.vehicles, required this.ctx});
+  const _LeadCard({required this.state, required this.vehicles, required this.ctx, required this.kind});
   final _CrewTabState state;
+
+  /// [LeadKind.command] (Führung, Organigramm) oder [LeadKind.run]
+  /// (Übungsdurchführung).
+  final String kind;
   final Map<String?, VehicleDetail> vehicles;
   final _CrewContext ctx;
 
@@ -357,16 +362,46 @@ class _LeadCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = Theme.of(context).colorScheme;
     final d = state.d;
-    final leads = leadsInTreeOrder(d.leads);
-    final filled = d.leads.where((l) => ctx.personOn(l.id) != null).length;
+    final run = kind == LeadKind.run;
+    final head = run ? c.tertiary : c.inverseSurface;
+    final onHead = run ? c.onTertiary : c.onInverseSurface;
+    final mine = run ? d.runLeads : d.commandLeads;
+    final leads = leadsInTreeOrder(mine);
+    final filled = mine.where((l) => ctx.personOn(l.id) != null).length;
     final labels = leadLabels(d, {for (final p in ctx.persons.values) p.person.id: p.displayName});
-    final catalog = vehicles[null]?.functions ?? const <CrewFunction>[];
+    // Vorlagen aus den Stammdaten, nach Rubrik getrennt.
+    final catalog = [
+      for (final f in vehicles[null]?.functions ?? const <CrewFunction>[])
+        if (isRunName(f.name) == run) f,
+    ];
+    final suggestions = [
+      for (final f in catalog) (f.name, f.requiredQualificationId),
+      if (run)
+        for (final (_, name, match) in runDefaults)
+          if (!catalog.any((f) => f.name.toLowerCase().contains(match))) (name, null),
+      if (!run && d.commandLeads.isEmpty) (defaultLeadName, null),
+    ];
     final top = leads.isEmpty ? null : leads.first.$1.id;
     Future<void> edit({ExerciseLeadFunction? lead, String? name, String? qual}) async {
       final quals = await state.repo.qualifications.all();
       if (!context.mounted) return;
-      await showLeadDialog(context, d, vehicles: vehicles, quals: quals, lead: lead, parentId: top, presetName: name, presetQualificationId: qual);
+      await showLeadDialog(
+        context,
+        d,
+        vehicles: vehicles,
+        quals: quals,
+        lead: lead,
+        kind: kind,
+        parentId: run ? null : top,
+        presetName: name,
+        presetQualificationId: qual,
+      );
     }
+
+    // Übungsdurchführung: Vorlage direkt anlegen (z. B. weiterer Beobachter).
+    Future<void> add(String name, String? qual) async => run
+        ? await state.repo.exercises.saveLead(d.exercise.id, LeadInput(name: name, kind: LeadKind.run, qualificationId: qual))
+        : await edit(name: name, qual: qual);
 
     String? info(ExerciseLeadFunction l) {
       final parts = [
@@ -385,7 +420,7 @@ class _LeadCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              color: c.inverseSurface,
+              color: head,
               padding: const EdgeInsets.fromLTRB(14, 8, 8, 8),
               child: Row(
                 children: [
@@ -395,44 +430,41 @@ class _LeadCard extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
-                          'Führungs- und Sonderfunktionen',
-                          style: TextStyle(color: c.onInverseSurface, fontWeight: FontWeight.w700, fontSize: 16),
+                          LeadKind.label(kind),
+                          style: TextStyle(color: onHead, fontWeight: FontWeight.w700, fontSize: 16),
                         ),
-                        Text('$filled von ${d.leads.length} besetzt', style: TextStyle(color: c.onInverseSurface.withValues(alpha: 0.85), fontSize: 12)),
+                        Text('$filled von ${mine.length} besetzt', style: TextStyle(color: onHead.withValues(alpha: 0.85), fontSize: 12)),
                       ],
                     ),
                   ),
-                  TextButton.icon(
-                    key: const Key('crew-org'),
-                    style: TextButton.styleFrom(foregroundColor: c.onInverseSurface),
-                    onPressed: () => DefaultTabController.maybeOf(context)?.animateTo(3),
-                    icon: const Icon(Icons.account_tree_outlined, size: 18),
-                    label: const Text('Organigramm'),
-                  ),
+                  if (!run)
+                    TextButton.icon(
+                      key: const Key('crew-org'),
+                      style: TextButton.styleFrom(foregroundColor: onHead),
+                      onPressed: () => DefaultTabController.maybeOf(context)?.animateTo(3),
+                      icon: const Icon(Icons.account_tree_outlined, size: 18),
+                      label: const Text('Organigramm'),
+                    ),
                   MenuAnchor(
                     builder: (context, controller, _) => TextButton.icon(
-                      key: const Key('crew-add-lead'),
-                      style: TextButton.styleFrom(foregroundColor: c.onInverseSurface),
+                      key: Key(run ? 'crew-add-run' : 'crew-add-lead'),
+                      style: TextButton.styleFrom(foregroundColor: onHead),
                       onPressed: () => controller.isOpen ? controller.close() : controller.open(),
                       icon: const Icon(Icons.add, size: 18),
                       label: const Text('Funktion'),
                     ),
                     menuChildren: [
                       MenuItemButton(
-                        key: const Key('crew-add-lead-free'),
+                        key: Key(run ? 'crew-add-run-free' : 'crew-add-lead-free'),
                         leadingIcon: const Icon(Icons.edit_outlined),
                         onPressed: () => edit(),
                         child: const Text('Eigene Funktion …'),
                       ),
-                      if (d.leads.isEmpty)
+                      for (final (name, qual) in suggestions)
                         MenuItemButton(
-                          onPressed: () => state.repo.exercises.saveLead(d.exercise.id, LeadInput(name: defaultLeadName)),
-                          child: const Text(defaultLeadName),
-                        ),
-                      for (final f in catalog)
-                        MenuItemButton(
-                          onPressed: () => edit(name: f.name, qual: f.requiredQualificationId),
-                          child: Text(f.name),
+                          key: Key('crew-add-$kind-$name'),
+                          onPressed: () => add(name, qual),
+                          child: Text(run && mine.any((l) => l.name == name) ? 'weitere: $name' : name),
                         ),
                     ],
                   ),
@@ -442,7 +474,11 @@ class _LeadCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(12),
               child: leads.isEmpty
-                  ? const Text('Keine Führungsfunktionen. Über „Funktion“ anlegen – z. B. Einsatzleiter, Zugführer, Gruppenführer.')
+                  ? Text(
+                      run
+                          ? 'Keine Funktionen der Übungsdurchführung. Über „Funktion“ anlegen – z. B. Übungsleitung, Übungsbeobachter, Mimenbetreuung.'
+                          : 'Keine Führungsfunktionen. Über „Funktion“ anlegen – z. B. Einsatzleiter, Zugführer, Gruppenführer.',
+                    )
                   : Wrap(
                       spacing: 8,
                       runSpacing: 8,

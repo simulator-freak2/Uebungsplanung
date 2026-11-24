@@ -5606,6 +5606,16 @@ class $ExerciseLeadFunctionsTable extends ExerciseLeadFunctions
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('fuehrung'),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -5618,6 +5628,7 @@ class $ExerciseLeadFunctionsTable extends ExerciseLeadFunctions
     vehicleId,
     radioEntryId,
     sortOrder,
+    kind,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -5698,6 +5709,12 @@ class $ExerciseLeadFunctionsTable extends ExerciseLeadFunctions
         sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
       );
     }
+    if (data.containsKey('kind')) {
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
+    }
     return context;
   }
 
@@ -5747,6 +5764,10 @@ class $ExerciseLeadFunctionsTable extends ExerciseLeadFunctions
         DriftSqlType.int,
         data['${effectivePrefix}sort_order'],
       )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
     );
   }
 
@@ -5774,6 +5795,10 @@ class ExerciseLeadFunction extends DataClass
   /// Verknüpfter Eintrag im Funkplan (Funkrufname).
   final String? radioEntryId;
   final int sortOrder;
+
+  /// Rubrik: `fuehrung` (Organigramm) oder `durchfuehrung` (Übungsleitung,
+  /// Beobachter, Mimenbetreuung …).
+  final String kind;
   const ExerciseLeadFunction({
     required this.id,
     required this.updatedAt,
@@ -5785,6 +5810,7 @@ class ExerciseLeadFunction extends DataClass
     this.vehicleId,
     this.radioEntryId,
     required this.sortOrder,
+    required this.kind,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -5809,6 +5835,7 @@ class ExerciseLeadFunction extends DataClass
       map['radio_entry_id'] = Variable<String>(radioEntryId);
     }
     map['sort_order'] = Variable<int>(sortOrder);
+    map['kind'] = Variable<String>(kind);
     return map;
   }
 
@@ -5832,6 +5859,7 @@ class ExerciseLeadFunction extends DataClass
           ? const Value.absent()
           : Value(radioEntryId),
       sortOrder: Value(sortOrder),
+      kind: Value(kind),
     );
   }
 
@@ -5853,6 +5881,7 @@ class ExerciseLeadFunction extends DataClass
       vehicleId: serializer.fromJson<String?>(json['vehicleId']),
       radioEntryId: serializer.fromJson<String?>(json['radioEntryId']),
       sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      kind: serializer.fromJson<String>(json['kind']),
     );
   }
   @override
@@ -5871,6 +5900,7 @@ class ExerciseLeadFunction extends DataClass
       'vehicleId': serializer.toJson<String?>(vehicleId),
       'radioEntryId': serializer.toJson<String?>(radioEntryId),
       'sortOrder': serializer.toJson<int>(sortOrder),
+      'kind': serializer.toJson<String>(kind),
     };
   }
 
@@ -5885,6 +5915,7 @@ class ExerciseLeadFunction extends DataClass
     Value<String?> vehicleId = const Value.absent(),
     Value<String?> radioEntryId = const Value.absent(),
     int? sortOrder,
+    String? kind,
   }) => ExerciseLeadFunction(
     id: id ?? this.id,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -5898,6 +5929,7 @@ class ExerciseLeadFunction extends DataClass
     vehicleId: vehicleId.present ? vehicleId.value : this.vehicleId,
     radioEntryId: radioEntryId.present ? radioEntryId.value : this.radioEntryId,
     sortOrder: sortOrder ?? this.sortOrder,
+    kind: kind ?? this.kind,
   );
   ExerciseLeadFunction copyWithCompanion(ExerciseLeadFunctionsCompanion data) {
     return ExerciseLeadFunction(
@@ -5917,6 +5949,7 @@ class ExerciseLeadFunction extends DataClass
           ? data.radioEntryId.value
           : this.radioEntryId,
       sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      kind: data.kind.present ? data.kind.value : this.kind,
     );
   }
 
@@ -5932,7 +5965,8 @@ class ExerciseLeadFunction extends DataClass
           ..write('parentId: $parentId, ')
           ..write('vehicleId: $vehicleId, ')
           ..write('radioEntryId: $radioEntryId, ')
-          ..write('sortOrder: $sortOrder')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('kind: $kind')
           ..write(')'))
         .toString();
   }
@@ -5949,6 +5983,7 @@ class ExerciseLeadFunction extends DataClass
     vehicleId,
     radioEntryId,
     sortOrder,
+    kind,
   );
   @override
   bool operator ==(Object other) =>
@@ -5963,7 +5998,8 @@ class ExerciseLeadFunction extends DataClass
           other.parentId == this.parentId &&
           other.vehicleId == this.vehicleId &&
           other.radioEntryId == this.radioEntryId &&
-          other.sortOrder == this.sortOrder);
+          other.sortOrder == this.sortOrder &&
+          other.kind == this.kind);
 }
 
 class ExerciseLeadFunctionsCompanion
@@ -5978,6 +6014,7 @@ class ExerciseLeadFunctionsCompanion
   final Value<String?> vehicleId;
   final Value<String?> radioEntryId;
   final Value<int> sortOrder;
+  final Value<String> kind;
   final Value<int> rowid;
   const ExerciseLeadFunctionsCompanion({
     this.id = const Value.absent(),
@@ -5990,6 +6027,7 @@ class ExerciseLeadFunctionsCompanion
     this.vehicleId = const Value.absent(),
     this.radioEntryId = const Value.absent(),
     this.sortOrder = const Value.absent(),
+    this.kind = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ExerciseLeadFunctionsCompanion.insert({
@@ -6003,6 +6041,7 @@ class ExerciseLeadFunctionsCompanion
     this.vehicleId = const Value.absent(),
     this.radioEntryId = const Value.absent(),
     this.sortOrder = const Value.absent(),
+    this.kind = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : exerciseId = Value(exerciseId),
        name = Value(name);
@@ -6017,6 +6056,7 @@ class ExerciseLeadFunctionsCompanion
     Expression<String>? vehicleId,
     Expression<String>? radioEntryId,
     Expression<int>? sortOrder,
+    Expression<String>? kind,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -6031,6 +6071,7 @@ class ExerciseLeadFunctionsCompanion
       if (vehicleId != null) 'vehicle_id': vehicleId,
       if (radioEntryId != null) 'radio_entry_id': radioEntryId,
       if (sortOrder != null) 'sort_order': sortOrder,
+      if (kind != null) 'kind': kind,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -6046,6 +6087,7 @@ class ExerciseLeadFunctionsCompanion
     Value<String?>? vehicleId,
     Value<String?>? radioEntryId,
     Value<int>? sortOrder,
+    Value<String>? kind,
     Value<int>? rowid,
   }) {
     return ExerciseLeadFunctionsCompanion(
@@ -6060,6 +6102,7 @@ class ExerciseLeadFunctionsCompanion
       vehicleId: vehicleId ?? this.vehicleId,
       radioEntryId: radioEntryId ?? this.radioEntryId,
       sortOrder: sortOrder ?? this.sortOrder,
+      kind: kind ?? this.kind,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -6099,6 +6142,9 @@ class ExerciseLeadFunctionsCompanion
     if (sortOrder.present) {
       map['sort_order'] = Variable<int>(sortOrder.value);
     }
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -6118,6 +6164,7 @@ class ExerciseLeadFunctionsCompanion
           ..write('vehicleId: $vehicleId, ')
           ..write('radioEntryId: $radioEntryId, ')
           ..write('sortOrder: $sortOrder, ')
+          ..write('kind: $kind, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -15666,6 +15713,7 @@ typedef $$ExerciseLeadFunctionsTableCreateCompanionBuilder =
       Value<String?> vehicleId,
       Value<String?> radioEntryId,
       Value<int> sortOrder,
+      Value<String> kind,
       Value<int> rowid,
     });
 typedef $$ExerciseLeadFunctionsTableUpdateCompanionBuilder =
@@ -15680,6 +15728,7 @@ typedef $$ExerciseLeadFunctionsTableUpdateCompanionBuilder =
       Value<String?> vehicleId,
       Value<String?> radioEntryId,
       Value<int> sortOrder,
+      Value<String> kind,
       Value<int> rowid,
     });
 
@@ -15739,6 +15788,11 @@ class $$ExerciseLeadFunctionsTableFilterComposer
 
   ColumnFilters<int> get sortOrder => $composableBuilder(
     column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -15801,6 +15855,11 @@ class $$ExerciseLeadFunctionsTableOrderingComposer
     column: $table.sortOrder,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ExerciseLeadFunctionsTableAnnotationComposer
@@ -15847,6 +15906,9 @@ class $$ExerciseLeadFunctionsTableAnnotationComposer
 
   GeneratedColumn<int> get sortOrder =>
       $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
 }
 
 class $$ExerciseLeadFunctionsTableTableManager
@@ -15905,6 +15967,7 @@ class $$ExerciseLeadFunctionsTableTableManager
                 Value<String?> vehicleId = const Value.absent(),
                 Value<String?> radioEntryId = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
+                Value<String> kind = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ExerciseLeadFunctionsCompanion(
                 id: id,
@@ -15917,6 +15980,7 @@ class $$ExerciseLeadFunctionsTableTableManager
                 vehicleId: vehicleId,
                 radioEntryId: radioEntryId,
                 sortOrder: sortOrder,
+                kind: kind,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -15931,6 +15995,7 @@ class $$ExerciseLeadFunctionsTableTableManager
                 Value<String?> vehicleId = const Value.absent(),
                 Value<String?> radioEntryId = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
+                Value<String> kind = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ExerciseLeadFunctionsCompanion.insert(
                 id: id,
@@ -15943,6 +16008,7 @@ class $$ExerciseLeadFunctionsTableTableManager
                 vehicleId: vehicleId,
                 radioEntryId: radioEntryId,
                 sortOrder: sortOrder,
+                kind: kind,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

@@ -30,15 +30,15 @@ void main() {
     await repo.vehicles.addFunction(null, 'Einsatzleiter', zf); // Vorlage aus den Stammdaten
     final id = await newExercise();
     final d = await detail(id);
-    expect(d.leads.single.name, defaultLeadName);
-    expect(d.leads.single.id, defaultLeadId(id));
-    expect(d.leads.single.requiredQualificationId, zf);
-    expect(d.leads.single.parentId, isNull);
+    expect(d.commandLeads.single.name, defaultLeadName);
+    expect(d.commandLeads.single.id, defaultLeadId(id));
+    expect(d.commandLeads.single.requiredQualificationId, zf);
+    expect(d.commandLeads.single.parentId, isNull);
 
     // Gelöscht bleibt gelöscht, auch wenn die Vorgabe erneut geprüft wird.
     await repo.exercises.deleteLead(id, defaultLeadId(id));
     await repo.exercises.ensureDefaultLead(id);
-    expect((await detail(id)).leads, isEmpty);
+    expect((await detail(id)).commandLeads, isEmpty);
   });
 
   test('Frei anlegen, gleiche Namen, unterstellen, löschen rückt nach oben', () async {
@@ -49,7 +49,7 @@ void main() {
     final gf2 = await repo.exercises.saveLead(id, LeadInput(name: 'Gruppenführer', parentId: zf));
     var d = await detail(id);
     expect(d.leads.where((l) => l.name == 'Gruppenführer').length, 2);
-    expect([for (final (l, depth) in leadsInTreeOrder(d.leads)) '$depth ${l.name}'], [
+    expect([for (final (l, depth) in leadsInTreeOrder(d.commandLeads)) '$depth ${l.name}'], [
       '0 $defaultLeadName',
       '1 Zugführer',
       '2 Gruppenführer',
@@ -59,7 +59,7 @@ void main() {
     // Kein Ring: Zugführer kann nicht seinem Gruppenführer unterstellt werden.
     await repo.exercises.saveLead(id, LeadInput(id: zf, name: 'Zugführer', parentId: gf1));
     expect((await detail(id)).leads.firstWhere((l) => l.id == zf).parentId, el);
-    expect(descendantsOf(el, d.leads), {zf, gf1, gf2});
+    expect(descendantsOf(el, d.commandLeads), {zf, gf1, gf2});
 
     final p = await repo.persons.save(PersonInput(lastName: 'Hahn'));
     await repo.exercises.assign(id, functionId: zf, personId: p);
@@ -78,7 +78,7 @@ void main() {
     final r = d.radio.single;
     expect(r.callSign, 'Florian Musterstadt 1/10-1');
     expect(r.task, defaultLeadName);
-    expect(d.leads.single.radioEntryId, r.id);
+    expect(d.commandLeads.single.radioEntryId, r.id);
 
     // Änderung im Funkplan erscheint im Organigramm.
     await repo.documents.saveRadio(id, id: r.id, callSign: 'Florian Musterstadt 1/10-2', network: 'bos_digital');
@@ -171,7 +171,8 @@ void main() {
 
     final copy = await repo.exercises.copy(id, asTemplate: true);
     final c = await detail(copy);
-    expect(c.leads.length, 3);
+    expect(c.commandLeads.length, 3);
+    expect(c.runLeads.length, runDefaults.length);
     expect(c.assignments, isEmpty);
     final cz = c.leads.firstWhere((l) => l.name == 'Zugführer');
     expect(cz.parentId, defaultLeadId(copy));
@@ -182,9 +183,10 @@ void main() {
     addTearDown(other.db.close);
     final imported = (await importTemplate(other, await exportTemplate(repo, id))).exerciseId;
     final i = (await other.exercises.detail(imported))!;
-    expect([for (final (l, depth) in leadsInTreeOrder(i.leads)) '$depth ${l.name}'], ['0 $defaultLeadName', '1 Zugführer', '2 Gruppenführer']);
+    expect([for (final (l, depth) in leadsInTreeOrder(i.commandLeads)) '$depth ${l.name}'], ['0 $defaultLeadName', '1 Zugführer', '2 Gruppenführer']);
+    expect(i.runLeads.map((l) => l.name), [for (final r in runDefaults) r.$2]);
     expect(i.radio.single.callSign, 'Kater 1');
-    expect(i.leads.first.radioEntryId, i.radio.single.id);
+    expect(i.commandLeads.first.radioEntryId, i.radio.single.id);
   });
 
   test('Umstellung von Version 5: besetzte Führungsfunktionen wandern in die Übung', () async {
@@ -210,11 +212,13 @@ void main() {
     db = AppDatabase(NativeDatabase(file));
     r = Repositories(db);
     final d = (await r.exercises.detail(id))!;
-    expect([for (final (l, depth) in leadsInTreeOrder(d.leads)) '$depth ${l.name}'], ['0 Einsatzleiter', '1 Mimenbetreuung']);
-    expect(d.leads.first.id, defaultLeadId(id));
-    expect(d.leads.first.requiredQualificationId, zfQ);
-    expect(d.personsByFunction, {defaultLeadId(id): [p], '$id-$mime': [p]});
-    expect((await r.exercises.detail(empty))!.leads.single.name, defaultLeadName);
+    expect([for (final (l, depth) in leadsInTreeOrder(d.commandLeads)) '$depth ${l.name}'], ['0 Einsatzleiter']);
+    expect(d.commandLeads.first.id, defaultLeadId(id));
+    expect(d.commandLeads.first.requiredQualificationId, zfQ);
+    // Mimenbetreuung landet in der Übungsdurchführung, auf der festen ID der Vorgabe.
+    expect(d.runLeads.map((l) => l.name), ['Mimenbetreuung', 'Übungsleitung', 'Übungsbeobachter', 'Sicherheitsbeauftragter']);
+    expect(d.personsByFunction, {defaultLeadId(id): [p], runDefaultId(id, 'mime'): [p]});
+    expect((await r.exercises.detail(empty))!.commandLeads.single.name, defaultLeadName);
     await db.close();
   });
 
@@ -234,8 +238,55 @@ void main() {
     await sa.connect(url: url, username: 'admin', password: 'geheim123', displayName: 'Admin', setup: true);
     await sb.connect(url: url, username: 'admin', password: 'geheim123');
     final d = (await b.exercises.detail(id))!;
-    expect(d.leads.map((l) => l.name), [defaultLeadName, 'Zugführer']);
-    expect(d.leads.last.parentId, defaultLeadId(id));
-    expect(d.radio.single.id, d.leads.last.radioEntryId);
+    expect(d.commandLeads.map((l) => l.name), [defaultLeadName, 'Zugführer']);
+    expect(d.commandLeads.last.parentId, defaultLeadId(id));
+    expect(d.radio.single.id, d.commandLeads.last.radioEntryId);
+    expect(d.runLeads.length, runDefaults.length);
+  });
+
+  test('Übungsdurchführung: Vorgaben, mehrere Beobachter, nicht im Organigramm', () async {
+    final id = await newExercise();
+    var d = await detail(id);
+    expect(d.runLeads.map((l) => l.name), ['Übungsleitung', 'Übungsbeobachter', 'Mimenbetreuung', 'Sicherheitsbeauftragter']);
+    expect(d.runLeads.every((l) => l.parentId == null), isTrue);
+
+    final beo2 = await repo.exercises.saveLead(id, LeadInput(name: 'Übungsbeobachter', kind: LeadKind.run, parentId: defaultLeadId(id)));
+    final foto = await repo.exercises.saveLead(id, LeadInput(name: 'Fotograf', kind: LeadKind.run));
+    final a = await repo.persons.save(PersonInput(lastName: 'A'));
+    final b = await repo.persons.save(PersonInput(lastName: 'B'));
+    await repo.exercises.assign(id, functionId: runDefaultId(id, 'beo'), personId: a);
+    await repo.exercises.assign(id, functionId: beo2, personId: b);
+    d = await detail(id);
+    expect(d.runLeads.where((l) => l.name == 'Übungsbeobachter').length, 2);
+    expect(d.runLeads.firstWhere((l) => l.id == beo2).parentId, isNull); // keine Unterstellung
+    expect(d.runLeads.map((l) => l.id), contains(foto));
+    expect(d.personsByFunction[beo2], [b]);
+
+    // Nicht im Organigramm und nicht als Vorgesetzte wählbar.
+    final org = buildOrgChart(d, vehicles: await repo.vehicles.watchAllDetails().first, persons: const {});
+    expect(org.single.name, defaultLeadName);
+    expect(org.single.children, isEmpty);
+    final zf = await repo.exercises.saveLead(id, LeadInput(name: 'Zugführer', parentId: beo2));
+    expect((await detail(id)).leads.firstWhere((l) => l.id == zf).parentId, isNull);
+
+    // Gelöschte Vorgabe kommt nicht wieder.
+    await repo.exercises.deleteLead(id, runDefaultId(id, 'sb'));
+    await ensureRunDefaults(repo.db, id);
+    expect((await detail(id)).runLeads.any((l) => l.name == 'Sicherheitsbeauftragter'), isFalse);
+  });
+
+  test('Umstellung von Version 6: Durchführungs-Funktionen bekommen ihre Rubrik', () async {
+    final id = await newExercise();
+    final mime = await repo.exercises.saveLead(id, LeadInput(name: 'Mimenbetreuung', parentId: defaultLeadId(id)));
+    // Stand von Version 6 nachbilden: nur Führung, keine Vorgaben der Durchführung.
+    for (final r in runDefaults) {
+      await repo.db.customStatement("DELETE FROM exercise_lead_functions WHERE id = '${runDefaultId(id, r.$1)}'");
+    }
+    await migrateRunFunctions(repo.db);
+    final d = await detail(id);
+    expect(d.commandLeads.map((l) => l.name), [defaultLeadName]);
+    expect(d.runLeads.firstWhere((l) => l.id == mime).parentId, isNull);
+    expect(d.runLeads.where((l) => l.name == 'Mimenbetreuung').length, 1);
+    expect(d.runLeads.length, runDefaults.length);
   });
 }
