@@ -57,9 +57,18 @@ Oben rechts:
 
 Reiter **Lageskizze** in jeder Übung:
 
-- **Taktisches Zeichen** wählen (über 400 Zeichen von taktisches-zeichen.de, mit Suche) und auf die Karte tippen
+- **Taktisches Zeichen** wählen (rund 400 Zeichen von taktisches-zeichen.de, mit Suche) und auf die Karte tippen.
+  Nach **DV 102** sind die Zeichen für alle Organisationen gleich – die Zugehörigkeit zeigt nur die Farbe:
+  Feuerwehr rot, THW blau, Hilfsorganisationen (DLRG, DRK, Wasserwacht, ASB, JUH, MHD) weiß, Polizei grün,
+  Führung/Behörden gelb. Die Organisation wird im Auswahlfenster gewählt; voreingestellt ist die des Profils.
+  Gefahren, Schäden, Maßnahmen und Fernmeldezeichen behalten ihre festen Farben.
 - **Linie** (z. B. Absperrung, Schlauchleitung), **Fläche** (z. B. Gefahrenbereich, Suchabschnitt), **Text**
-- Element antippen: beschriften, Farbe ändern, verschieben, löschen
+- **Bearbeiten**: zeigt eine Liste aller Zeichen, Linien, Flächen und Texte. Elemente in der Liste oder auf der
+  Karte antippen, um sie auszuwählen (auch mehrere), oder **Alle auswählen**. Für die Auswahl: beschriften,
+  Farbe bzw. Organisation ändern, verschieben (ein Zeichen/Text) und **löschen** – mit „Rückgängig“.
+  Am Computer löscht auch die Entf-Taste die Auswahl, Esc beendet das Bearbeiten.
+- Ein Element auf der Karte antippen startet ebenfalls das Bearbeiten
+- Skizzen aus älteren Versionen werden beim Öffnen automatisch auf die neuen Zeichen umgestellt
 - **Ort suchen** (benötigt Internet) oder die Karte von Hand verschieben
 - **Für Übungsmappe übernehmen** speichert ein Bild; es erscheint als Seite „Lageskizze“ mit Legende in der Mappe
 

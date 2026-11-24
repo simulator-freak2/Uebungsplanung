@@ -83,24 +83,16 @@ flutter:
     - assets/profile/
     - assets/fonts/
     - assets/zeichen/
+    - assets/zeichen/Einheiten/
     - assets/zeichen/Einrichtungen/
     - assets/zeichen/Fahrzeuge/
     - assets/zeichen/Fernmeldewesen/
-    - assets/zeichen/Feuerwehr_Einheiten/
-    - assets/zeichen/Feuerwehr_Fahrzeuge/
-    - assets/zeichen/Feuerwehr_Personen/
     - assets/zeichen/Fuehrungsstellen/
     - assets/zeichen/Gefahren/
     - assets/zeichen/Massnahmen/
     - assets/zeichen/Personen/
-    - assets/zeichen/Rettungswesen_Einrichtungen/
-    - assets/zeichen/Rettungswesen_Fahrzeuge/
     - assets/zeichen/Schaeden/
     - assets/zeichen/Sonstiges/
-    - assets/zeichen/Wasserrettung_Einheiten/
-    - assets/zeichen/Wasserrettung_Einrichtungen/
-    - assets/zeichen/Wasserrettung_Fahrzeuge/
-    - assets/zeichen/Wasserrettung_Personen/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

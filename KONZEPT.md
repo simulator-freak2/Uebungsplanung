@@ -158,7 +158,7 @@ Vorlage = Übung ohne Datum           Benutzer ── Rolle(Admin | Planer)
 | 5 | Beobachtungspunkte | frei je Übung **und** zentral als Katalog einspielbar |
 | 6 | Freigabe | eigene Rolle **TL / Wehrführer** |
 | 7 | Mehrfachfunktionen | eine Person darf mehrere Funktionen gleichzeitig haben |
-| 8 | Taktische Zeichen | Quelle taktisches-zeichen.de (github.com/jonas-koeritz/Taktische-Zeichen). Die fertigen Zeichen aus den Releases sind CC0; der Quellcode steht unter CC BY 4.0. Namensnennung erfolgt trotzdem. |
+| 8 | Taktische Zeichen | Quelle taktisches-zeichen.de (github.com/jonas-koeritz/Taktische-Zeichen). Die fertigen Zeichen aus den Releases sind CC0; der Quellcode steht unter CC BY 4.0. Namensnennung erfolgt trotzdem. Nach DV 102 organisationsneutral zusammengeführt (`app/tool/zeichen_dv102.py`); die App färbt Grundzeichen und Inhalt je Organisation ein. |
 | 9 | Reservierung | in Materialkompass genehmigungspflichtig (Status `angefragt` → `bestaetigt`/`abgelehnt`) |
 | 10 | Start | Etappe 1 freigegeben |
 

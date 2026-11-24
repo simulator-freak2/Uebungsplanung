@@ -1,3 +1,5 @@
 Taktische Zeichen: Jonas Köritz, https://github.com/jonas-koeritz/Taktische-Zeichen (taktisches-zeichen.de).
 Quellcode CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), fertige Zeichen CC0 1.0.
 Für den Übungsplaner aus den Vorlagen erzeugt; eingebettete Schriftdefinition entfernt.
+Nach DV 102 organisationsneutral zusammengeführt (app/tool/zeichen_dv102.py): Grundfarbe #FEFEFE und
+Inhaltsfarbe #010101 sind Platzhalter, die die App durch die Farben der Organisation ersetzt.

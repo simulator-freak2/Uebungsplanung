@@ -1,586 +1,1007 @@
 [
  {
-  "kategorie": "Feuerwehr – Fahrzeuge",
+  "kategorie": "Einheiten",
   "zeichen": [
    {
-    "datei": "Feuerwehr_Fahrzeuge/Abrollbehaelter_Container.svg",
-    "name": "Abrollbehälter Container"
+    "datei": "Einheiten/ABC_Erkundungsgruppe.svg",
+    "name": "ABC Erkundungsgruppe",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Drehleiter_mit_Korb.svg",
-    "name": "Drehleiter mit Korb"
+    "datei": "Einheiten/Abteilung.svg",
+    "name": "Abteilung",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/ELW_1.svg",
-    "name": "ELW 1"
+    "datei": "Einheiten/Bereitschaft.svg",
+    "name": "Bereitschaft",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/ELW_2.svg",
-    "name": "ELW 2"
+    "datei": "Einheiten/Bezirksabteilungsfuehrung.svg",
+    "name": "Bezirksabteilungsführung",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Feuerwehranhaenger.svg",
-    "name": "Feuerwehranhänger"
+    "datei": "Einheiten/Bezirksbereitschaftsfuehrung.svg",
+    "name": "Bezirksbereitschaftsführung",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Feuerwehrboot.svg",
-    "name": "Feuerwehrboot"
+    "datei": "Einheiten/Bootsgruppe.svg",
+    "name": "Bootsgruppe",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Atemschutz.svg",
-    "name": "Gerätewagen Atemschutz"
+    "datei": "Einheiten/Bootstrupp.svg",
+    "name": "Bootstrupp",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Gefahrgut.svg",
-    "name": "Gerätewagen Gefahrgut"
+    "datei": "Einheiten/Dekontaminationsgruppe_Geraet.svg",
+    "name": "Dekontaminationsgruppe Gerät",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Logistik.svg",
-    "name": "Gerätewagen Logistik"
+    "datei": "Einheiten/Dekontaminationsgruppe_Personen.svg",
+    "name": "Dekontaminationsgruppe Personen",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Logistik_1.svg",
-    "name": "Gerätewagen Logistik 1"
+    "datei": "Einheiten/Fernsprech_Bau_und_Betriebstrupp.svg",
+    "name": "Fernsprech Bau und Betriebstrupp",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Geraetewagen_Logistik_2.svg",
-    "name": "Gerätewagen Logistik 2"
+    "datei": "Einheiten/Fuehrungsgruppe_Feuerwehrbereitschaft.svg",
+    "name": "Führungsgruppe Feuerwehrbereitschaft",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/HLF.svg",
-    "name": "HLF"
+    "datei": "Einheiten/Fuehrungsgruppe_TEL.svg",
+    "name": "Führungsgruppe TEL",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/KTW.svg",
-    "name": "KTW"
+    "datei": "Einheiten/Fuehrungstrupp.svg",
+    "name": "Führungstrupp",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Kommandowagen.svg",
-    "name": "Kommandowagen"
+    "datei": "Einheiten/Gefahrstoffzug_ABC_Zug.svg",
+    "name": "Gefahrstoffzug ABC Zug",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Kraftfahrzeug.svg",
-    "name": "Kraftfahrzeug"
+    "datei": "Einheiten/IuK_Zug.svg",
+    "name": "IuK Zug",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg",
-    "name": "Kraftfahrzeug Geländegängig"
+    "datei": "Einheiten/Logistiktrupp.svg",
+    "name": "Logistiktrupp",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/LF_16-TS.svg",
-    "name": "LF 16-TS"
+    "datei": "Einheiten/Logistikzug.svg",
+    "name": "Logistikzug",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/LF_24-50.svg",
-    "name": "LF 24-50"
+    "datei": "Einheiten/Loeschgruppe.svg",
+    "name": "Löschgruppe",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/LF_8-6.svg",
-    "name": "LF 8-6"
+    "datei": "Einheiten/Loeschstaffel.svg",
+    "name": "Löschstaffel",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/LF_KatS.svg",
-    "name": "LF KatS"
+    "datei": "Einheiten/Loeschtrupp.svg",
+    "name": "Löschtrupp",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Loeschfahrzeug.svg",
-    "name": "Löschfahrzeug"
+    "datei": "Einheiten/Loeschzug.svg",
+    "name": "Löschzug",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/MTF.svg",
-    "name": "MTF"
+    "datei": "Einheiten/Loeschzug_Berufsfeuerwehr.svg",
+    "name": "Löschzug Berufsfeuerwehr",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/MTW.svg",
-    "name": "MTW"
+    "datei": "Einheiten/Loeschzug_Freiwillige_Feuerwehr.svg",
+    "name": "Löschzug Freiwillige Feuerwehr",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/MZF.svg",
-    "name": "MZF"
+    "datei": "Einheiten/Loeschzug_Wasser.svg",
+    "name": "Löschzug Wasser",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Messfahrzeug.svg",
-    "name": "Messfahrzeug"
+    "datei": "Einheiten/Loeschzug_Werkfeuerwehr.svg",
+    "name": "Löschzug Werkfeuerwehr",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Notarzteinsatzfahrzeug.svg",
-    "name": "Notarzteinsatzfahrzeug"
+    "datei": "Einheiten/RettR-UAV_Erkundungsgruppe.svg",
+    "name": "RettR-UAV Erkundungsgruppe",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Notarztwagen.svg",
-    "name": "Notarztwagen"
+    "datei": "Einheiten/RettR-UAV_Erkundungsstaffel.svg",
+    "name": "RettR-UAV Erkundungsstaffel",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/RTW.svg",
-    "name": "RTW"
+    "datei": "Einheiten/RettR-UAV_Erkundungstrupp.svg",
+    "name": "RettR-UAV Erkundungstrupp",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Reaktorerkundungskraftwagen.svg",
-    "name": "Reaktorerkundungskraftwagen"
+    "datei": "Einheiten/Sprechfunkbetriebstrupp.svg",
+    "name": "Sprechfunkbetriebstrupp",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Ruestwagen.svg",
-    "name": "Rüstwagen"
+    "datei": "Einheiten/Stroemungsrettungsgruppe.svg",
+    "name": "Strömungsrettungsgruppe",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Schlauchwagen.svg",
-    "name": "Schlauchwagen"
+    "datei": "Einheiten/Stroemungsrettungstrupp.svg",
+    "name": "Strömungsrettungstrupp",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/TLF_16-25.svg",
-    "name": "TLF 16-25"
+    "datei": "Einheiten/Tauchgruppe.svg",
+    "name": "Tauchgruppe",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/TLF_2000.svg",
-    "name": "TLF 2000"
+    "datei": "Einheiten/Tauchtrupp.svg",
+    "name": "Tauchtrupp",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/TLF_3000.svg",
-    "name": "TLF 3000"
+    "datei": "Einheiten/Versorgungstrupp_Materialerhaltung.svg",
+    "name": "Versorgungstrupp Materialerhaltung",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/TLF_4000.svg",
-    "name": "TLF 4000"
+    "datei": "Einheiten/Versorgungstrupp_Verbrauchsgueter.svg",
+    "name": "Versorgungstrupp Verbrauchsgüter",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Tankloeschfahrzeug.svg",
-    "name": "Tanklöschfahrzeug"
+    "datei": "Einheiten/Wasserrettungsgruppe.svg",
+    "name": "Wasserrettungsgruppe",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Fahrzeuge/Wechselladerfahrzeug.svg",
-    "name": "Wechselladerfahrzeug"
+    "datei": "Einheiten/Wasserrettungstrupp.svg",
+    "name": "Wasserrettungstrupp",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einheiten/Wasserrettungsverband.svg",
+    "name": "Wasserrettungsverband",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einheiten/Wasserrettungszug.svg",
+    "name": "Wasserrettungszug",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einheiten/Zugtrupp.svg",
+    "name": "Zugtrupp",
+    "grund": "hilfsorganisation"
    }
   ]
  },
  {
-  "kategorie": "Feuerwehr – Einheiten",
+  "kategorie": "Fahrzeuge",
   "zeichen": [
    {
-    "datei": "Feuerwehr_Einheiten/ABC_Erkundungsgruppe.svg",
-    "name": "ABC Erkundungsgruppe"
+    "datei": "Fahrzeuge/Abrollbehaelter_Container.svg",
+    "name": "Abrollbehälter Container",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Abteilung.svg",
-    "name": "Abteilung"
+    "datei": "Fahrzeuge/Abrollbehaelter_MANV.svg",
+    "name": "Abrollbehälter MANV",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Bereitschaft.svg",
-    "name": "Bereitschaft"
+    "datei": "Fahrzeuge/Anhaenger.svg",
+    "name": "Anhänger",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Bezirksabteilungsfuehrung.svg",
-    "name": "Bezirksabteilungsführung"
+    "datei": "Fahrzeuge/Anhaenger_Wasserrettung.svg",
+    "name": "Anhänger (Wasserrettung)",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Bezirksbereitschaftsfuehrung.svg",
-    "name": "Bezirksbereitschaftsführung"
+    "datei": "Fahrzeuge/Anhaenger_Stroemungsrettung.svg",
+    "name": "Anhänger Strömungsrettung",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Dekontaminationsgruppe_Geraet.svg",
-    "name": "Dekontaminationsgruppe Gerät"
+    "datei": "Fahrzeuge/Anhaenger_Tauchen.svg",
+    "name": "Anhänger Tauchen",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Dekontaminationsgruppe_Personen.svg",
-    "name": "Dekontaminationsgruppe Personen"
+    "datei": "Fahrzeuge/Boot.svg",
+    "name": "Boot",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Fernsprech_Bau_und_Betriebstrupp.svg",
-    "name": "Fernsprech Bau und Betriebstrupp"
+    "datei": "Fahrzeuge/Drehleiter_mit_Korb.svg",
+    "name": "Drehleiter mit Korb",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Fuehrungsgruppe_Feuerwehrbereitschaft.svg",
-    "name": "Führungsgruppe Feuerwehrbereitschaft"
+    "datei": "Fahrzeuge/ELW_1.svg",
+    "name": "ELW 1",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Fuehrungsgruppe_TEL.svg",
-    "name": "Führungsgruppe TEL"
+    "datei": "Fahrzeuge/ELW_2.svg",
+    "name": "ELW 2",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Gefahrstoffzug_ABC_Zug.svg",
-    "name": "Gefahrstoffzug ABC Zug"
+    "datei": "Fahrzeuge/Fahrrad.svg",
+    "name": "Fahrrad"
    },
    {
-    "datei": "Feuerwehr_Einheiten/IuK_Zug.svg",
-    "name": "IuK Zug"
+    "datei": "Fahrzeuge/Fahrzeug.svg",
+    "name": "Fahrzeug",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Logistikzug.svg",
-    "name": "Logistikzug"
+    "datei": "Fahrzeuge/Feuerwehranhaenger.svg",
+    "name": "Feuerwehranhänger",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Loeschgruppe.svg",
-    "name": "Löschgruppe"
+    "datei": "Fahrzeuge/Feuerwehrboot.svg",
+    "name": "Feuerwehrboot",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Loeschstaffel.svg",
-    "name": "Löschstaffel"
+    "datei": "Fahrzeuge/Flugzeug.svg",
+    "name": "Flugzeug"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Loeschtrupp.svg",
-    "name": "Löschtrupp"
+    "datei": "Fahrzeuge/Geraetewagen_Atemschutz.svg",
+    "name": "Gerätewagen Atemschutz",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Loeschzug.svg",
-    "name": "Löschzug"
+    "datei": "Fahrzeuge/Geraetewagen_Gefahrgut.svg",
+    "name": "Gerätewagen Gefahrgut",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Loeschzug_Berufsfeuerwehr.svg",
-    "name": "Löschzug Berufsfeuerwehr"
+    "datei": "Fahrzeuge/Geraetewagen_Logistik.svg",
+    "name": "Gerätewagen Logistik",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Loeschzug_Freiwillige_Feuerwehr.svg",
-    "name": "Löschzug Freiwillige Feuerwehr"
+    "datei": "Fahrzeuge/Geraetewagen_Logistik_1.svg",
+    "name": "Gerätewagen Logistik 1",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Loeschzug_Wasser.svg",
-    "name": "Löschzug Wasser"
+    "datei": "Fahrzeuge/Geraetewagen_Logistik_2.svg",
+    "name": "Gerätewagen Logistik 2",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Loeschzug_Werkfeuerwehr.svg",
-    "name": "Löschzug Werkfeuerwehr"
+    "datei": "Fahrzeuge/Geraetewagen_Sanitaet.svg",
+    "name": "Gerätewagen Sanität",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/RettR-UAV_Erkundungsgruppe.svg",
-    "name": "RettR-UAV Erkundungsgruppe"
+    "datei": "Fahrzeuge/Geraetewagen_TeSi.svg",
+    "name": "Gerätewagen TeSi",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/RettR-UAV_Erkundungsstaffel.svg",
-    "name": "RettR-UAV Erkundungsstaffel"
+    "datei": "Fahrzeuge/GW_Boot.svg",
+    "name": "GW Boot",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/RettR-UAV_Erkundungstrupp.svg",
-    "name": "RettR-UAV Erkundungstrupp"
+    "datei": "Fahrzeuge/GW_Boot_gelaendegaengig.svg",
+    "name": "GW Boot geländegängig",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Sprechfunkbetriebstrupp.svg",
-    "name": "Sprechfunkbetriebstrupp"
+    "datei": "Fahrzeuge/GW_Stroemungsrettung.svg",
+    "name": "GW Strömungsrettung",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Versorgungstrupp_Materialerhaltung.svg",
-    "name": "Versorgungstrupp Materialerhaltung"
+    "datei": "Fahrzeuge/GW_Stroemungsrettung_gelaendegaengig.svg",
+    "name": "GW Strömungsrettung geländegängig",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Einheiten/Versorgungstrupp_Verbrauchsgueter.svg",
-    "name": "Versorgungstrupp Verbrauchsgüter"
+    "datei": "Fahrzeuge/GW_Tauchen.svg",
+    "name": "GW Tauchen",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/GW_Tauchen_gelaendegaengig.svg",
+    "name": "GW Tauchen geländegängig",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/HLF.svg",
+    "name": "HLF",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Hochwasserboot.svg",
+    "name": "Hochwasserboot",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Hubschrauber.svg",
+    "name": "Hubschrauber"
+   },
+   {
+    "datei": "Fahrzeuge/Kettenfahrzeug.svg",
+    "name": "Kettenfahrzeug",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Kommandowagen.svg",
+    "name": "Kommandowagen",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Kraftfahrzeug.svg",
+    "name": "Kraftfahrzeug",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Kraftfahrzeug_Wasserrettung.svg",
+    "name": "Kraftfahrzeug (Wasserrettung)",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg",
+    "name": "Kraftfahrzeug Geländegängig",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Kraftfahrzeug_gelaendegaengig_Wasserrettung.svg",
+    "name": "Kraftfahrzeug geländegängig (Wasserrettung)",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Kraftrad.svg",
+    "name": "Kraftrad"
+   },
+   {
+    "datei": "Fahrzeuge/KTW.svg",
+    "name": "KTW",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/LF_16-TS.svg",
+    "name": "LF 16-TS",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/LF_24-50.svg",
+    "name": "LF 24-50",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/LF_8-6.svg",
+    "name": "LF 8-6",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/LF_KatS.svg",
+    "name": "LF KatS",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Loeschfahrzeug.svg",
+    "name": "Löschfahrzeug",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Messfahrzeug.svg",
+    "name": "Messfahrzeug",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/MTF.svg",
+    "name": "MTF",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/MTW.svg",
+    "name": "MTW",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/MZF.svg",
+    "name": "MZF",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Notarzteinsatzfahrzeug.svg",
+    "name": "Notarzteinsatzfahrzeug",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Notarztwagen.svg",
+    "name": "Notarztwagen",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Reaktorerkundungskraftwagen.svg",
+    "name": "Reaktorerkundungskraftwagen",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/RTW.svg",
+    "name": "RTW",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Ruestwagen.svg",
+    "name": "Rüstwagen",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Schienenfahrzeug.svg",
+    "name": "Schienenfahrzeug",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Schlauchboot.svg",
+    "name": "Schlauchboot",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Schlauchwagen.svg",
+    "name": "Schlauchwagen",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Tankloeschfahrzeug.svg",
+    "name": "Tanklöschfahrzeug",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/TLF_16-25.svg",
+    "name": "TLF 16-25",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/TLF_2000.svg",
+    "name": "TLF 2000",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/TLF_3000.svg",
+    "name": "TLF 3000",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/TLF_4000.svg",
+    "name": "TLF 4000",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Wasserfahrzeug.svg",
+    "name": "Wasserfahrzeug",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Fahrzeuge/Wechselladerfahrzeug.svg",
+    "name": "Wechselladerfahrzeug",
+    "grund": "hilfsorganisation"
    }
   ]
  },
  {
-  "kategorie": "Feuerwehr – Personen",
+  "kategorie": "Personen",
   "zeichen": [
    {
-    "datei": "Feuerwehr_Personen/Abschnittsleiter_Feuerwehr.svg",
-    "name": "Abschnittsleiter Feuerwehr"
+    "datei": "Personen/Abschnittsleiter_Feuerwehr.svg",
+    "name": "Abschnittsleiter Feuerwehr",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Personen/Abschnittsleiter_Luft.svg",
-    "name": "Abschnittsleiter Luft"
+    "datei": "Personen/Abschnittsleiter_Luft.svg",
+    "name": "Abschnittsleiter Luft",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Personen/Angriffstruppfuehrer.svg",
-    "name": "Angriffstruppführer"
+    "datei": "Personen/Angriffstruppfuehrer.svg",
+    "name": "Angriffstruppführer",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Personen/Angriffstruppmann.svg",
-    "name": "Angriffstruppmann"
+    "datei": "Personen/Angriffstruppmann.svg",
+    "name": "Angriffstruppmann",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Personen/Einsatzabschnittsleiter_Feuerwehr.svg",
-    "name": "Einsatzabschnittsleiter Feuerwehr"
+    "datei": "Personen/Einsatzabschnittsleiter.svg",
+    "name": "Einsatzabschnittsleiter",
+    "grund": "fuehrung"
    },
    {
-    "datei": "Feuerwehr_Personen/Gruppenfuehrer.svg",
-    "name": "Gruppenführer"
+    "datei": "Personen/Einsatzabschnittsleiter_Feuerwehr.svg",
+    "name": "Einsatzabschnittsleiter Feuerwehr",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Feuerwehr_Personen/Maschinist.svg",
-    "name": "Maschinist"
-   },
-   {
-    "datei": "Feuerwehr_Personen/Melder.svg",
-    "name": "Melder"
-   },
-   {
-    "datei": "Feuerwehr_Personen/RettR_Bildauswerter.svg",
-    "name": "RettR Bildauswerter"
-   },
-   {
-    "datei": "Feuerwehr_Personen/RettR_Fachberater.svg",
-    "name": "RettR Fachberater"
-   },
-   {
-    "datei": "Feuerwehr_Personen/RettR_Flugleiter.svg",
-    "name": "RettR Flugleiter"
-   },
-   {
-    "datei": "Feuerwehr_Personen/RettR_Gruppenfuehrer.svg",
-    "name": "RettR Gruppenführer"
-   },
-   {
-    "datei": "Feuerwehr_Personen/Schlauchtruppfuehrer.svg",
-    "name": "Schlauchtruppführer"
-   },
-   {
-    "datei": "Feuerwehr_Personen/Schlauchtruppmann.svg",
-    "name": "Schlauchtruppmann"
-   },
-   {
-    "datei": "Feuerwehr_Personen/Staffelfuehrer.svg",
-    "name": "Staffelführer"
-   },
-   {
-    "datei": "Feuerwehr_Personen/Truppfuehrer.svg",
-    "name": "Truppführer"
-   },
-   {
-    "datei": "Feuerwehr_Personen/UAV_Flugleiter.svg",
-    "name": "UAV Flugleiter"
-   },
-   {
-    "datei": "Feuerwehr_Personen/Wassertruppfuehrer.svg",
-    "name": "Wassertruppführer"
-   },
-   {
-    "datei": "Feuerwehr_Personen/Wassertruppmann.svg",
-    "name": "Wassertruppmann"
-   },
-   {
-    "datei": "Feuerwehr_Personen/Zugfuehrer_Loeschzug.svg",
-    "name": "Zugführer Löschzug"
-   }
-  ]
- },
- {
-  "kategorie": "Wasserrettung – Fahrzeuge",
-  "zeichen": [
-   {
-    "datei": "Wasserrettung_Fahrzeuge/Anhaenger.svg",
-    "name": "Anhänger"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/Anhaenger_Stroemungsrettung.svg",
-    "name": "Anhänger Strömungsrettung"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/Anhaenger_Tauchen.svg",
-    "name": "Anhänger Tauchen"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/Boot.svg",
-    "name": "Boot"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/GW_Boot.svg",
-    "name": "GW Boot"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/GW_Boot_gelaendegaengig.svg",
-    "name": "GW Boot geländegängig"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/GW_Stroemungsrettung.svg",
-    "name": "GW Strömungsrettung"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/GW_Stroemungsrettung_gelaendegaengig.svg",
-    "name": "GW Strömungsrettung geländegängig"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/GW_Tauchen.svg",
-    "name": "GW Tauchen"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/GW_Tauchen_gelaendegaengig.svg",
-    "name": "GW Tauchen geländegängig"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/Hochwasserboot.svg",
-    "name": "Hochwasserboot"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/Kraftfahrzeug.svg",
-    "name": "Kraftfahrzeug"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/Kraftfahrzeug_gelaendegaengig.svg",
-    "name": "Kraftfahrzeug geländegängig"
-   },
-   {
-    "datei": "Wasserrettung_Fahrzeuge/Schlauchboot.svg",
-    "name": "Schlauchboot"
-   }
-  ]
- },
- {
-  "kategorie": "Wasserrettung – Einheiten",
-  "zeichen": [
-   {
-    "datei": "Wasserrettung_Einheiten/Bootsgruppe.svg",
-    "name": "Bootsgruppe"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Bootstrupp.svg",
-    "name": "Bootstrupp"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Fuehrungstrupp.svg",
-    "name": "Führungstrupp"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Logistiktrupp.svg",
-    "name": "Logistiktrupp"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Stroemungsrettungsgruppe.svg",
-    "name": "Strömungsrettungsgruppe"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Stroemungsrettungstrupp.svg",
-    "name": "Strömungsrettungstrupp"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Tauchgruppe.svg",
-    "name": "Tauchgruppe"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Tauchtrupp.svg",
-    "name": "Tauchtrupp"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Wasserrettungsgruppe.svg",
-    "name": "Wasserrettungsgruppe"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Wasserrettungstrupp.svg",
-    "name": "Wasserrettungstrupp"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Wasserrettungsverband.svg",
-    "name": "Wasserrettungsverband"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Wasserrettungszug.svg",
-    "name": "Wasserrettungszug"
-   },
-   {
-    "datei": "Wasserrettung_Einheiten/Zugtrupp.svg",
-    "name": "Zugtrupp"
-   }
-  ]
- },
- {
-  "kategorie": "Wasserrettung – Personen",
-  "zeichen": [
-   {
-    "datei": "Wasserrettung_Personen/Einsatzkraft.svg",
+    "datei": "Personen/Einsatzkraft.svg",
     "name": "Einsatzkraft"
    },
    {
-    "datei": "Wasserrettung_Personen/Einsatzleiter_Wasserrettungsdienst.svg",
-    "name": "Einsatzleiter Wasserrettungsdienst"
+    "datei": "Personen/Einsatzleiter.svg",
+    "name": "Einsatzleiter",
+    "grund": "fuehrung"
    },
    {
-    "datei": "Wasserrettung_Personen/Fachberater.svg",
+    "datei": "Personen/Einsatzleiter_Wasserrettungsdienst.svg",
+    "name": "Einsatzleiter Wasserrettungsdienst",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Personen/Fachberater.svg",
     "name": "Fachberater"
    },
    {
-    "datei": "Wasserrettung_Personen/Fuehrungskraft.svg",
-    "name": "Führungskraft"
+    "datei": "Personen/Flugleiter.svg",
+    "name": "Flugleiter"
    },
    {
-    "datei": "Wasserrettung_Personen/Gruppenfuehrer.svg",
-    "name": "Gruppenführer"
+    "datei": "Personen/Fuehrungskraft.svg",
+    "name": "Führungskraft",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Wasserrettung_Personen/Truppfuehrer.svg",
-    "name": "Truppführer"
+    "datei": "Personen/Gerettete_Person.svg",
+    "name": "Gerettete Person"
    },
    {
-    "datei": "Wasserrettung_Personen/Verbandfuehrer.svg",
-    "name": "Verbandführer"
+    "datei": "Personen/Gruppenfuehrer.svg",
+    "name": "Gruppenführer",
+    "grund": "hilfsorganisation"
    },
    {
-    "datei": "Wasserrettung_Personen/Zugfuehrer.svg",
-    "name": "Zugführer"
+    "datei": "Personen/Gruppenfuehrer_Wasserrettung.svg",
+    "name": "Gruppenführer (Wasserrettung)",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Maschinist.svg",
+    "name": "Maschinist",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Melder.svg",
+    "name": "Melder",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Person.svg",
+    "name": "Person"
+   },
+   {
+    "datei": "Personen/Person_mit_Sonderfunktion.svg",
+    "name": "Person mit Sonderfunktion"
+   },
+   {
+    "datei": "Personen/RettR_Bildauswerter.svg",
+    "name": "RettR Bildauswerter",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/RettR_Fachberater.svg",
+    "name": "RettR Fachberater",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/RettR_Flugleiter.svg",
+    "name": "RettR Flugleiter",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/RettR_Gruppenfuehrer.svg",
+    "name": "RettR Gruppenführer",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Schlauchtruppfuehrer.svg",
+    "name": "Schlauchtruppführer",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Schlauchtruppmann.svg",
+    "name": "Schlauchtruppmann",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Staffelfuehrer.svg",
+    "name": "Staffelführer",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Tote_Person.svg",
+    "name": "Tote Person"
+   },
+   {
+    "datei": "Personen/Transportierte_Person.svg",
+    "name": "Transportierte Person"
+   },
+   {
+    "datei": "Personen/Truppfuehrer.svg",
+    "name": "Truppführer",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Truppfuehrer_Wasserrettung.svg",
+    "name": "Truppführer (Wasserrettung)",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/UAV_Flugleiter.svg",
+    "name": "UAV Flugleiter",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Untereinsatzabschnittsleiter.svg",
+    "name": "Untereinsatzabschnittsleiter",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Personen/Verbandfuehrer.svg",
+    "name": "Verbandführer",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Verbandfuehrer_I.svg",
+    "name": "Verbandführer I",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Verbandfuehrer_II.svg",
+    "name": "Verbandführer II",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Verbandfuehrer_III.svg",
+    "name": "Verbandführer III",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Verletzte_Person.svg",
+    "name": "Verletzte Person"
+   },
+   {
+    "datei": "Personen/Vermisste_Person.svg",
+    "name": "Vermisste Person"
+   },
+   {
+    "datei": "Personen/Verschuettete_Person.svg",
+    "name": "Verschüttete Person"
+   },
+   {
+    "datei": "Personen/Wassertruppfuehrer.svg",
+    "name": "Wassertruppführer",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Wassertruppmann.svg",
+    "name": "Wassertruppmann",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Zu_transportierende_Person.svg",
+    "name": "Zu transportierende Person"
+   },
+   {
+    "datei": "Personen/Zugfuehrer.svg",
+    "name": "Zugführer",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Zugfuehrer_Wasserrettung.svg",
+    "name": "Zugführer (Wasserrettung)",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Personen/Zugfuehrer_Loeschzug.svg",
+    "name": "Zugführer Löschzug",
+    "grund": "hilfsorganisation"
    }
   ]
  },
  {
-  "kategorie": "Wasserrettung – Einrichtungen",
+  "kategorie": "Einrichtungen",
   "zeichen": [
    {
-    "datei": "Wasserrettung_Einrichtungen/Mobile_Wasserrettungsstation.svg",
-    "name": "Mobile Wasserrettungsstation"
-   },
-   {
-    "datei": "Wasserrettung_Einrichtungen/Wasserrettungsstation.svg",
-    "name": "Wasserrettungsstation"
-   }
-  ]
- },
- {
-  "kategorie": "Rettungsdienst – Fahrzeuge",
-  "zeichen": [
-   {
-    "datei": "Rettungswesen_Fahrzeuge/Abrollbehaelter_MANV.svg",
-    "name": "Abrollbehälter MANV"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/Geraetewagen_Logistik.svg",
-    "name": "Gerätewagen Logistik"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/Geraetewagen_Sanitaet.svg",
-    "name": "Gerätewagen Sanität"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/Geraetewagen_TeSi.svg",
-    "name": "Gerätewagen TeSi"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/KTW.svg",
-    "name": "KTW"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/Kraftfahrzeug.svg",
-    "name": "Kraftfahrzeug"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg",
-    "name": "Kraftfahrzeug Geländegängig"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/MTW.svg",
-    "name": "MTW"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/Notarzteinsatzfahrzeug.svg",
-    "name": "Notarzteinsatzfahrzeug"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/Notarztwagen.svg",
-    "name": "Notarztwagen"
-   },
-   {
-    "datei": "Rettungswesen_Fahrzeuge/RTW.svg",
-    "name": "RTW"
-   }
-  ]
- },
- {
-  "kategorie": "Rettungsdienst – Einrichtungen",
-  "zeichen": [
-   {
-    "datei": "Rettungswesen_Einrichtungen/Arztbesetzte_Patientenablage.svg",
+    "datei": "Einrichtungen/Arztbesetzte_Patientenablage.svg",
     "name": "Arztbesetzte Patientenablage"
    },
    {
-    "datei": "Rettungswesen_Einrichtungen/Patientenablage.svg",
+    "datei": "Einrichtungen/Behandlungsplatz.svg",
+    "name": "Behandlungsplatz",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Belegungsstelle.svg",
+    "name": "Belegungsstelle",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Bereitstellungsraum.svg",
+    "name": "Bereitstellungsraum",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Bereitstellungsraum_mit_Fuehrungsstelle.svg",
+    "name": "Bereitstellungsraum mit Führungsstelle",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Bereitstellungsraum_mit_Meldekopf.svg",
+    "name": "Bereitstellungsraum mit Meldekopf",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Betreuungsstelle.svg",
+    "name": "Betreuungsstelle",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Dekontaminationsplatz.svg",
+    "name": "Dekontaminationsplatz",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Elektroversorgung.svg",
+    "name": "Elektroversorgung",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Entsorgungsstelle.svg",
+    "name": "Entsorgungsstelle",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Feldlager.svg",
+    "name": "Feldlager",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Feuerwehr_Einsatzzentrale.svg",
+    "name": "Feuerwehr Einsatzzentrale",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Halteplatz_fuer_Fahrzeuge_zum_Verletztentransport.svg",
+    "name": "Halteplatz für Fahrzeuge zum Verletztentransport",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Hubschrauberlandeplatz.svg",
+    "name": "Hubschrauberlandeplatz",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Integrierte_Leitstelle.svg",
+    "name": "Integrierte Leitstelle",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Leitstelle.svg",
+    "name": "Leitstelle",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Logistikstuetzpunkt.svg",
+    "name": "Logistikstützpunkt",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Lotsenstelle.svg",
+    "name": "Lotsenstelle",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Meldekopf.svg",
+    "name": "Meldekopf",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Mobile_Wasserrettungsstation.svg",
+    "name": "Mobile Wasserrettungsstation",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Patientenablage.svg",
     "name": "Patientenablage"
    },
    {
-    "datei": "Rettungswesen_Einrichtungen/Sammelplatz_fuer_Betroffene.svg",
+    "datei": "Einrichtungen/Sammelplatz_fuer_Betroffene.svg",
     "name": "Sammelplatz für Betroffene"
+   },
+   {
+    "datei": "Einrichtungen/Sammelstelle.svg",
+    "name": "Sammelstelle",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Stelle.svg",
+    "name": "Stelle",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Stelle_Betrieb.svg",
+    "name": "Stelle Betrieb",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Stelle_Infrastruktur.svg",
+    "name": "Stelle Infrastruktur",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Trinkwasserversorgung.svg",
+    "name": "Trinkwasserversorgung",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Versorgungsstelle_Materialerhaltung.svg",
+    "name": "Versorgungsstelle Materialerhaltung",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Versorgungsstelle_Verbrauchsgueter.svg",
+    "name": "Versorgungsstelle Verbrauchsgüter",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Versorgungsstelle_Verpflegung.svg",
+    "name": "Versorgungsstelle Verpflegung",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Einrichtungen/Wache.svg",
+    "name": "Wache",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Wasserrettungsstation.svg",
+    "name": "Wasserrettungsstation",
+    "grund": "hilfsorganisation"
+   },
+   {
+    "datei": "Einrichtungen/Werkstatt.svg",
+    "name": "Werkstatt",
+    "grund": "hilfsorganisation"
+   }
+  ]
+ },
+ {
+  "kategorie": "Führungsstellen",
+  "zeichen": [
+   {
+    "datei": "Fuehrungsstellen/Abschnittsfuehrungsstelle.svg",
+    "name": "Abschnittsführungsstelle",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/BR500.svg",
+    "name": "BR500",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/BW.svg",
+    "name": "BW",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/EAL.svg",
+    "name": "EAL",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/EL.svg",
+    "name": "EL",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/ELO.svg",
+    "name": "ELO",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/Feldlager.svg",
+    "name": "Feldlager",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/Fuehrungsstab.svg",
+    "name": "Führungsstab",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/Fuehrungsstelle.svg",
+    "name": "Führungsstelle",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/HK.svg",
+    "name": "HK",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/KatSL.svg",
+    "name": "KatSL",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/LG.svg",
+    "name": "LG",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/LK.svg",
+    "name": "LK",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/LuK.svg",
+    "name": "LuK",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/PuMA.svg",
+    "name": "PuMA",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/Stadt.svg",
+    "name": "Stadt",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/TEL.svg",
+    "name": "TEL",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/UEAL.svg",
+    "name": "UEAL",
+    "grund": "fuehrung"
+   },
+   {
+    "datei": "Fuehrungsstellen/OeEL.svg",
+    "name": "ÖEL",
+    "grund": "fuehrung"
    }
   ]
  },
@@ -904,346 +1325,6 @@
    {
     "datei": "Massnahmen/Oelschadenbekaempfung.svg",
     "name": "Ölschadenbekämpfung"
-   }
-  ]
- },
- {
-  "kategorie": "Personen",
-  "zeichen": [
-   {
-    "datei": "Personen/Einsatzabschnittsleiter.svg",
-    "name": "Einsatzabschnittsleiter"
-   },
-   {
-    "datei": "Personen/Einsatzleiter.svg",
-    "name": "Einsatzleiter"
-   },
-   {
-    "datei": "Personen/Flugleiter.svg",
-    "name": "Flugleiter"
-   },
-   {
-    "datei": "Personen/Gerettete_Person.svg",
-    "name": "Gerettete Person"
-   },
-   {
-    "datei": "Personen/Gruppenfuehrer.svg",
-    "name": "Gruppenführer"
-   },
-   {
-    "datei": "Personen/Melder.svg",
-    "name": "Melder"
-   },
-   {
-    "datei": "Personen/Person.svg",
-    "name": "Person"
-   },
-   {
-    "datei": "Personen/Person_mit_Sonderfunktion.svg",
-    "name": "Person mit Sonderfunktion"
-   },
-   {
-    "datei": "Personen/Tote_Person.svg",
-    "name": "Tote Person"
-   },
-   {
-    "datei": "Personen/Transportierte_Person.svg",
-    "name": "Transportierte Person"
-   },
-   {
-    "datei": "Personen/Truppfuehrer.svg",
-    "name": "Truppführer"
-   },
-   {
-    "datei": "Personen/Untereinsatzabschnittsleiter.svg",
-    "name": "Untereinsatzabschnittsleiter"
-   },
-   {
-    "datei": "Personen/Verbandfuehrer_I.svg",
-    "name": "Verbandführer I"
-   },
-   {
-    "datei": "Personen/Verbandfuehrer_II.svg",
-    "name": "Verbandführer II"
-   },
-   {
-    "datei": "Personen/Verbandfuehrer_III.svg",
-    "name": "Verbandführer III"
-   },
-   {
-    "datei": "Personen/Verletzte_Person.svg",
-    "name": "Verletzte Person"
-   },
-   {
-    "datei": "Personen/Vermisste_Person.svg",
-    "name": "Vermisste Person"
-   },
-   {
-    "datei": "Personen/Verschuettete_Person.svg",
-    "name": "Verschüttete Person"
-   },
-   {
-    "datei": "Personen/Zu_transportierende_Person.svg",
-    "name": "Zu transportierende Person"
-   },
-   {
-    "datei": "Personen/Zugfuehrer.svg",
-    "name": "Zugführer"
-   }
-  ]
- },
- {
-  "kategorie": "Führungsstellen",
-  "zeichen": [
-   {
-    "datei": "Fuehrungsstellen/Abschnittsfuehrungsstelle.svg",
-    "name": "Abschnittsführungsstelle"
-   },
-   {
-    "datei": "Fuehrungsstellen/BR500.svg",
-    "name": "BR500"
-   },
-   {
-    "datei": "Fuehrungsstellen/BW.svg",
-    "name": "BW"
-   },
-   {
-    "datei": "Fuehrungsstellen/EAL.svg",
-    "name": "EAL"
-   },
-   {
-    "datei": "Fuehrungsstellen/EL.svg",
-    "name": "EL"
-   },
-   {
-    "datei": "Fuehrungsstellen/ELO.svg",
-    "name": "ELO"
-   },
-   {
-    "datei": "Fuehrungsstellen/Feldlager.svg",
-    "name": "Feldlager"
-   },
-   {
-    "datei": "Fuehrungsstellen/Fuehrungsstab.svg",
-    "name": "Führungsstab"
-   },
-   {
-    "datei": "Fuehrungsstellen/Fuehrungsstelle.svg",
-    "name": "Führungsstelle"
-   },
-   {
-    "datei": "Fuehrungsstellen/HK.svg",
-    "name": "HK"
-   },
-   {
-    "datei": "Fuehrungsstellen/KatSL.svg",
-    "name": "KatSL"
-   },
-   {
-    "datei": "Fuehrungsstellen/LG.svg",
-    "name": "LG"
-   },
-   {
-    "datei": "Fuehrungsstellen/LK.svg",
-    "name": "LK"
-   },
-   {
-    "datei": "Fuehrungsstellen/LuK.svg",
-    "name": "LuK"
-   },
-   {
-    "datei": "Fuehrungsstellen/PuMA.svg",
-    "name": "PuMA"
-   },
-   {
-    "datei": "Fuehrungsstellen/Stadt.svg",
-    "name": "Stadt"
-   },
-   {
-    "datei": "Fuehrungsstellen/TEL.svg",
-    "name": "TEL"
-   },
-   {
-    "datei": "Fuehrungsstellen/UEAL.svg",
-    "name": "UEAL"
-   },
-   {
-    "datei": "Fuehrungsstellen/OeEL.svg",
-    "name": "ÖEL"
-   }
-  ]
- },
- {
-  "kategorie": "Einrichtungen",
-  "zeichen": [
-   {
-    "datei": "Einrichtungen/Behandlungsplatz.svg",
-    "name": "Behandlungsplatz"
-   },
-   {
-    "datei": "Einrichtungen/Belegungsstelle.svg",
-    "name": "Belegungsstelle"
-   },
-   {
-    "datei": "Einrichtungen/Bereitstellungsraum.svg",
-    "name": "Bereitstellungsraum"
-   },
-   {
-    "datei": "Einrichtungen/Bereitstellungsraum_mit_Fuehrungsstelle.svg",
-    "name": "Bereitstellungsraum mit Führungsstelle"
-   },
-   {
-    "datei": "Einrichtungen/Bereitstellungsraum_mit_Meldekopf.svg",
-    "name": "Bereitstellungsraum mit Meldekopf"
-   },
-   {
-    "datei": "Einrichtungen/Betreuungsstelle.svg",
-    "name": "Betreuungsstelle"
-   },
-   {
-    "datei": "Einrichtungen/Dekontaminationsplatz.svg",
-    "name": "Dekontaminationsplatz"
-   },
-   {
-    "datei": "Einrichtungen/Elektroversorgung.svg",
-    "name": "Elektroversorgung"
-   },
-   {
-    "datei": "Einrichtungen/Entsorgungsstelle.svg",
-    "name": "Entsorgungsstelle"
-   },
-   {
-    "datei": "Einrichtungen/Feldlager.svg",
-    "name": "Feldlager"
-   },
-   {
-    "datei": "Einrichtungen/Feuerwehr_Einsatzzentrale.svg",
-    "name": "Feuerwehr Einsatzzentrale"
-   },
-   {
-    "datei": "Einrichtungen/Halteplatz_fuer_Fahrzeuge_zum_Verletztentransport.svg",
-    "name": "Halteplatz für Fahrzeuge zum Verletztentransport"
-   },
-   {
-    "datei": "Einrichtungen/Hubschrauberlandeplatz.svg",
-    "name": "Hubschrauberlandeplatz"
-   },
-   {
-    "datei": "Einrichtungen/Integrierte_Leitstelle.svg",
-    "name": "Integrierte Leitstelle"
-   },
-   {
-    "datei": "Einrichtungen/Leitstelle.svg",
-    "name": "Leitstelle"
-   },
-   {
-    "datei": "Einrichtungen/Logistikstuetzpunkt.svg",
-    "name": "Logistikstützpunkt"
-   },
-   {
-    "datei": "Einrichtungen/Lotsenstelle.svg",
-    "name": "Lotsenstelle"
-   },
-   {
-    "datei": "Einrichtungen/Meldekopf.svg",
-    "name": "Meldekopf"
-   },
-   {
-    "datei": "Einrichtungen/Sammelstelle.svg",
-    "name": "Sammelstelle"
-   },
-   {
-    "datei": "Einrichtungen/Stelle.svg",
-    "name": "Stelle"
-   },
-   {
-    "datei": "Einrichtungen/Stelle_Betrieb.svg",
-    "name": "Stelle Betrieb"
-   },
-   {
-    "datei": "Einrichtungen/Stelle_Infrastruktur.svg",
-    "name": "Stelle Infrastruktur"
-   },
-   {
-    "datei": "Einrichtungen/Trinkwasserversorgung.svg",
-    "name": "Trinkwasserversorgung"
-   },
-   {
-    "datei": "Einrichtungen/Versorgungsstelle_Materialerhaltung.svg",
-    "name": "Versorgungsstelle Materialerhaltung"
-   },
-   {
-    "datei": "Einrichtungen/Versorgungsstelle_Verbrauchsgueter.svg",
-    "name": "Versorgungsstelle Verbrauchsgüter"
-   },
-   {
-    "datei": "Einrichtungen/Versorgungsstelle_Verpflegung.svg",
-    "name": "Versorgungsstelle Verpflegung"
-   },
-   {
-    "datei": "Einrichtungen/Wache.svg",
-    "name": "Wache"
-   },
-   {
-    "datei": "Einrichtungen/Werkstatt.svg",
-    "name": "Werkstatt"
-   }
-  ]
- },
- {
-  "kategorie": "Fahrzeuge (allgemein)",
-  "zeichen": [
-   {
-    "datei": "Fahrzeuge/Abrollbehaelter_Container.svg",
-    "name": "Abrollbehälter Container"
-   },
-   {
-    "datei": "Fahrzeuge/Anhaenger.svg",
-    "name": "Anhänger"
-   },
-   {
-    "datei": "Fahrzeuge/Fahrrad.svg",
-    "name": "Fahrrad"
-   },
-   {
-    "datei": "Fahrzeuge/Fahrzeug.svg",
-    "name": "Fahrzeug"
-   },
-   {
-    "datei": "Fahrzeuge/Flugzeug.svg",
-    "name": "Flugzeug"
-   },
-   {
-    "datei": "Fahrzeuge/Hubschrauber.svg",
-    "name": "Hubschrauber"
-   },
-   {
-    "datei": "Fahrzeuge/Kettenfahrzeug.svg",
-    "name": "Kettenfahrzeug"
-   },
-   {
-    "datei": "Fahrzeuge/Kraftfahrzeug.svg",
-    "name": "Kraftfahrzeug"
-   },
-   {
-    "datei": "Fahrzeuge/Kraftfahrzeug_gelaendegaengig.svg",
-    "name": "Kraftfahrzeug geländegängig"
-   },
-   {
-    "datei": "Fahrzeuge/Kraftrad.svg",
-    "name": "Kraftrad"
-   },
-   {
-    "datei": "Fahrzeuge/Schienenfahrzeug.svg",
-    "name": "Schienenfahrzeug"
-   },
-   {
-    "datei": "Fahrzeuge/Wasserfahrzeug.svg",
-    "name": "Wasserfahrzeug"
-   },
-   {
-    "datei": "Fahrzeuge/Wechselladerfahrzeug.svg",
-    "name": "Wechselladerfahrzeug"
    }
   ]
  },

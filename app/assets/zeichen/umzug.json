@@ -1,0 +1,546 @@
+{
+ "assets/zeichen/Fahrzeuge/Kraftfahrzeug_gelaendegaengig.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/ABC_Erkundungsgruppe.svg": {
+  "datei": "assets/zeichen/Einheiten/ABC_Erkundungsgruppe.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Abteilung.svg": {
+  "datei": "assets/zeichen/Einheiten/Abteilung.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Bereitschaft.svg": {
+  "datei": "assets/zeichen/Einheiten/Bereitschaft.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Bezirksabteilungsfuehrung.svg": {
+  "datei": "assets/zeichen/Einheiten/Bezirksabteilungsfuehrung.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Bezirksbereitschaftsfuehrung.svg": {
+  "datei": "assets/zeichen/Einheiten/Bezirksbereitschaftsfuehrung.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Dekontaminationsgruppe_Geraet.svg": {
+  "datei": "assets/zeichen/Einheiten/Dekontaminationsgruppe_Geraet.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Dekontaminationsgruppe_Personen.svg": {
+  "datei": "assets/zeichen/Einheiten/Dekontaminationsgruppe_Personen.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Fernsprech_Bau_und_Betriebstrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Fernsprech_Bau_und_Betriebstrupp.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Fuehrungsgruppe_Feuerwehrbereitschaft.svg": {
+  "datei": "assets/zeichen/Einheiten/Fuehrungsgruppe_Feuerwehrbereitschaft.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Fuehrungsgruppe_TEL.svg": {
+  "datei": "assets/zeichen/Einheiten/Fuehrungsgruppe_TEL.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Gefahrstoffzug_ABC_Zug.svg": {
+  "datei": "assets/zeichen/Einheiten/Gefahrstoffzug_ABC_Zug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/IuK_Zug.svg": {
+  "datei": "assets/zeichen/Einheiten/IuK_Zug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Loeschgruppe.svg": {
+  "datei": "assets/zeichen/Einheiten/Loeschgruppe.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Loeschstaffel.svg": {
+  "datei": "assets/zeichen/Einheiten/Loeschstaffel.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Loeschtrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Loeschtrupp.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Loeschzug.svg": {
+  "datei": "assets/zeichen/Einheiten/Loeschzug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Loeschzug_Berufsfeuerwehr.svg": {
+  "datei": "assets/zeichen/Einheiten/Loeschzug_Berufsfeuerwehr.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Loeschzug_Freiwillige_Feuerwehr.svg": {
+  "datei": "assets/zeichen/Einheiten/Loeschzug_Freiwillige_Feuerwehr.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Loeschzug_Wasser.svg": {
+  "datei": "assets/zeichen/Einheiten/Loeschzug_Wasser.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Loeschzug_Werkfeuerwehr.svg": {
+  "datei": "assets/zeichen/Einheiten/Loeschzug_Werkfeuerwehr.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Logistikzug.svg": {
+  "datei": "assets/zeichen/Einheiten/Logistikzug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/RettR-UAV_Erkundungsgruppe.svg": {
+  "datei": "assets/zeichen/Einheiten/RettR-UAV_Erkundungsgruppe.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/RettR-UAV_Erkundungsstaffel.svg": {
+  "datei": "assets/zeichen/Einheiten/RettR-UAV_Erkundungsstaffel.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/RettR-UAV_Erkundungstrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/RettR-UAV_Erkundungstrupp.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Sprechfunkbetriebstrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Sprechfunkbetriebstrupp.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Versorgungstrupp_Materialerhaltung.svg": {
+  "datei": "assets/zeichen/Einheiten/Versorgungstrupp_Materialerhaltung.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Einheiten/Versorgungstrupp_Verbrauchsgueter.svg": {
+  "datei": "assets/zeichen/Einheiten/Versorgungstrupp_Verbrauchsgueter.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Abrollbehaelter_Container.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Abrollbehaelter_Container.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Drehleiter_mit_Korb.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Drehleiter_mit_Korb.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/ELW_1.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/ELW_1.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/ELW_2.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/ELW_2.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Feuerwehranhaenger.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Feuerwehranhaenger.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Feuerwehrboot.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Feuerwehrboot.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Geraetewagen_Atemschutz.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Geraetewagen_Atemschutz.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Geraetewagen_Gefahrgut.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Geraetewagen_Gefahrgut.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Geraetewagen_Logistik.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Geraetewagen_Logistik.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Geraetewagen_Logistik_1.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Geraetewagen_Logistik_1.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Geraetewagen_Logistik_2.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Geraetewagen_Logistik_2.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/HLF.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/HLF.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/KTW.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/KTW.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Kommandowagen.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Kommandowagen.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Kraftfahrzeug.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Kraftfahrzeug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/LF_16-TS.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/LF_16-TS.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/LF_24-50.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/LF_24-50.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/LF_8-6.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/LF_8-6.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/LF_KatS.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/LF_KatS.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Loeschfahrzeug.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Loeschfahrzeug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/MTF.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/MTF.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/MTW.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/MTW.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/MZF.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/MZF.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Messfahrzeug.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Messfahrzeug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Notarzteinsatzfahrzeug.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Notarzteinsatzfahrzeug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Notarztwagen.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Notarztwagen.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/RTW.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/RTW.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Reaktorerkundungskraftwagen.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Reaktorerkundungskraftwagen.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Ruestwagen.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Ruestwagen.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Schlauchwagen.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Schlauchwagen.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/TLF_16-25.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/TLF_16-25.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/TLF_2000.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/TLF_2000.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/TLF_3000.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/TLF_3000.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/TLF_4000.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/TLF_4000.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Tankloeschfahrzeug.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Tankloeschfahrzeug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Fahrzeuge/Wechselladerfahrzeug.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Wechselladerfahrzeug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Abschnittsleiter_Feuerwehr.svg": {
+  "datei": "assets/zeichen/Personen/Abschnittsleiter_Feuerwehr.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Abschnittsleiter_Luft.svg": {
+  "datei": "assets/zeichen/Personen/Abschnittsleiter_Luft.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Angriffstruppfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Angriffstruppfuehrer.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Angriffstruppmann.svg": {
+  "datei": "assets/zeichen/Personen/Angriffstruppmann.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Einsatzabschnittsleiter_Feuerwehr.svg": {
+  "datei": "assets/zeichen/Personen/Einsatzabschnittsleiter_Feuerwehr.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Gruppenfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Gruppenfuehrer.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Maschinist.svg": {
+  "datei": "assets/zeichen/Personen/Maschinist.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Melder.svg": {
+  "datei": "assets/zeichen/Personen/Melder.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/RettR_Bildauswerter.svg": {
+  "datei": "assets/zeichen/Personen/RettR_Bildauswerter.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/RettR_Fachberater.svg": {
+  "datei": "assets/zeichen/Personen/RettR_Fachberater.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/RettR_Flugleiter.svg": {
+  "datei": "assets/zeichen/Personen/RettR_Flugleiter.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/RettR_Gruppenfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/RettR_Gruppenfuehrer.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Schlauchtruppfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Schlauchtruppfuehrer.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Schlauchtruppmann.svg": {
+  "datei": "assets/zeichen/Personen/Schlauchtruppmann.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Staffelfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Staffelfuehrer.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Truppfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Truppfuehrer.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/UAV_Flugleiter.svg": {
+  "datei": "assets/zeichen/Personen/UAV_Flugleiter.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Wassertruppfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Wassertruppfuehrer.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Wassertruppmann.svg": {
+  "datei": "assets/zeichen/Personen/Wassertruppmann.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Feuerwehr_Personen/Zugfuehrer_Loeschzug.svg": {
+  "datei": "assets/zeichen/Personen/Zugfuehrer_Loeschzug.svg",
+  "organisation": "feuerwehr"
+ },
+ "assets/zeichen/Rettungswesen_Einrichtungen/Arztbesetzte_Patientenablage.svg": {
+  "datei": "assets/zeichen/Einrichtungen/Arztbesetzte_Patientenablage.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Einrichtungen/Patientenablage.svg": {
+  "datei": "assets/zeichen/Einrichtungen/Patientenablage.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Einrichtungen/Sammelplatz_fuer_Betroffene.svg": {
+  "datei": "assets/zeichen/Einrichtungen/Sammelplatz_fuer_Betroffene.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/Abrollbehaelter_MANV.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Abrollbehaelter_MANV.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/Geraetewagen_Logistik.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Geraetewagen_Logistik.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/Geraetewagen_Sanitaet.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Geraetewagen_Sanitaet.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/Geraetewagen_TeSi.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Geraetewagen_TeSi.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/KTW.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/KTW.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/Kraftfahrzeug.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Kraftfahrzeug.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Kraftfahrzeug_Gelaendegaengig.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/MTW.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/MTW.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/Notarzteinsatzfahrzeug.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Notarzteinsatzfahrzeug.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/Notarztwagen.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Notarztwagen.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Rettungswesen_Fahrzeuge/RTW.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/RTW.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Bootsgruppe.svg": {
+  "datei": "assets/zeichen/Einheiten/Bootsgruppe.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Bootstrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Bootstrupp.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Fuehrungstrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Fuehrungstrupp.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Logistiktrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Logistiktrupp.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Stroemungsrettungsgruppe.svg": {
+  "datei": "assets/zeichen/Einheiten/Stroemungsrettungsgruppe.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Stroemungsrettungstrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Stroemungsrettungstrupp.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Tauchgruppe.svg": {
+  "datei": "assets/zeichen/Einheiten/Tauchgruppe.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Tauchtrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Tauchtrupp.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Wasserrettungsgruppe.svg": {
+  "datei": "assets/zeichen/Einheiten/Wasserrettungsgruppe.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Wasserrettungstrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Wasserrettungstrupp.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Wasserrettungsverband.svg": {
+  "datei": "assets/zeichen/Einheiten/Wasserrettungsverband.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Wasserrettungszug.svg": {
+  "datei": "assets/zeichen/Einheiten/Wasserrettungszug.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einheiten/Zugtrupp.svg": {
+  "datei": "assets/zeichen/Einheiten/Zugtrupp.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einrichtungen/Mobile_Wasserrettungsstation.svg": {
+  "datei": "assets/zeichen/Einrichtungen/Mobile_Wasserrettungsstation.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Einrichtungen/Wasserrettungsstation.svg": {
+  "datei": "assets/zeichen/Einrichtungen/Wasserrettungsstation.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/Anhaenger.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Anhaenger_Wasserrettung.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/Anhaenger_Stroemungsrettung.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Anhaenger_Stroemungsrettung.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/Anhaenger_Tauchen.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Anhaenger_Tauchen.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/Boot.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Boot.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/GW_Boot.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/GW_Boot.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/GW_Boot_gelaendegaengig.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/GW_Boot_gelaendegaengig.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/GW_Stroemungsrettung.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/GW_Stroemungsrettung.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/GW_Stroemungsrettung_gelaendegaengig.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/GW_Stroemungsrettung_gelaendegaengig.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/GW_Tauchen.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/GW_Tauchen.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/GW_Tauchen_gelaendegaengig.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/GW_Tauchen_gelaendegaengig.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/Hochwasserboot.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Hochwasserboot.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/Kraftfahrzeug.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Kraftfahrzeug_Wasserrettung.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/Kraftfahrzeug_gelaendegaengig.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Kraftfahrzeug_gelaendegaengig_Wasserrettung.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Fahrzeuge/Schlauchboot.svg": {
+  "datei": "assets/zeichen/Fahrzeuge/Schlauchboot.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Personen/Einsatzkraft.svg": {
+  "datei": "assets/zeichen/Personen/Einsatzkraft.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Personen/Einsatzleiter_Wasserrettungsdienst.svg": {
+  "datei": "assets/zeichen/Personen/Einsatzleiter_Wasserrettungsdienst.svg",
+  "organisation": "fuehrung"
+ },
+ "assets/zeichen/Wasserrettung_Personen/Fachberater.svg": {
+  "datei": "assets/zeichen/Personen/Fachberater.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Personen/Fuehrungskraft.svg": {
+  "datei": "assets/zeichen/Personen/Fuehrungskraft.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Personen/Gruppenfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Gruppenfuehrer_Wasserrettung.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Personen/Truppfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Truppfuehrer_Wasserrettung.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Personen/Verbandfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Verbandfuehrer.svg",
+  "organisation": "hilfsorganisation"
+ },
+ "assets/zeichen/Wasserrettung_Personen/Zugfuehrer.svg": {
+  "datei": "assets/zeichen/Personen/Zugfuehrer_Wasserrettung.svg",
+  "organisation": "hilfsorganisation"
+ }
+}

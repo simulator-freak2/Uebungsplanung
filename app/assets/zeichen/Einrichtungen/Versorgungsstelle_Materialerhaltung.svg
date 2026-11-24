@@ -5,7 +5,7 @@
 			<ellipse cx="128" cy="128" rx="64" ry="64" />
 		</clipPath>
 	</defs>
-	<ellipse fill="#FFFF00" stroke="#000000" stroke-width="5" cx="128" cy="128" rx="64" ry="64" />
-	<path d="M75 140 a16 16 0 0 0 0 -32 m16 16 l74 0 M181 140 a16 16 0 0 1 0 -32" stroke="#000000" stroke-width="4" fill="none" />
-	<rect x="64" y="160" width="128" height="32" clip-path="url(#base)" />
+	<ellipse fill="#FEFEFE" stroke="#000000" stroke-width="5" cx="128" cy="128" rx="64" ry="64" />
+	<path d="M75 140 a16 16 0 0 0 0 -32 m16 16 l74 0 M181 140 a16 16 0 0 1 0 -32" stroke="#010101" stroke-width="4" fill="none" />
+	<rect fill="#010101" x="64" y="160" width="128" height="32" clip-path="url(#base)" />
 </svg>
