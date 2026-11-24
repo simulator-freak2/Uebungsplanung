@@ -5487,6 +5487,643 @@ class ExercisesCompanion extends UpdateCompanion<Exercise> {
   }
 }
 
+class $ExerciseLeadFunctionsTable extends ExerciseLeadFunctions
+    with TableInfo<$ExerciseLeadFunctionsTable, ExerciseLeadFunction> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ExerciseLeadFunctionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid.v4(),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: () => DateTime.now().toUtc(),
+  );
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
+  @override
+  late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
+    'deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _exerciseIdMeta = const VerificationMeta(
+    'exerciseId',
+  );
+  @override
+  late final GeneratedColumn<String> exerciseId = GeneratedColumn<String>(
+    'exercise_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requiredQualificationIdMeta =
+      const VerificationMeta('requiredQualificationId');
+  @override
+  late final GeneratedColumn<String> requiredQualificationId =
+      GeneratedColumn<String>(
+        'required_qualification_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _parentIdMeta = const VerificationMeta(
+    'parentId',
+  );
+  @override
+  late final GeneratedColumn<String> parentId = GeneratedColumn<String>(
+    'parent_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _vehicleIdMeta = const VerificationMeta(
+    'vehicleId',
+  );
+  @override
+  late final GeneratedColumn<String> vehicleId = GeneratedColumn<String>(
+    'vehicle_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _radioEntryIdMeta = const VerificationMeta(
+    'radioEntryId',
+  );
+  @override
+  late final GeneratedColumn<String> radioEntryId = GeneratedColumn<String>(
+    'radio_entry_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sortOrderMeta = const VerificationMeta(
+    'sortOrder',
+  );
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+    'sort_order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    name,
+    requiredQualificationId,
+    parentId,
+    vehicleId,
+    radioEntryId,
+    sortOrder,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'exercise_lead_functions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ExerciseLeadFunction> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
+    }
+    if (data.containsKey('exercise_id')) {
+      context.handle(
+        _exerciseIdMeta,
+        exerciseId.isAcceptableOrUnknown(data['exercise_id']!, _exerciseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_exerciseIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('required_qualification_id')) {
+      context.handle(
+        _requiredQualificationIdMeta,
+        requiredQualificationId.isAcceptableOrUnknown(
+          data['required_qualification_id']!,
+          _requiredQualificationIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('parent_id')) {
+      context.handle(
+        _parentIdMeta,
+        parentId.isAcceptableOrUnknown(data['parent_id']!, _parentIdMeta),
+      );
+    }
+    if (data.containsKey('vehicle_id')) {
+      context.handle(
+        _vehicleIdMeta,
+        vehicleId.isAcceptableOrUnknown(data['vehicle_id']!, _vehicleIdMeta),
+      );
+    }
+    if (data.containsKey('radio_entry_id')) {
+      context.handle(
+        _radioEntryIdMeta,
+        radioEntryId.isAcceptableOrUnknown(
+          data['radio_entry_id']!,
+          _radioEntryIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(
+        _sortOrderMeta,
+        sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ExerciseLeadFunction map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ExerciseLeadFunction(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      exerciseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exercise_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      requiredQualificationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}required_qualification_id'],
+      ),
+      parentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}parent_id'],
+      ),
+      vehicleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}vehicle_id'],
+      ),
+      radioEntryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}radio_entry_id'],
+      ),
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+    );
+  }
+
+  @override
+  $ExerciseLeadFunctionsTable createAlias(String alias) {
+    return $ExerciseLeadFunctionsTable(attachedDatabase, alias);
+  }
+}
+
+class ExerciseLeadFunction extends DataClass
+    implements Insertable<ExerciseLeadFunction> {
+  final String id;
+  final DateTime updatedAt;
+  final bool deleted;
+  final String exerciseId;
+  final String name;
+  final String? requiredQualificationId;
+
+  /// Übergeordnete Führungsfunktion; `null` = oberste Ebene (Einsatzleiter).
+  final String? parentId;
+
+  /// Geführtes Fahrzeug (Stammdaten-ID); `null` = aus der Besetzung ableiten.
+  final String? vehicleId;
+
+  /// Verknüpfter Eintrag im Funkplan (Funkrufname).
+  final String? radioEntryId;
+  final int sortOrder;
+  const ExerciseLeadFunction({
+    required this.id,
+    required this.updatedAt,
+    required this.deleted,
+    required this.exerciseId,
+    required this.name,
+    this.requiredQualificationId,
+    this.parentId,
+    this.vehicleId,
+    this.radioEntryId,
+    required this.sortOrder,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['deleted'] = Variable<bool>(deleted);
+    map['exercise_id'] = Variable<String>(exerciseId);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || requiredQualificationId != null) {
+      map['required_qualification_id'] = Variable<String>(
+        requiredQualificationId,
+      );
+    }
+    if (!nullToAbsent || parentId != null) {
+      map['parent_id'] = Variable<String>(parentId);
+    }
+    if (!nullToAbsent || vehicleId != null) {
+      map['vehicle_id'] = Variable<String>(vehicleId);
+    }
+    if (!nullToAbsent || radioEntryId != null) {
+      map['radio_entry_id'] = Variable<String>(radioEntryId);
+    }
+    map['sort_order'] = Variable<int>(sortOrder);
+    return map;
+  }
+
+  ExerciseLeadFunctionsCompanion toCompanion(bool nullToAbsent) {
+    return ExerciseLeadFunctionsCompanion(
+      id: Value(id),
+      updatedAt: Value(updatedAt),
+      deleted: Value(deleted),
+      exerciseId: Value(exerciseId),
+      name: Value(name),
+      requiredQualificationId: requiredQualificationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(requiredQualificationId),
+      parentId: parentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(parentId),
+      vehicleId: vehicleId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(vehicleId),
+      radioEntryId: radioEntryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(radioEntryId),
+      sortOrder: Value(sortOrder),
+    );
+  }
+
+  factory ExerciseLeadFunction.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ExerciseLeadFunction(
+      id: serializer.fromJson<String>(json['id']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
+      exerciseId: serializer.fromJson<String>(json['exerciseId']),
+      name: serializer.fromJson<String>(json['name']),
+      requiredQualificationId: serializer.fromJson<String?>(
+        json['requiredQualificationId'],
+      ),
+      parentId: serializer.fromJson<String?>(json['parentId']),
+      vehicleId: serializer.fromJson<String?>(json['vehicleId']),
+      radioEntryId: serializer.fromJson<String?>(json['radioEntryId']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deleted': serializer.toJson<bool>(deleted),
+      'exerciseId': serializer.toJson<String>(exerciseId),
+      'name': serializer.toJson<String>(name),
+      'requiredQualificationId': serializer.toJson<String?>(
+        requiredQualificationId,
+      ),
+      'parentId': serializer.toJson<String?>(parentId),
+      'vehicleId': serializer.toJson<String?>(vehicleId),
+      'radioEntryId': serializer.toJson<String?>(radioEntryId),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+    };
+  }
+
+  ExerciseLeadFunction copyWith({
+    String? id,
+    DateTime? updatedAt,
+    bool? deleted,
+    String? exerciseId,
+    String? name,
+    Value<String?> requiredQualificationId = const Value.absent(),
+    Value<String?> parentId = const Value.absent(),
+    Value<String?> vehicleId = const Value.absent(),
+    Value<String?> radioEntryId = const Value.absent(),
+    int? sortOrder,
+  }) => ExerciseLeadFunction(
+    id: id ?? this.id,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deleted: deleted ?? this.deleted,
+    exerciseId: exerciseId ?? this.exerciseId,
+    name: name ?? this.name,
+    requiredQualificationId: requiredQualificationId.present
+        ? requiredQualificationId.value
+        : this.requiredQualificationId,
+    parentId: parentId.present ? parentId.value : this.parentId,
+    vehicleId: vehicleId.present ? vehicleId.value : this.vehicleId,
+    radioEntryId: radioEntryId.present ? radioEntryId.value : this.radioEntryId,
+    sortOrder: sortOrder ?? this.sortOrder,
+  );
+  ExerciseLeadFunction copyWithCompanion(ExerciseLeadFunctionsCompanion data) {
+    return ExerciseLeadFunction(
+      id: data.id.present ? data.id.value : this.id,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deleted: data.deleted.present ? data.deleted.value : this.deleted,
+      exerciseId: data.exerciseId.present
+          ? data.exerciseId.value
+          : this.exerciseId,
+      name: data.name.present ? data.name.value : this.name,
+      requiredQualificationId: data.requiredQualificationId.present
+          ? data.requiredQualificationId.value
+          : this.requiredQualificationId,
+      parentId: data.parentId.present ? data.parentId.value : this.parentId,
+      vehicleId: data.vehicleId.present ? data.vehicleId.value : this.vehicleId,
+      radioEntryId: data.radioEntryId.present
+          ? data.radioEntryId.value
+          : this.radioEntryId,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExerciseLeadFunction(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('name: $name, ')
+          ..write('requiredQualificationId: $requiredQualificationId, ')
+          ..write('parentId: $parentId, ')
+          ..write('vehicleId: $vehicleId, ')
+          ..write('radioEntryId: $radioEntryId, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    updatedAt,
+    deleted,
+    exerciseId,
+    name,
+    requiredQualificationId,
+    parentId,
+    vehicleId,
+    radioEntryId,
+    sortOrder,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ExerciseLeadFunction &&
+          other.id == this.id &&
+          other.updatedAt == this.updatedAt &&
+          other.deleted == this.deleted &&
+          other.exerciseId == this.exerciseId &&
+          other.name == this.name &&
+          other.requiredQualificationId == this.requiredQualificationId &&
+          other.parentId == this.parentId &&
+          other.vehicleId == this.vehicleId &&
+          other.radioEntryId == this.radioEntryId &&
+          other.sortOrder == this.sortOrder);
+}
+
+class ExerciseLeadFunctionsCompanion
+    extends UpdateCompanion<ExerciseLeadFunction> {
+  final Value<String> id;
+  final Value<DateTime> updatedAt;
+  final Value<bool> deleted;
+  final Value<String> exerciseId;
+  final Value<String> name;
+  final Value<String?> requiredQualificationId;
+  final Value<String?> parentId;
+  final Value<String?> vehicleId;
+  final Value<String?> radioEntryId;
+  final Value<int> sortOrder;
+  final Value<int> rowid;
+  const ExerciseLeadFunctionsCompanion({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    this.exerciseId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.requiredQualificationId = const Value.absent(),
+    this.parentId = const Value.absent(),
+    this.vehicleId = const Value.absent(),
+    this.radioEntryId = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ExerciseLeadFunctionsCompanion.insert({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deleted = const Value.absent(),
+    required String exerciseId,
+    required String name,
+    this.requiredQualificationId = const Value.absent(),
+    this.parentId = const Value.absent(),
+    this.vehicleId = const Value.absent(),
+    this.radioEntryId = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : exerciseId = Value(exerciseId),
+       name = Value(name);
+  static Insertable<ExerciseLeadFunction> custom({
+    Expression<String>? id,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? deleted,
+    Expression<String>? exerciseId,
+    Expression<String>? name,
+    Expression<String>? requiredQualificationId,
+    Expression<String>? parentId,
+    Expression<String>? vehicleId,
+    Expression<String>? radioEntryId,
+    Expression<int>? sortOrder,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deleted != null) 'deleted': deleted,
+      if (exerciseId != null) 'exercise_id': exerciseId,
+      if (name != null) 'name': name,
+      if (requiredQualificationId != null)
+        'required_qualification_id': requiredQualificationId,
+      if (parentId != null) 'parent_id': parentId,
+      if (vehicleId != null) 'vehicle_id': vehicleId,
+      if (radioEntryId != null) 'radio_entry_id': radioEntryId,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ExerciseLeadFunctionsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? updatedAt,
+    Value<bool>? deleted,
+    Value<String>? exerciseId,
+    Value<String>? name,
+    Value<String?>? requiredQualificationId,
+    Value<String?>? parentId,
+    Value<String?>? vehicleId,
+    Value<String?>? radioEntryId,
+    Value<int>? sortOrder,
+    Value<int>? rowid,
+  }) {
+    return ExerciseLeadFunctionsCompanion(
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deleted: deleted ?? this.deleted,
+      exerciseId: exerciseId ?? this.exerciseId,
+      name: name ?? this.name,
+      requiredQualificationId:
+          requiredQualificationId ?? this.requiredQualificationId,
+      parentId: parentId ?? this.parentId,
+      vehicleId: vehicleId ?? this.vehicleId,
+      radioEntryId: radioEntryId ?? this.radioEntryId,
+      sortOrder: sortOrder ?? this.sortOrder,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool>(deleted.value);
+    }
+    if (exerciseId.present) {
+      map['exercise_id'] = Variable<String>(exerciseId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (requiredQualificationId.present) {
+      map['required_qualification_id'] = Variable<String>(
+        requiredQualificationId.value,
+      );
+    }
+    if (parentId.present) {
+      map['parent_id'] = Variable<String>(parentId.value);
+    }
+    if (vehicleId.present) {
+      map['vehicle_id'] = Variable<String>(vehicleId.value);
+    }
+    if (radioEntryId.present) {
+      map['radio_entry_id'] = Variable<String>(radioEntryId.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExerciseLeadFunctionsCompanion(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deleted: $deleted, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('name: $name, ')
+          ..write('requiredQualificationId: $requiredQualificationId, ')
+          ..write('parentId: $parentId, ')
+          ..write('vehicleId: $vehicleId, ')
+          ..write('radioEntryId: $radioEntryId, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $ExercisePhasesTable extends ExercisePhases
     with TableInfo<$ExercisePhasesTable, ExercisePhase> {
   @override
@@ -12142,6 +12779,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $CrewPatternFunctionsTable(this);
   late final $KeywordsTable keywords = $KeywordsTable(this);
   late final $ExercisesTable exercises = $ExercisesTable(this);
+  late final $ExerciseLeadFunctionsTable exerciseLeadFunctions =
+      $ExerciseLeadFunctionsTable(this);
   late final $ExercisePhasesTable exercisePhases = $ExercisePhasesTable(this);
   late final $ExerciseSafetyChecksTable exerciseSafetyChecks =
       $ExerciseSafetyChecksTable(this);
@@ -12178,6 +12817,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     crewPatternFunctions,
     keywords,
     exercises,
+    exerciseLeadFunctions,
     exercisePhases,
     exerciseSafetyChecks,
     exerciseVehicles,
@@ -15012,6 +15652,338 @@ typedef $$ExercisesTableProcessedTableManager =
       $$ExercisesTableUpdateCompanionBuilder,
       (Exercise, BaseReferences<_$AppDatabase, $ExercisesTable, Exercise>),
       Exercise,
+      PrefetchHooks Function()
+    >;
+typedef $$ExerciseLeadFunctionsTableCreateCompanionBuilder =
+    ExerciseLeadFunctionsCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      required String exerciseId,
+      required String name,
+      Value<String?> requiredQualificationId,
+      Value<String?> parentId,
+      Value<String?> vehicleId,
+      Value<String?> radioEntryId,
+      Value<int> sortOrder,
+      Value<int> rowid,
+    });
+typedef $$ExerciseLeadFunctionsTableUpdateCompanionBuilder =
+    ExerciseLeadFunctionsCompanion Function({
+      Value<String> id,
+      Value<DateTime> updatedAt,
+      Value<bool> deleted,
+      Value<String> exerciseId,
+      Value<String> name,
+      Value<String?> requiredQualificationId,
+      Value<String?> parentId,
+      Value<String?> vehicleId,
+      Value<String?> radioEntryId,
+      Value<int> sortOrder,
+      Value<int> rowid,
+    });
+
+class $$ExerciseLeadFunctionsTableFilterComposer
+    extends Composer<_$AppDatabase, $ExerciseLeadFunctionsTable> {
+  $$ExerciseLeadFunctionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get requiredQualificationId => $composableBuilder(
+    column: $table.requiredQualificationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get parentId => $composableBuilder(
+    column: $table.parentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get vehicleId => $composableBuilder(
+    column: $table.vehicleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get radioEntryId => $composableBuilder(
+    column: $table.radioEntryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ExerciseLeadFunctionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ExerciseLeadFunctionsTable> {
+  $$ExerciseLeadFunctionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get requiredQualificationId => $composableBuilder(
+    column: $table.requiredQualificationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get parentId => $composableBuilder(
+    column: $table.parentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get vehicleId => $composableBuilder(
+    column: $table.vehicleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get radioEntryId => $composableBuilder(
+    column: $table.radioEntryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+    column: $table.sortOrder,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ExerciseLeadFunctionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ExerciseLeadFunctionsTable> {
+  $$ExerciseLeadFunctionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
+
+  GeneratedColumn<String> get exerciseId => $composableBuilder(
+    column: $table.exerciseId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get requiredQualificationId => $composableBuilder(
+    column: $table.requiredQualificationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get parentId =>
+      $composableBuilder(column: $table.parentId, builder: (column) => column);
+
+  GeneratedColumn<String> get vehicleId =>
+      $composableBuilder(column: $table.vehicleId, builder: (column) => column);
+
+  GeneratedColumn<String> get radioEntryId => $composableBuilder(
+    column: $table.radioEntryId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+}
+
+class $$ExerciseLeadFunctionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ExerciseLeadFunctionsTable,
+          ExerciseLeadFunction,
+          $$ExerciseLeadFunctionsTableFilterComposer,
+          $$ExerciseLeadFunctionsTableOrderingComposer,
+          $$ExerciseLeadFunctionsTableAnnotationComposer,
+          $$ExerciseLeadFunctionsTableCreateCompanionBuilder,
+          $$ExerciseLeadFunctionsTableUpdateCompanionBuilder,
+          (
+            ExerciseLeadFunction,
+            BaseReferences<
+              _$AppDatabase,
+              $ExerciseLeadFunctionsTable,
+              ExerciseLeadFunction
+            >,
+          ),
+          ExerciseLeadFunction,
+          PrefetchHooks Function()
+        > {
+  $$ExerciseLeadFunctionsTableTableManager(
+    _$AppDatabase db,
+    $ExerciseLeadFunctionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ExerciseLeadFunctionsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$ExerciseLeadFunctionsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$ExerciseLeadFunctionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                Value<String> exerciseId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> requiredQualificationId = const Value.absent(),
+                Value<String?> parentId = const Value.absent(),
+                Value<String?> vehicleId = const Value.absent(),
+                Value<String?> radioEntryId = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ExerciseLeadFunctionsCompanion(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                name: name,
+                requiredQualificationId: requiredQualificationId,
+                parentId: parentId,
+                vehicleId: vehicleId,
+                radioEntryId: radioEntryId,
+                sortOrder: sortOrder,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<bool> deleted = const Value.absent(),
+                required String exerciseId,
+                required String name,
+                Value<String?> requiredQualificationId = const Value.absent(),
+                Value<String?> parentId = const Value.absent(),
+                Value<String?> vehicleId = const Value.absent(),
+                Value<String?> radioEntryId = const Value.absent(),
+                Value<int> sortOrder = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ExerciseLeadFunctionsCompanion.insert(
+                id: id,
+                updatedAt: updatedAt,
+                deleted: deleted,
+                exerciseId: exerciseId,
+                name: name,
+                requiredQualificationId: requiredQualificationId,
+                parentId: parentId,
+                vehicleId: vehicleId,
+                radioEntryId: radioEntryId,
+                sortOrder: sortOrder,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<
+                    $ExerciseLeadFunctionsTable,
+                    ExerciseLeadFunction
+                  >(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $ExerciseLeadFunctionsTable,
+                    ExerciseLeadFunction
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ExerciseLeadFunctionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ExerciseLeadFunctionsTable,
+      ExerciseLeadFunction,
+      $$ExerciseLeadFunctionsTableFilterComposer,
+      $$ExerciseLeadFunctionsTableOrderingComposer,
+      $$ExerciseLeadFunctionsTableAnnotationComposer,
+      $$ExerciseLeadFunctionsTableCreateCompanionBuilder,
+      $$ExerciseLeadFunctionsTableUpdateCompanionBuilder,
+      (
+        ExerciseLeadFunction,
+        BaseReferences<
+          _$AppDatabase,
+          $ExerciseLeadFunctionsTable,
+          ExerciseLeadFunction
+        >,
+      ),
+      ExerciseLeadFunction,
       PrefetchHooks Function()
     >;
 typedef $$ExercisePhasesTableCreateCompanionBuilder =
@@ -18517,6 +19489,8 @@ class $AppDatabaseManager {
       $$KeywordsTableTableManager(_db, _db.keywords);
   $$ExercisesTableTableManager get exercises =>
       $$ExercisesTableTableManager(_db, _db.exercises);
+  $$ExerciseLeadFunctionsTableTableManager get exerciseLeadFunctions =>
+      $$ExerciseLeadFunctionsTableTableManager(_db, _db.exerciseLeadFunctions);
   $$ExercisePhasesTableTableManager get exercisePhases =>
       $$ExercisePhasesTableTableManager(_db, _db.exercisePhases);
   $$ExerciseSafetyChecksTableTableManager get exerciseSafetyChecks =>

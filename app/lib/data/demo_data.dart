@@ -1,5 +1,6 @@
 import 'documents_repository.dart';
 import 'exercise_repository.dart';
+import 'lead_functions.dart';
 import 'profile.dart';
 import 'repositories.dart';
 
@@ -175,14 +176,24 @@ Future<void> loadDemoData(Repositories repo, OrgProfile profile) async {
     await crew('Motorrettungsboot (MRB)', 'Bootsbesatzung (1/2)', {'Bootsführer': 'Meyer', 'Bootsgast': 'Koch', 'Wasserretter': 'Fischer'});
     await crew('GW-Wasserrettung', 'Wasserrettungstrupp (1/2)', {'Gruppenführer': 'Lange', 'Sanitäter': 'Schmitt'});
   }
-  final lead = all[null]!.functions;
-  Future<void> leadFn(String name, String person) async {
-    final f = lead.where((x) => x.name == name).firstOrNull;
-    if (f != null) await ex.assign(id, functionId: f.id, personId: personIds[person]!);
+  // Führungsstruktur: Einsatzleiter (Vorgabe jeder Übung) und Unterstellte.
+  final el = defaultLeadId(id);
+  await ex.saveLead(id, LeadInput(id: el, name: defaultLeadName, qualificationId: await repo.qualifications.ensure(fw ? 'Zugführer' : 'Gruppenführer Wasserrettung'), callSign: fw ? 'Florian Musterstadt 1/10-1' : 'Pelikan Musterstadt 87/0'));
+  await ex.assign(id, functionId: el, personId: personIds[fw ? 'Hahn' : 'Lange']!);
+  Future<void> lead(String name, String? person, {String? vehicle, String? qual}) async {
+    final lid = await ex.saveLead(id, LeadInput(name: name, parentId: el, vehicleId: vehicle == null ? null : vehicles[vehicle], qualificationId: qual == null ? null : await repo.qualifications.ensure(qual)));
+    if (person != null) await ex.assign(id, functionId: lid, personId: personIds[person]!);
   }
 
-  await leadFn('Einsatzleiter', fw ? 'Hahn' : 'Lange');
-  await leadFn('Mimenbetreuung', fw ? 'Jung' : 'Schmitt');
+  if (fw) {
+    await lead('Gruppenführer', 'Becker', qual: 'Gruppenführer');
+    await lead('Fahrzeugführer', 'Krüger', vehicle: 'RW');
+    await lead('Mimenbetreuung', 'Jung', qual: 'Sanitäter');
+  } else {
+    await lead('Abschnittsleiter Wasser', 'Meyer', vehicle: 'Motorrettungsboot (MRB)', qual: 'Bootsführer A');
+    await lead('Uferposten', null);
+    await lead('Mimenbetreuung', 'Schmitt', qual: 'Sanitäter');
+  }
 
   // Alarmierungsplan
   if (fw) {

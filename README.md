@@ -27,7 +27,8 @@ Neu gegenüber 1.0: **Server** mit Benutzerrollen und Abgleich mehrerer Geräte 
 - **Stammdaten**: Personal mit Qualifikationen (Excel-Import), Fahrzeuge mit Funktionen und Besetzungsmustern,
   Führungs- und Sonderfunktionen, Alarmstichworte, Katalog für Beobachtungspunkte
 - **Übungen** mit Übungsplan, Sicherheits-Checkliste, Freigabe durch TL/Wehrführer,
-  Fahrzeugbesetzung per Drag & Drop, Alarmierungsplan (Uhrzeit oder relativ),
+  Fahrzeugbesetzung per Drag & Drop, frei anlegbare Führungs- und Sonderfunktionen je Übung mit **Organigramm**
+  (Funkrufname, Funktion, Fahrzeug – aus Besetzung und Funkplan), Alarmierungsplan (Uhrzeit oder relativ),
   **eine Alarmmeldung je Alarmierungszeitpunkt**, Funkplan, Rollenkarten mit Eskalationsstufen,
   Material, Beobachtungsbogen, Nachbesprechung
 - **Übungsmappe** als PDF oder Ausdruck (Teile wählbar), Beobachter-Ansicht

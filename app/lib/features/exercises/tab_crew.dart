@@ -2,11 +2,13 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../data/database.dart';
 import '../../data/exercise_repository.dart';
+import '../../data/lead_functions.dart';
 import '../../data/repositories.dart';
 import '../../ui/theme.dart';
 import '../../ui/widgets.dart';
 import '../../materialkompass/mk_ui.dart';
 import '../vehicles_page.dart' show vehicleStatus;
+import 'tab_org.dart';
 
 /// Was beim Ziehen transportiert wird: die Person und – wenn sie aus einer
 /// Funktion gezogen wird – diese Funktion.
@@ -134,11 +136,7 @@ class _CrewTabState extends State<CrewTab> {
                 Text('Personal (${persons.length})', style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 8),
                 TextField(
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    prefixIcon: Icon(Icons.search, size: 20),
-                    hintText: 'Name oder Qualifikation',
-                  ),
+                  decoration: const InputDecoration(isDense: true, prefixIcon: Icon(Icons.search, size: 20), hintText: 'Name oder Qualifikation'),
                   onChanged: (v) => setState(() => _query = v),
                 ),
                 CheckboxListTile(
@@ -191,7 +189,7 @@ class _CrewTabState extends State<CrewTab> {
               ),
             ),
           ),
-        if (vehicles[null] != null) _VehicleCard(state: this, detail: vehicles[null]!, ctx: ctx, lead: true),
+        _LeadCard(state: this, vehicles: vehicles, ctx: ctx),
         for (final ev in d.vehicles)
           if (vehicles[ev.vehicleId] != null) _VehicleCard(state: this, detail: vehicles[ev.vehicleId]!, ctx: ctx, exerciseVehicle: ev),
         const SizedBox(height: 4),
@@ -233,27 +231,23 @@ class _CrewContext {
 }
 
 class _VehicleCard extends StatelessWidget {
-  const _VehicleCard({required this.state, required this.detail, required this.ctx, this.exerciseVehicle, this.lead = false});
+  const _VehicleCard({required this.state, required this.detail, required this.ctx, this.exerciseVehicle});
   final _CrewTabState state;
   final VehicleDetail detail;
   final _CrewContext ctx;
   final ExerciseVehicle? exerciseVehicle;
-  final bool lead;
 
   @override
   Widget build(BuildContext context) {
-    final c = Theme.of(context).colorScheme;
-    final v = detail.vehicle;
+    final v = detail.vehicle!;
     final ev = exerciseVehicle;
     final patternId = ev?.patternId;
-    final inPattern = patternId == null || !detail.matrix.containsKey(patternId)
-        ? detail.functions.map((f) => f.id).toSet()
-        : detail.matrix[patternId]!;
+    final inPattern = patternId == null || !detail.matrix.containsKey(patternId) ? detail.functions.map((f) => f.id).toSet() : detail.matrix[patternId]!;
     // Funktionen des Musters plus solche, die außerhalb des Musters besetzt sind.
     final shown = detail.functions.where((f) => inPattern.contains(f.id) || ctx.personOn(f.id) != null).toList();
     final filled = shown.where((f) => ctx.personOn(f.id) != null).length;
-    final headerColor = lead ? c.inverseSurface : AppColors.red;
-    final onHeader = lead ? c.onInverseSurface : Colors.white;
+    const headerColor = AppColors.red;
+    const onHeader = Colors.white;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
@@ -273,19 +267,15 @@ class _VehicleCard extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
-                          lead ? 'Führungs- und Sonderfunktionen' : v!.name,
-                          style: TextStyle(color: onHeader, fontWeight: FontWeight.w700, fontSize: 16),
+                          v.name,
+                          style: const TextStyle(color: onHeader, fontWeight: FontWeight.w700, fontSize: 16),
                         ),
-                        if (v?.callSign != null)
-                          Text(v!.callSign!, style: TextStyle(color: onHeader.withValues(alpha: 0.85), fontSize: 12)),
-                        Text(
-                          '$filled von ${shown.length} besetzt',
-                          style: TextStyle(color: onHeader.withValues(alpha: 0.85), fontSize: 12),
-                        ),
+                        if (v.callSign != null) Text(v.callSign!, style: TextStyle(color: onHeader.withValues(alpha: 0.85), fontSize: 12)),
+                        Text('$filled von ${shown.length} besetzt', style: TextStyle(color: onHeader.withValues(alpha: 0.85), fontSize: 12)),
                       ],
                     ),
                   ),
-                  if (!lead && detail.patterns.isNotEmpty)
+                  if (detail.patterns.isNotEmpty)
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(color: Theme.of(context).cardTheme.color, borderRadius: BorderRadius.circular(8)),
@@ -300,50 +290,173 @@ class _VehicleCard extends StatelessWidget {
                         onChanged: (p) => state.repo.exercises.setPattern(ev!.id, p),
                       ),
                     ),
-                  if (!lead)
-                    IconButton(
-                      tooltip: 'Aus der Übung nehmen',
-                      color: onHeader,
-                      icon: const Icon(Icons.close),
-                      onPressed: () async {
-                        if (await confirmDelete(
-                          context,
-                          v!.name,
-                          details: 'Das Fahrzeug wird aus dieser Übung genommen, die Besetzung gelöscht.',
-                        )) {
-                          await state.repo.exercises.removeVehicle(state.exerciseId, ev!, detail.functions.map((f) => f.id));
-                        }
-                      },
-                    ),
+                  IconButton(
+                    tooltip: 'Aus der Übung nehmen',
+                    color: onHeader,
+                    icon: const Icon(Icons.close),
+                    onPressed: () async {
+                      if (await confirmDelete(context, v.name, details: 'Das Fahrzeug wird aus dieser Übung genommen, die Besetzung gelöscht.')) {
+                        await state.repo.exercises.removeVehicle(state.exerciseId, ev!, detail.functions.map((f) => f.id));
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
-            if (!lead && v != null)
             Padding(
               padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
-              child: Align(alignment: Alignment.centerLeft, child: ReservationControl(detail: state.d, exerciseVehicle: ev!, vehicle: v)),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ReservationControl(detail: state.d, exerciseVehicle: ev!, vehicle: v),
+              ),
             ),
-          if (v != null && v.status != 'einsatzbereit')
+            if (v.status != 'einsatzbereit')
               Padding(
                 padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Tag(
-                    'Status: ${vehicleStatus[v.status] ?? v.status}',
-                    color: AppColors.warn.withValues(alpha: 0.18),
-                    textColor: AppColors.warn,
-                  ),
+                  child: Tag('Status: ${vehicleStatus[v.status] ?? v.status}', color: AppColors.warn.withValues(alpha: 0.18), textColor: AppColors.warn),
                 ),
               ),
             Padding(
               padding: const EdgeInsets.all(12),
               child: shown.isEmpty
-                  ? Text(lead ? 'Keine Führungsfunktionen angelegt.' : 'Dieses Fahrzeug hat noch keine Funktionen.')
+                  ? const Text('Dieses Fahrzeug hat noch keine Funktionen.')
                   : Wrap(
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        for (final f in shown) _Seat(state: state, function: f, ctx: ctx, outsidePattern: !inPattern.contains(f.id)),
+                        for (final f in shown)
+                          _Seat(
+                            state: state,
+                            functionId: f.id,
+                            name: f.name,
+                            need: f.requiredQualificationId,
+                            ctx: ctx,
+                            outsidePattern: !inPattern.contains(f.id),
+                          ),
+                      ],
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Führungs- und Sonderfunktionen dieser Übung. Sie werden frei angelegt
+/// (Namen dürfen mehrfach vorkommen) und bilden das Organigramm.
+class _LeadCard extends StatelessWidget {
+  const _LeadCard({required this.state, required this.vehicles, required this.ctx});
+  final _CrewTabState state;
+  final Map<String?, VehicleDetail> vehicles;
+  final _CrewContext ctx;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = Theme.of(context).colorScheme;
+    final d = state.d;
+    final leads = leadsInTreeOrder(d.leads);
+    final filled = d.leads.where((l) => ctx.personOn(l.id) != null).length;
+    final labels = leadLabels(d, {for (final p in ctx.persons.values) p.person.id: p.displayName});
+    final catalog = vehicles[null]?.functions ?? const <CrewFunction>[];
+    final top = leads.isEmpty ? null : leads.first.$1.id;
+    Future<void> edit({ExerciseLeadFunction? lead, String? name, String? qual}) async {
+      final quals = await state.repo.qualifications.all();
+      if (!context.mounted) return;
+      await showLeadDialog(context, d, vehicles: vehicles, quals: quals, lead: lead, parentId: top, presetName: name, presetQualificationId: qual);
+    }
+
+    String? info(ExerciseLeadFunction l) {
+      final parts = [
+        if (l.parentId != null && labels[l.parentId] != null) 'unter ${labels[l.parentId]}',
+        if (l.vehicleId != null && vehicles[l.vehicleId]?.vehicle != null) vehicles[l.vehicleId]!.vehicle!.name,
+        if (l.radioEntryId != null) ?d.radio.where((r) => r.id == l.radioEntryId).firstOrNull?.callSign,
+      ];
+      return parts.isEmpty ? null : parts.join(' · ');
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              color: c.inverseSurface,
+              padding: const EdgeInsets.fromLTRB(14, 8, 8, 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Wrap(
+                      spacing: 10,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          'Führungs- und Sonderfunktionen',
+                          style: TextStyle(color: c.onInverseSurface, fontWeight: FontWeight.w700, fontSize: 16),
+                        ),
+                        Text('$filled von ${d.leads.length} besetzt', style: TextStyle(color: c.onInverseSurface.withValues(alpha: 0.85), fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                  TextButton.icon(
+                    key: const Key('crew-org'),
+                    style: TextButton.styleFrom(foregroundColor: c.onInverseSurface),
+                    onPressed: () => DefaultTabController.maybeOf(context)?.animateTo(3),
+                    icon: const Icon(Icons.account_tree_outlined, size: 18),
+                    label: const Text('Organigramm'),
+                  ),
+                  MenuAnchor(
+                    builder: (context, controller, _) => TextButton.icon(
+                      key: const Key('crew-add-lead'),
+                      style: TextButton.styleFrom(foregroundColor: c.onInverseSurface),
+                      onPressed: () => controller.isOpen ? controller.close() : controller.open(),
+                      icon: const Icon(Icons.add, size: 18),
+                      label: const Text('Funktion'),
+                    ),
+                    menuChildren: [
+                      MenuItemButton(
+                        key: const Key('crew-add-lead-free'),
+                        leadingIcon: const Icon(Icons.edit_outlined),
+                        onPressed: () => edit(),
+                        child: const Text('Eigene Funktion …'),
+                      ),
+                      if (d.leads.isEmpty)
+                        MenuItemButton(
+                          onPressed: () => state.repo.exercises.saveLead(d.exercise.id, LeadInput(name: defaultLeadName)),
+                          child: const Text(defaultLeadName),
+                        ),
+                      for (final f in catalog)
+                        MenuItemButton(
+                          onPressed: () => edit(name: f.name, qual: f.requiredQualificationId),
+                          child: Text(f.name),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: leads.isEmpty
+                  ? const Text('Keine Führungsfunktionen. Über „Funktion“ anlegen – z. B. Einsatzleiter, Zugführer, Gruppenführer.')
+                  : Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (final (l, _) in leads)
+                          _Seat(
+                            state: state,
+                            functionId: l.id,
+                            name: l.name,
+                            need: l.requiredQualificationId,
+                            ctx: ctx,
+                            info: info(l),
+                            onEdit: () => edit(lead: l),
+                          ),
                       ],
                     ),
             ),
@@ -355,19 +468,33 @@ class _VehicleCard extends StatelessWidget {
 }
 
 class _Seat extends StatelessWidget {
-  const _Seat({required this.state, required this.function, required this.ctx, required this.outsidePattern});
+  const _Seat({
+    required this.state,
+    required this.functionId,
+    required this.name,
+    required this.need,
+    required this.ctx,
+    this.outsidePattern = false,
+    this.info,
+    this.onEdit,
+  });
   final _CrewTabState state;
-  final CrewFunction function;
+  final String functionId;
+  final String name;
+  final String? need;
   final _CrewContext ctx;
   final bool outsidePattern;
+
+  /// Zusatzzeile, z. B. „unter Einsatzleiter · HLF 20“.
+  final String? info;
+  final VoidCallback? onEdit;
 
   @override
   Widget build(BuildContext context) {
     final c = Theme.of(context).colorScheme;
-    final f = function;
+    final f = (id: functionId, name: name);
     final personId = ctx.personOn(f.id);
     final person = personId == null ? null : ctx.persons[personId];
-    final need = f.requiredQualificationId;
     final missing = person != null && need != null && !person.qualificationIds.contains(need);
     final picked = state._picked;
 
@@ -391,9 +518,7 @@ class _Seat extends StatelessWidget {
                   : c.surfaceContainerHighest.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: hover
-                    ? c.primary
-                    : (missing ? AppColors.warn : (picked != null ? c.primary.withValues(alpha: 0.5) : c.outlineVariant)),
+                color: hover ? c.primary : (missing ? AppColors.warn : (picked != null ? c.primary.withValues(alpha: 0.5) : c.outlineVariant)),
                 width: hover || missing ? 1.5 : 1,
               ),
             ),
@@ -402,20 +527,47 @@ class _Seat extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(4, 0, 4, 4),
-                  child: Text.rich(
-                    TextSpan(
-                      text: f.name.toUpperCase(),
-                      children: [
-                        if (need != null)
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text.rich(
                           TextSpan(
-                            text: ' · ${ctx.qualNames[need] ?? ''}',
-                            style: TextStyle(color: c.primary),
+                            text: f.name.toUpperCase(),
+                            children: [
+                              if (need != null)
+                                TextSpan(
+                                  text: ' · ${ctx.qualNames[need] ?? ''}',
+                                  style: TextStyle(color: c.primary),
+                                ),
+                            ],
                           ),
-                      ],
-                    ),
-                    style: TextStyle(fontSize: 10.5, letterSpacing: 0.5, fontWeight: FontWeight.w600, color: c.onSurfaceVariant),
+                          style: TextStyle(fontSize: 10.5, letterSpacing: 0.5, fontWeight: FontWeight.w600, color: c.onSurfaceVariant),
+                        ),
+                      ),
+                      if (onEdit != null)
+                        InkWell(
+                          key: ValueKey('seat-edit-${f.id}'),
+                          onTap: onEdit,
+                          borderRadius: BorderRadius.circular(8),
+                          child: Tooltip(
+                            message: 'Bearbeiten',
+                            child: Icon(Icons.edit_outlined, size: 15, color: c.onSurfaceVariant),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
+                if (info != null)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 0, 4, 4),
+                    child: Text(
+                      info!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 11, color: c.onSurfaceVariant),
+                    ),
+                  ),
                 if (person != null)
                   Row(
                     children: [
@@ -448,18 +600,12 @@ class _Seat extends StatelessWidget {
                 else
                   Padding(
                     padding: const EdgeInsets.all(6),
-                    child: Text(
-                      picked != null ? 'hier einsetzen' : 'hierher ziehen',
-                      style: TextStyle(fontSize: 12, color: c.onSurfaceVariant),
-                    ),
+                    child: Text(picked != null ? 'hier einsetzen' : 'hierher ziehen', style: TextStyle(fontSize: 12, color: c.onSurfaceVariant)),
                   ),
                 if (missing)
                   Padding(
                     padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
-                    child: Text(
-                      'fehlt: ${ctx.qualNames[need] ?? 'Qualifikation'}',
-                      style: const TextStyle(fontSize: 11, color: AppColors.warn),
-                    ),
+                    child: Text('fehlt: ${ctx.qualNames[need] ?? 'Qualifikation'}', style: const TextStyle(fontSize: 11, color: AppColors.warn)),
                   ),
                 if (outsidePattern)
                   Padding(
@@ -476,15 +622,7 @@ class _Seat extends StatelessWidget {
 }
 
 class _PersonChip extends StatelessWidget {
-  const _PersonChip({
-    super.key,
-    required this.person,
-    required this.drag,
-    required this.picked,
-    required this.onTap,
-    this.badge,
-    this.compact = false,
-  });
+  const _PersonChip({super.key, required this.person, required this.drag, required this.picked, required this.onTap, this.badge, this.compact = false});
   final PersonWithQualifications person;
   final CrewDrag drag;
   final bool picked;
@@ -530,10 +668,7 @@ class _PersonChip extends StatelessWidget {
                   ],
                 ),
               ),
-              if (badge != null && badge! > 0) ...[
-                const SizedBox(width: 6),
-                Tooltip(message: '$badge Funktion(en) in dieser Übung', child: Tag('$badge×')),
-              ],
+              if (badge != null && badge! > 0) ...[const SizedBox(width: 6), Tooltip(message: '$badge Funktion(en) in dieser Übung', child: Tag('$badge×'))],
             ],
           ),
         ),

@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 
 import 'database.dart';
 import 'exercise_repository.dart';
+import 'lead_functions.dart';
 import 'repositories.dart';
 
 /// Austauschformat für Vorlagen (`.uebung.json`).
@@ -22,6 +23,9 @@ Future<String> exportTemplate(Repositories repo, String exerciseId) async {
   String? patternName(String vehicleId, String? patternId) =>
       vehicles[vehicleId]?.patterns.where((p) => p.id == patternId).firstOrNull?.name;
 
+  final quals = {for (final q in await repo.qualifications.all()) q.id: q.name};
+  final leadIndex = {for (var i = 0; i < d.leads.length; i++) d.leads[i].id: i};
+  final radio = {for (final r in d.radio) r.id: r.callSign};
   final json = {
     'format': templateFormat,
     'version': templateVersion,
@@ -57,6 +61,16 @@ Future<String> exportTemplate(Repositories repo, String exerciseId) async {
     ],
     'funkplan': [
       for (final r in d.radio) {'rufname': r.callSign, 'geraet': r.device, 'netz': r.network, 'kanal': r.channel, 'aufgabe': r.task},
+    ],
+    'fuehrung': [
+      for (final l in d.leads)
+        {
+          'funktion': l.name,
+          'qualifikation': quals[l.requiredQualificationId],
+          'unterstellt': leadIndex[l.parentId],
+          'fahrzeug': vehicleName(l.vehicleId),
+          'rufname': radio[l.radioEntryId],
+        },
     ],
     'rollenkarten': [
       for (final r in d.roles)
@@ -165,6 +179,30 @@ Future<TemplateImportResult> importTemplate(Repositories repo, String text) asyn
     final docs = repo.documents;
     for (final r in list('funkplan')) {
       await docs.saveRadio(id, callSign: '${r['rufname'] ?? ''}', device: s(r['geraet']), network: s(r['netz']) ?? 'bos_digital', channel: s(r['kanal']), task: s(r['aufgabe']));
+    }
+    // Führungsstruktur; ältere Dateien ohne Angabe bekommen die Vorgabe.
+    final leads = list('fuehrung');
+    if (j['fuehrung'] == null) await ex.ensureDefaultLead(id);
+    final leadIds = <int, String>{};
+    for (var i = 0; i < leads.length; i++) {
+      final l = leads[i];
+      final qual = s(l['qualifikation']);
+      final vehicle = l['fahrzeug'] == null ? null : findVehicle(l['fahrzeug']);
+      if (l['fahrzeug'] != null && vehicle == null) skipped.add('Fahrzeug „${l['fahrzeug']}“ bei ${l['funktion']}');
+      leadIds[i] = await ex.saveLead(
+        id,
+        LeadInput(
+          name: s(l['funktion']) ?? defaultLeadName,
+          qualificationId: qual == null ? null : await repo.qualifications.ensure(qual),
+          vehicleId: vehicle?.vehicle?.id,
+          callSign: s(l['rufname']),
+        ),
+      );
+    }
+    // Unterstellung erst danach, weil Vorgesetzte auch später in der Liste stehen dürfen.
+    for (var i = 0; i < leads.length; i++) {
+      final parent = leadIds[(leads[i]['unterstellt'] as num?)?.toInt()];
+      if (parent != null) await ex.setLeadParent(id, leadIds[i]!, parent);
     }
     for (final r in list('rollenkarten')) {
       await db.into(db.roleCards).insert(RoleCardsCompanion.insert(

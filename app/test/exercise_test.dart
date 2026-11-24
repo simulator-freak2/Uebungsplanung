@@ -3,6 +3,7 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:uebungsplaner/data/database.dart';
 import 'package:uebungsplaner/data/exercise_repository.dart';
+import 'package:uebungsplaner/data/lead_functions.dart';
 import 'package:uebungsplaner/data/repositories.dart';
 import 'package:uebungsplaner/features/exercises/tab_alarm.dart';
 
@@ -56,7 +57,7 @@ void main() {
     final vid = await repo.vehicles.save(VehicleInput(name: 'HLF 20'));
     final gf = await repo.vehicles.addFunction(vid, 'Gruppenführer', null);
     final ma = await repo.vehicles.addFunction(vid, 'Maschinist', null);
-    final el = await repo.vehicles.addFunction(null, 'Einsatzleiter', null);
+    final el = defaultLeadId(id);
     final a = await repo.persons.save(PersonInput(lastName: 'A'));
     final b = await repo.persons.save(PersonInput(lastName: 'B'));
     await repo.exercises.addVehicle(id, vid);
@@ -129,12 +130,16 @@ void main() {
     // Version 1 simulieren: Übungstabellen löschen und user_version zurücksetzen.
     final raw = NativeDatabase.memory(setup: (db) {
       db.execute('CREATE TABLE settings ("key" TEXT NOT NULL PRIMARY KEY, value TEXT NOT NULL)');
+      db.execute('CREATE TABLE crew_functions (id TEXT NOT NULL PRIMARY KEY, updated_at INTEGER NOT NULL, deleted INTEGER NOT NULL DEFAULT 0, '
+          'vehicle_id TEXT NULL, name TEXT NOT NULL, required_qualification_id TEXT NULL, sort_order INTEGER NOT NULL DEFAULT 0)');
       db.execute('PRAGMA user_version = 1');
     });
     final db = AppDatabase(raw);
     final r = Repositories(db);
     final id = await r.exercises.create(ExerciseInput(title: 'Test', date: DateTime(2027), startMinutes: 1140));
-    expect((await r.exercises.detail(id))!.exercise.title, 'Test');
+    final d = (await r.exercises.detail(id))!;
+    expect(d.exercise.title, 'Test');
+    expect(d.leads.single.name, defaultLeadName);
     await db.close();
   });
 }

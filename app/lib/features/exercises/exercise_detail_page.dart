@@ -12,6 +12,7 @@ import 'tab_alarmplan.dart';
 import 'tab_crew.dart';
 import 'tab_map.dart';
 import 'tab_observation.dart';
+import 'tab_org.dart';
 import 'tab_plan.dart';
 import 'tab_radio_material.dart';
 import 'tab_roles.dart';
@@ -48,7 +49,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
           builder: (context, a) {
             final approval = a.data ?? true;
             return DefaultTabController(
-              length: 10,
+              length: 11,
               child: Scaffold(
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -136,6 +137,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                         Tab(text: 'Übungsplan'),
                         Tab(text: 'Lageskizze'),
                         Tab(text: 'Besetzung'),
+                        Tab(text: 'Organigramm'),
                         Tab(text: 'Alarmplan'),
                         Tab(text: 'Alarmmeldung'),
                         Tab(text: 'Funk'),
@@ -150,6 +152,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                         PlanTab(detail: d, approvalRequired: approval),
                         MapTab(detail: d),
                         CrewTab(detail: d),
+                        OrgTab(detail: d),
                         AlarmPlanTab(detail: d),
                         AlarmTab(detail: d),
                         RadioTab(detail: d),

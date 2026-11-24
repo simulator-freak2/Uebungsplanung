@@ -6,6 +6,7 @@ import 'package:pdf/widgets.dart' as pw;
 
 import '../data/documents_repository.dart';
 import '../data/exercise_repository.dart';
+import '../data/lead_functions.dart';
 import '../data/repositories.dart';
 import '../map/sketch.dart';
 import '../util/time.dart' as t;
@@ -16,6 +17,7 @@ enum MapSection {
   plan('Übungsplan'),
   sketch('Lageskizze'),
   crew('Fahrzeugbesetzung'),
+  orgChart('Organigramm'),
   alarmPlan('Alarmierungsplan'),
   alarms('Alarmmeldungen'),
   radio('Funkplan'),
@@ -47,7 +49,7 @@ class ExerciseMapData {
   final String organisation;
   final ExerciseDetail detail;
 
-  /// Fahrzeugdetails; Schlüssel `null` = Führungsfunktionen.
+  /// Fahrzeugdetails; Schlüssel `null` = Vorlagen der Führungsfunktionen.
   final Map<String?, VehicleDetail> vehicles;
   final Map<String, PersonWithQualifications> persons;
   final Map<String, String> qualificationNames;
@@ -199,9 +201,18 @@ Future<Uint8List> buildExerciseMap(ExerciseMapData data, Set<MapSection> section
             }(),
         ];
     page('Fahrzeugbesetzung', () => [
-          if (data.vehicles[null] != null) ...[
+          if (d.leads.isNotEmpty) ...[
             h2('Führungs- und Sonderfunktionen'),
-            table(['Funktion', 'Person', 'benötigt', 'Hinweis'], rows(data.vehicles[null]!, {for (final x in data.vehicles[null]!.functions) x.id})),
+            table(['Funktion', 'Person', 'benötigt', 'Hinweis'], [
+              for (final (l, depth) in leadsInTreeOrder(d.leads))
+                () {
+                  final pid = byFn[l.id]?.first;
+                  final p = pid == null ? null : data.persons[pid];
+                  final need = l.requiredQualificationId;
+                  final missing = p != null && need != null && !p.qualificationIds.contains(need);
+                  return ['${'    ' * depth}${depth > 0 ? '› ' : ''}${l.name}', p?.displayName ?? '', need == null ? '' : (data.qualificationNames[need] ?? ''), missing ? 'Qualifikation fehlt' : ''];
+                }(),
+            ]),
           ],
           for (final ev in d.vehicles)
             if (data.vehicles[ev.vehicleId] != null) ...() {
@@ -215,6 +226,99 @@ Future<Uint8List> buildExerciseMap(ExerciseMapData data, Set<MapSection> section
             }(),
           if (d.vehicles.isEmpty) pw.Text('Keine Fahrzeuge eingeplant.'),
         ]);
+  }
+
+  // -------------------------------------------------------------- Organigramm
+  if (sections.contains(MapSection.orgChart)) {
+    final roots = buildOrgChart(d, vehicles: data.vehicles, persons: data.persons, qualificationNames: data.qualificationNames);
+    const line = PdfColors.grey600;
+    const gap = 14.0;
+    pw.Widget box(OrgNode n) {
+      final top = n.function.parentId == null;
+      return pw.Container(
+        width: 138,
+        decoration: pw.BoxDecoration(
+          color: PdfColors.white,
+          border: pw.Border.all(color: n.qualificationMissing ? PdfColors.orange800 : PdfColors.grey500, width: n.qualificationMissing ? 1.2 : 0.7),
+          borderRadius: const pw.BorderRadius.all(pw.Radius.circular(4)),
+        ),
+        child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.stretch, children: [
+          pw.Container(
+            padding: const pw.EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+            decoration: pw.BoxDecoration(
+              color: top ? _red : PdfColors.grey800,
+              borderRadius: const pw.BorderRadius.only(topLeft: pw.Radius.circular(4), topRight: pw.Radius.circular(4)),
+            ),
+            child: pw.Text(n.callSign ?? '–', style: pw.TextStyle(font: f.bold, fontSize: 8, color: PdfColors.white)),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.fromLTRB(5, 3, 5, 4),
+            child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+              pw.Text(n.name, style: pw.TextStyle(font: f.bold, fontSize: 9)),
+              pw.Text(n.personName ?? 'nicht besetzt', style: pw.TextStyle(fontSize: 8, color: n.personName == null ? _grey : PdfColors.black)),
+              pw.SizedBox(height: 2),
+              pw.Text('Fahrzeug: ${n.vehicleName ?? '–'}', style: const pw.TextStyle(fontSize: 7, color: _grey)),
+              if (n.qualificationMissing) pw.Text('fehlt: ${n.qualificationName ?? 'Qualifikation'}', style: const pw.TextStyle(fontSize: 7, color: PdfColors.orange800)),
+            ]),
+          ),
+        ]),
+      );
+    }
+
+    pw.Widget tree(OrgNode n) {
+      if (n.children.isEmpty) return box(n);
+      return pw.Column(mainAxisSize: pw.MainAxisSize.min, children: [
+        box(n),
+        pw.Container(width: 1, height: gap, color: line),
+        pw.Row(mainAxisSize: pw.MainAxisSize.min, crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+          for (var i = 0; i < n.children.length; i++)
+            pw.CustomPaint(
+              painter: (canvas, size) {
+                // Ursprung unten links, y zeigt nach oben.
+                final first = i == 0, last = i == n.children.length - 1;
+                final mid = size.x / 2;
+                canvas
+                  ..setStrokeColor(line)
+                  ..setLineWidth(1);
+                if (!(first && last)) {
+                  canvas
+                    ..moveTo(first ? mid : 0, size.y - 0.5)
+                    ..lineTo(last ? mid : size.x, size.y - 0.5);
+                }
+                canvas
+                  ..moveTo(mid, size.y)
+                  ..lineTo(mid, size.y - gap)
+                  ..strokePath();
+              },
+              child: pw.Padding(padding: const pw.EdgeInsets.fromLTRB(5, gap, 5, 0), child: tree(n.children[i])),
+            ),
+        ]),
+      ]);
+    }
+
+    doc.addPage(pw.Page(
+      theme: theme,
+      pageFormat: PdfPageFormat.a4.landscape,
+      margin: const pw.EdgeInsets.fromLTRB(36, 30, 36, 30),
+      build: (ctx) => pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.stretch, children: [
+        header(ctx, 'Organigramm'),
+        pw.Expanded(
+          child: roots.isEmpty
+              ? pw.Text('Keine Führungsfunktionen angelegt.')
+              : pw.Center(
+                  child: pw.FittedBox(
+                    fit: pw.BoxFit.scaleDown,
+                    child: pw.Row(mainAxisSize: pw.MainAxisSize.min, crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+                      for (final r in roots) pw.Padding(padding: const pw.EdgeInsets.symmetric(horizontal: 8), child: tree(r)),
+                    ]),
+                  ),
+                ),
+        ),
+        pw.Text('Je Kästchen: Funkrufname (Kopf), Funktion, Person, Fahrzeug. Stand: Besetzung und Funkplan der Übung.',
+            style: const pw.TextStyle(fontSize: 7, color: _grey)),
+        footer(ctx),
+      ]),
+    ));
   }
 
   // -------------------------------------------------------- Alarmierungsplan
