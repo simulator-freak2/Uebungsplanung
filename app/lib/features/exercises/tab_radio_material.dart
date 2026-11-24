@@ -3,18 +3,27 @@ import 'package:material_ui/material_ui.dart';
 import '../../data/database.dart';
 import '../../data/documents_repository.dart';
 import '../../data/exercise_repository.dart';
+import '../../data/radio_overview.dart';
 import '../../materialkompass/mk_ui.dart';
 import '../../ui/widgets.dart';
 
-/// Funkplan: Rufname, Gerät, Funknetz, Gruppe/Kanal, Aufgabe.
-class RadioTab extends StatelessWidget {
+/// Funkplan: Rufname, Gerät, Funknetz, Gruppe/Kanal, Aufgabe –
+/// als Tabelle oder als grafische Übersicht (Kommunikationsskizze).
+class RadioTab extends StatefulWidget {
   const RadioTab({super.key, required this.detail});
   final ExerciseDetail detail;
 
   @override
+  State<RadioTab> createState() => _RadioTabState();
+}
+
+class _RadioTabState extends State<RadioTab> {
+  bool _graphic = false;
+
+  @override
   Widget build(BuildContext context) {
     final repo = AppScope.of(context);
-    final d = detail;
+    final d = widget.detail;
     final c = Theme.of(context).colorScheme;
 
     Future<void> edit([RadioEntry? r]) async {
@@ -106,10 +115,23 @@ class RadioTab extends StatelessWidget {
           title: 'Funkplan / Kommunikationsplan',
           subtitle: 'BOS digital (TMO/DMO), BOS analog und DLRG-Betriebsfunk',
           actions: [
+            if (d.radio.isNotEmpty)
+              SegmentedButton<bool>(
+                key: const Key('radio-view'),
+                showSelectedIcon: false,
+                segments: const [
+                  ButtonSegment(value: false, icon: Icon(Icons.table_rows_outlined), label: Text('Tabelle')),
+                  ButtonSegment(value: true, icon: Icon(Icons.account_tree_outlined), label: Text('Grafik')),
+                ],
+                selected: {_graphic},
+                onSelectionChanged: (v) => setState(() => _graphic = v.first),
+              ),
             FilledButton.tonalIcon(key: const Key('radio-add'), onPressed: edit, icon: const Icon(Icons.add), label: const Text('Eintrag')),
           ],
           child: d.radio.isEmpty
               ? const Text('Noch kein Funkplan. Legt Rufnamen, Funknetz und Gesprächsgruppe bzw. Kanal fest.')
+              : _graphic
+              ? RadioOverviewGraphic(overview: RadioOverview.from(d.radio), onTap: edit)
               : SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
@@ -153,6 +175,153 @@ class RadioTab extends StatelessWidget {
                 ),
         ),
       ],
+    );
+  }
+}
+
+/// Farbe eines Funknetzes (Hintergrund, Vordergrund).
+(Color, Color) radioNetworkColors(ColorScheme c, String network) => switch (network) {
+      'bos_digital' => (c.primaryContainer, c.onPrimaryContainer),
+      'bos_analog' => (c.tertiaryContainer, c.onTertiaryContainer),
+      'dlrg_betriebsfunk' => (c.secondaryContainer, c.onSecondaryContainer),
+      _ => (c.surfaceContainerHighest, c.onSurface),
+    };
+
+/// Grafische Übersicht des Funkplans: je Funknetz die Gesprächsgruppen bzw.
+/// Kanäle mit den Stellen darin. Stellen in mehreren Gruppen sind markiert.
+class RadioOverviewGraphic extends StatelessWidget {
+  const RadioOverviewGraphic({super.key, required this.overview, this.onTap});
+  final RadioOverview overview;
+  final void Function(RadioEntry)? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = Theme.of(context).colorScheme;
+    final t = Theme.of(context).textTheme;
+    final links = overview.linkingStations;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final n in overview.networks.entries) ...[
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: Row(children: [
+              Icon(Icons.cell_tower, size: 18, color: radioNetworkColors(c, n.key).$2),
+              const SizedBox(width: 6),
+              Text(radioNetworks[n.key] ?? n.key, style: t.titleSmall),
+              const SizedBox(width: 8),
+              Text('${n.value.length} ${n.value.length == 1 ? 'Gruppe' : 'Gruppen'}', style: t.bodySmall?.copyWith(color: c.onSurfaceVariant)),
+            ]),
+          ),
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: [for (final g in n.value) _GroupCard(overview: overview, group: g, onTap: onTap)],
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (links.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Icon(Icons.link, size: 18, color: c.onSurfaceVariant),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text('Verbindungsstellen (in mehreren Gruppen): ${links.join(', ')}', style: t.bodySmall?.copyWith(color: c.onSurfaceVariant)),
+              ),
+            ]),
+          ),
+      ],
+    );
+  }
+}
+
+class _GroupCard extends StatelessWidget {
+  const _GroupCard({required this.overview, required this.group, this.onTap});
+  final RadioOverview overview;
+  final RadioGroupNode group;
+  final void Function(RadioEntry)? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = Theme.of(context).colorScheme;
+    final t = Theme.of(context).textTheme;
+    final (bg, fg) = radioNetworkColors(c, group.network);
+    final line = BorderSide(color: fg.withValues(alpha: 0.5), width: 2);
+    return Container(
+      width: 300,
+      decoration: BoxDecoration(border: Border.all(color: bg, width: 2), borderRadius: BorderRadius.circular(12)),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            color: bg,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(children: [
+              Icon(Icons.settings_input_antenna, size: 18, color: fg),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(group.label, style: t.titleSmall?.copyWith(color: fg, fontWeight: FontWeight.w700)),
+              ),
+              Text('${group.entries.length}', style: t.labelMedium?.copyWith(color: fg)),
+            ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22, 0, 10, 10),
+            child: Container(
+              decoration: BoxDecoration(border: Border(left: line)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (final r in group.entries)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(children: [
+                        Container(width: 12, decoration: BoxDecoration(border: Border(top: line))),
+                        Expanded(child: _station(context, r)),
+                      ]),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _station(BuildContext context, RadioEntry r) {
+    final c = Theme.of(context).colorScheme;
+    final t = Theme.of(context).textTheme;
+    final others = overview.otherGroups(r, group);
+    final info = [r.device, r.task].whereType<String>().where((s) => s.isNotEmpty).join(' · ');
+    return Material(
+      color: c.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: others.isEmpty ? c.outlineVariant : c.primary, width: others.isEmpty ? 1 : 1.5),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: onTap == null ? null : () => onTap!(r),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(r.callSign, style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+            if (info.isNotEmpty) Text(info, style: t.bodySmall?.copyWith(color: c.onSurfaceVariant)),
+            if (others.isNotEmpty)
+              Row(children: [
+                Icon(Icons.link, size: 14, color: c.primary),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text('auch in ${others.map((g) => g.network == group.network ? g.label : g.fullLabel).join(', ')}',
+                      style: t.bodySmall?.copyWith(color: c.primary)),
+                ),
+              ]),
+          ]),
+        ),
+      ),
     );
   }
 }

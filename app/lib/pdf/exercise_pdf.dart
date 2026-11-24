@@ -4,8 +4,10 @@ import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
+import '../data/database.dart';
 import '../data/documents_repository.dart';
 import '../data/exercise_repository.dart';
+import '../data/radio_overview.dart';
 import '../data/repositories.dart';
 import '../map/sketch.dart';
 import '../util/time.dart' as t;
@@ -19,6 +21,7 @@ enum MapSection {
   alarmPlan('Alarmierungsplan'),
   alarms('Alarmmeldungen'),
   radio('Funkplan'),
+  radioOverview('Funkplan – grafische Übersicht'),
   roles('Rollenkarten'),
   material('Materialliste'),
   observation('Beobachtungsbogen'),
@@ -248,6 +251,95 @@ Future<Uint8List> buildExerciseMap(ExerciseMapData data, Set<MapSection> section
           else
             table(['Rufname', 'Einheit / Gerät', 'Funknetz', 'Gruppe / Kanal', 'Aufgabe'],
                 [for (final r in d.radio) [r.callSign, r.device ?? '', radioNetworks[r.network] ?? r.network, r.channel ?? '', r.task ?? '']]),
+        ]);
+  }
+
+  // ------------------------------------------- Funkplan, grafische Übersicht
+  if (sections.contains(MapSection.radioOverview)) {
+    final o = RadioOverview.from(d.radio);
+    const netColors = {
+      'bos_digital': PdfColor.fromInt(0xFF1E4E8C),
+      'bos_analog': PdfColor.fromInt(0xFF2E7D32),
+      'dlrg_betriebsfunk': PdfColor.fromInt(0xFFC8102E),
+    };
+    // Höchstens so viele Stellen je Kasten, damit ein Kasten auf eine Seite passt.
+    const perBox = 14;
+    pw.Widget station(RadioEntry r, RadioGroupNode g, PdfColor color) {
+      final others = o.otherGroups(r, g);
+      final info = [r.device, r.task].whereType<String>().where((s) => s.isNotEmpty).join(' · ');
+      return pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.center, children: [
+        pw.Container(width: 8, height: 1.2, color: color),
+        pw.Expanded(
+          child: pw.Container(
+            margin: const pw.EdgeInsets.symmetric(vertical: 2),
+            padding: const pw.EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+            decoration: pw.BoxDecoration(
+              color: PdfColors.grey100,
+              border: pw.Border.all(color: others.isEmpty ? PdfColors.grey400 : color, width: others.isEmpty ? 0.5 : 1.2),
+              borderRadius: const pw.BorderRadius.all(pw.Radius.circular(3)),
+            ),
+            child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+              pw.Text(r.callSign, style: pw.TextStyle(font: f.bold, fontSize: 8.5)),
+              if (info.isNotEmpty) pw.Text(info, style: const pw.TextStyle(fontSize: 7, color: _grey)),
+              if (others.isNotEmpty)
+                pw.Text('auch in ${others.map((x) => x.network == g.network ? x.label : x.fullLabel).join(', ')}',
+                    style: pw.TextStyle(font: f.bold, fontSize: 7, color: color)),
+            ]),
+          ),
+        ),
+      ]);
+    }
+
+    pw.Widget box(RadioGroupNode g, List<RadioEntry> entries, bool continued) {
+      final color = netColors[g.network] ?? _grey;
+      return pw.Container(
+        width: 165,
+        decoration: pw.BoxDecoration(border: pw.Border.all(color: color, width: 1), borderRadius: const pw.BorderRadius.all(pw.Radius.circular(4))),
+        child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.stretch, children: [
+          pw.Container(
+            color: color,
+            padding: const pw.EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+            child: pw.Row(children: [
+              pw.Expanded(
+                child: pw.Text('${g.label}${continued ? ' (Forts.)' : ''}', style: pw.TextStyle(font: f.bold, fontSize: 9.5, color: PdfColors.white)),
+              ),
+              pw.Text('${g.entries.length}', style: const pw.TextStyle(fontSize: 8, color: PdfColors.white)),
+            ]),
+          ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.fromLTRB(10, 0, 5, 5),
+            child: pw.Container(
+              padding: const pw.EdgeInsets.only(top: 3),
+              decoration: pw.BoxDecoration(border: pw.Border(left: pw.BorderSide(color: color, width: 1.2))),
+              child: pw.Column(children: [for (final r in entries) station(r, g, color)]),
+            ),
+          ),
+        ]),
+      );
+    }
+
+    page('Funkplan – Übersicht', () => [
+          if (o.isEmpty)
+            pw.Text('Kein Funkplan.')
+          else ...[
+            for (final n in o.networks.entries) ...[
+              pw.Row(children: [
+                pw.Container(width: 10, height: 10, color: netColors[n.key] ?? _grey),
+                pw.SizedBox(width: 6),
+                pw.Text(radioNetworks[n.key] ?? n.key, style: pw.TextStyle(font: f.bold, fontSize: 12)),
+              ]),
+              pw.SizedBox(height: 6),
+              pw.Wrap(spacing: 10, runSpacing: 10, children: [
+                for (final g in n.value)
+                  for (var i = 0; i < g.entries.length; i += perBox)
+                    box(g, g.entries.sublist(i, (i + perBox).clamp(0, g.entries.length)), i > 0),
+              ]),
+              pw.SizedBox(height: 14),
+            ],
+            if (o.linkingStations.isNotEmpty)
+              pw.Text('Verbindungsstellen (in mehreren Gruppen): ${o.linkingStations.join(', ')}',
+                  style: const pw.TextStyle(fontSize: 8.5, color: _grey)),
+          ],
         ]);
   }
 

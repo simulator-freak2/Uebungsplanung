@@ -41,7 +41,7 @@ Ein Update ersetzt nur das Programm, die Daten bleiben erhalten.
 | Besetzung | Fahrzeuge einplanen, Besetzungsmuster wählen, Personen per **Drag & Drop** auf Funktionen ziehen (oder Person antippen → Funktion antippen). Gelb = Qualifikation fehlt. Eine Person darf mehrere Funktionen haben. |
 | Alarmierungsplan | Wer wird wann alarmiert/abgerufen, rückt aus, ist vor Ort. Zeiten als Uhrzeit (`19:15`) oder ab Beginn (`+15`). |
 | Alarmmeldung | Ausdruck im Aufbau der Divera-Meldung. **Je Alarmierungszeitpunkt eine eigene Meldung** (Erstalarm, Nachalarmierung …). Die Auslösung in Divera macht der TL. |
-| Funkplan | Rufnamen, Funknetz (BOS digital/analog, DLRG-Betriebsfunk), Gruppe/Kanal, Aufgabe |
+| Funkplan | Rufnamen, Funknetz (BOS digital/analog, DLRG-Betriebsfunk), Gruppe/Kanal, Aufgabe. Mit **Tabelle / Grafik** umschalten: Die Grafik zeigt je Funknetz die Gesprächsgruppen bzw. Kanäle mit allen Stellen; Stellen in mehreren Gruppen (gleicher Rufname) sind als Verbindungsstellen markiert. Antippen öffnet den Eintrag. |
 | Rollenkarten | Mimen mit Name, Geburtsdatum/Alter, Vorerkrankungen, Erkrankungen, Symptomen, Verletzungen, Story und **Eskalationsstufen** |
 | Material | Materialliste |
 | Beobachtung | Beobachtungspunkte (frei oder aus dem Katalog) mit Bewertung und Notiz; Eskalationsstufen der Mimen |
@@ -49,7 +49,7 @@ Ein Update ersetzt nur das Programm, die Daten bleiben erhalten.
 
 Oben rechts:
 
-- **Übungsmappe**: Teile auswählen und dann drucken oder als PDF speichern. Die Mappe enthält Übungsplan, Besetzung, Alarmierungsplan, alle Alarmmeldungen, Funkplan, je Mime eine Rollenkarte, Material, Beobachtungsbogen und Nachbesprechungsprotokoll.
+- **Übungsmappe**: Teile auswählen und dann drucken oder als PDF speichern. Die Mappe enthält Übungsplan, Besetzung, Alarmierungsplan, alle Alarmmeldungen, Funkplan (als Tabelle und als grafische Übersicht), je Mime eine Rollenkarte, Material, Beobachtungsbogen und Nachbesprechungsprotokoll.
 - **Zur Freigabe vorlegen / Freigeben**: Das geht erst, wenn die Sicherheits-Checkliste vollständig ist. Die Freigabe erteilt TL oder Wehrführer mit Namen. Sie lässt sich in den Einstellungen abschalten.
 - **⋮**: Beobachter-Ansicht (große Schrift, nur lesen, z. B. fürs Tablet), Als Vorlage speichern, Übung kopieren, Löschen.
 
